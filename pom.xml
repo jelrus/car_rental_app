@@ -10,7 +10,6 @@
   <packaging>war</packaging>
 
   <name>car_rental_app Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://localhost:8080</url>
 
   <properties>

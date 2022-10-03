@@ -7,8 +7,6 @@ import persistence.entity.user.impl.User;
 
 public class UserDaoImpl implements UserDao {
 
-
-
     @Override
     public boolean create(User entity) {
         return false;

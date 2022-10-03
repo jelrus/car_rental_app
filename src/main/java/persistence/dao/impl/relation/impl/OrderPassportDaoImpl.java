@@ -6,6 +6,9 @@ import persistence.datatable.DataTableResponse;
 import persistence.entity.relation.OrderPassport;
 
 public class OrderPassportDaoImpl implements OrderPassportDao {
+
+
+
     @Override
     public boolean create(OrderPassport entity) {
         return false;

@@ -43,4 +43,5 @@ public class Action extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), identifier, message);
     }
+
 }
