@@ -1,7 +1,7 @@
 package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.product.Order;
+import persistence.entity.interaction.Order;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -31,13 +31,13 @@ public class UserOrders extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         UserOrders that = (UserOrders) o;
-        return Objects.equals(userId, that.userId) &&
-               Objects.equals(ordersId, that.ordersId);
+        return Objects.equals(userId, that.userId) && Objects.equals(ordersId, that.ordersId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, ordersId);
+        return Objects.hash(super.hashCode(), userId, ordersId);
     }
 }

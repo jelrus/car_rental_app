@@ -2,6 +2,9 @@ package persistence.entity;
 
 import persistence.entity.user.type.UserRole;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 public abstract class BaseUser extends BaseEntity{
 
     private String username;
@@ -9,6 +12,7 @@ public abstract class BaseUser extends BaseEntity{
     private String firstName;
     private String lastName;
     private String profilePic;
+    private BigDecimal balance;
     private String description;
     private Boolean enabled;
     private UserRole roleType;
@@ -54,6 +58,14 @@ public abstract class BaseUser extends BaseEntity{
         return profilePic;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
@@ -80,5 +92,28 @@ public abstract class BaseUser extends BaseEntity{
 
     public void setRoleType(UserRole roleType) {
         this.roleType = roleType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        BaseUser baseUser = (BaseUser) o;
+        return Objects.equals(username, baseUser.username) &&
+               Objects.equals(password, baseUser.password) &&
+               Objects.equals(firstName, baseUser.firstName) &&
+               Objects.equals(lastName, baseUser.lastName) &&
+               Objects.equals(profilePic, baseUser.profilePic) &&
+               Objects.equals(balance, baseUser.balance) &&
+               Objects.equals(description, baseUser.description) &&
+               Objects.equals(enabled, baseUser.enabled) &&
+               roleType == baseUser.roleType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), username, password, firstName, lastName,
+                            profilePic, balance, description, enabled, roleType);
     }
 }

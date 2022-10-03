@@ -1,4 +1,4 @@
-package persistence.entity.product.type;
+package persistence.entity.interaction.type;
 
 public enum OrderStatus {
     PROCESSING,
