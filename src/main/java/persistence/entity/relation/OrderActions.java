@@ -5,12 +5,12 @@ import persistence.entity.BaseEntity;
 import java.util.Collection;
 import java.util.Objects;
 
-public class OrderInvoices extends BaseEntity {
+public class OrderActions extends BaseEntity {
 
     private Long orderId;
-    private Collection<Long> invoiceId;
+    private Collection<Long> actionId;
 
-    public OrderInvoices() {
+    public OrderActions() {
         super();
     }
 
@@ -22,12 +22,12 @@ public class OrderInvoices extends BaseEntity {
         this.orderId = orderId;
     }
 
-    public Collection<Long> getInvoiceId() {
-        return invoiceId;
+    public Collection<Long> getActionId() {
+        return actionId;
     }
 
-    public void setInvoiceId(Collection<Long> invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setActionId(Collection<Long> actionId) {
+        this.actionId = actionId;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class OrderInvoices extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        OrderInvoices that = (OrderInvoices) o;
-        return Objects.equals(orderId, that.orderId) && Objects.equals(invoiceId, that.invoiceId);
+        OrderActions that = (OrderActions) o;
+        return Objects.equals(orderId, that.orderId) && Objects.equals(actionId, that.actionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderId, invoiceId);
+        return Objects.hash(super.hashCode(), orderId, actionId);
     }
 }

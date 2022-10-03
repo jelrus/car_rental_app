@@ -1,13 +1,13 @@
-package persistence.entity.user;
+package persistence.entity.user.impl;
 
-import persistence.entity.BaseUser;
+import persistence.entity.user.BaseUser;
 import persistence.entity.user.type.UserRole;
 
-public class User extends BaseUser {
+public class Admin extends BaseUser {
 
-    public User() {
+    public Admin() {
         super();
-        setRoleType(UserRole.ROLE_USER);
+        setRoleType(UserRole.ROLE_ADMIN);
     }
 
     @Override

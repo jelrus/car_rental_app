@@ -1,11 +1,12 @@
-package persistence.entity;
+package persistence.entity.user;
 
+import persistence.entity.BaseEntity;
 import persistence.entity.user.type.UserRole;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public abstract class BaseUser extends BaseEntity{
+public abstract class BaseUser extends BaseEntity {
 
     private String username;
     private String password;

@@ -11,8 +11,8 @@ public class Car extends BaseEntity {
 
     private String title;
     private String productPic;
-    private CarBrand carBrand;
-    private CarQualityType carQualityType;
+    private CarBrand brand;
+    private CarQualityType quality;
     private String info;
     private BigDecimal rentalPrice;
 
@@ -36,20 +36,20 @@ public class Car extends BaseEntity {
         this.productPic = productPic;
     }
 
-    public CarBrand getCarBrand() {
-        return carBrand;
+    public CarBrand getBrand() {
+        return brand;
     }
 
-    public void setCarBrand(CarBrand carBrand) {
-        this.carBrand = carBrand;
+    public void setBrand(CarBrand brand) {
+        this.brand = brand;
     }
 
-    public CarQualityType getCarQualityType() {
-        return carQualityType;
+    public CarQualityType getQuality() {
+        return quality;
     }
 
-    public void setCarQualityType(CarQualityType carQualityType) {
-        this.carQualityType = carQualityType;
+    public void setQuality(CarQualityType quality) {
+        this.quality = quality;
     }
 
     public String getInfo() {
@@ -76,14 +76,14 @@ public class Car extends BaseEntity {
         Car car = (Car) o;
         return Objects.equals(title, car.title) &&
                Objects.equals(productPic, car.productPic) &&
-               carBrand == car.carBrand &&
-               carQualityType == car.carQualityType &&
+               brand == car.brand &&
+               quality == car.quality &&
                Objects.equals(info, car.info) &&
                Objects.equals(rentalPrice, car.rentalPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, productPic, carBrand, carQualityType, info, rentalPrice);
+        return Objects.hash(super.hashCode(), title, productPic, brand, quality, info, rentalPrice);
     }
 }

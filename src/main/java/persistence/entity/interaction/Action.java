@@ -4,12 +4,12 @@ import persistence.entity.BaseEntity;
 
 import java.util.Objects;
 
-public class Invoice extends BaseEntity {
+public class Action extends BaseEntity {
 
     private String identifier;
     private String message;
 
-    public Invoice() {
+    public Action() {
         super();
     }
 
@@ -34,9 +34,9 @@ public class Invoice extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(identifier, invoice.identifier) &&
-               Objects.equals(message, invoice.message);
+        Action action = (Action) o;
+        return Objects.equals(identifier, action.identifier) &&
+               Objects.equals(message, action.message);
     }
 
     @Override
