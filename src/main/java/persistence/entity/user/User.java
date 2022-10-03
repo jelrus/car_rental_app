@@ -11,12 +11,12 @@ public class User extends BaseUser {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

@@ -1,10 +1,6 @@
 package persistence.entity;
 
-import persistence.entity.product.Order;
 import persistence.entity.user.type.UserRole;
-
-import java.util.Collection;
-import java.util.Objects;
 
 public abstract class BaseUser extends BaseEntity{
 
@@ -16,7 +12,11 @@ public abstract class BaseUser extends BaseEntity{
     private String description;
     private Boolean enabled;
     private UserRole roleType;
-    private Collection<Order> orders;
+
+    public BaseUser() {
+        super();
+        this.enabled = true;
+    }
 
     public String getUsername() {
         return username;
@@ -80,36 +80,5 @@ public abstract class BaseUser extends BaseEntity{
 
     public void setRoleType(UserRole roleType) {
         this.roleType = roleType;
-    }
-
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        BaseUser baseUser = (BaseUser) o;
-        return Objects.equals(username, baseUser.username) &&
-               Objects.equals(password, baseUser.password) &&
-               Objects.equals(firstName, baseUser.firstName) &&
-               Objects.equals(lastName, baseUser.lastName) &&
-               Objects.equals(profilePic, baseUser.profilePic) &&
-               Objects.equals(description, baseUser.description) &&
-               Objects.equals(enabled, baseUser.enabled) &&
-               roleType == baseUser.roleType &&
-               Objects.equals(orders, baseUser.orders);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, firstName, lastName,
-                            profilePic, description, enabled, roleType, orders);
     }
 }
