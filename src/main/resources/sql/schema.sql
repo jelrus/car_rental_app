@@ -13,7 +13,7 @@ create table users(
                       id bigint auto_increment primary key,
                       created datetime(6) not null,
                       updated datetime(6) not null,
-                      username nvarchar(255) not null,
+                      username nvarchar(255) unique not null,
                       password nvarchar(255) not null,
                       first_name nvarchar(255),
                       last_name nvarchar(255),

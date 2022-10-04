@@ -7,7 +7,7 @@ public class Manager extends BaseUser {
 
     public Manager() {
         super();
-        setRoleType(UserRole.ROLE_MANAGER);
+        setRoleType(UserRole.MANAGER);
     }
 
     @Override

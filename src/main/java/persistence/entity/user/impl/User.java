@@ -7,7 +7,7 @@ public class User extends BaseUser {
 
     public User() {
         super();
-        setRoleType(UserRole.ROLE_USER);
+        setRoleType(UserRole.USER);
     }
 
     @Override

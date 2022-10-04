@@ -7,7 +7,7 @@ public class Admin extends BaseUser {
 
     public Admin() {
         super();
-        setRoleType(UserRole.ROLE_ADMIN);
+        setRoleType(UserRole.ADMIN);
     }
 
     @Override

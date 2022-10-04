@@ -60,6 +60,13 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
 
     @Override
     public boolean releaseConnection(Connection connection) {
+
+        try {
+            connection.close();
+        } catch (SQLException closeEx) {
+            closeEx.printStackTrace();
+        }
+
         connectionPool.add(connection);
         return usedConnections.remove(connection);
     }
@@ -77,5 +84,23 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
     @Override
     public String getPassword() {
         return dsc.getPassword();
+    }
+
+    public void setupConnection(Connection connection, int txIsoLevel) {
+        try {
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(txIsoLevel);
+        } catch (SQLException connSetupEx) {
+            connSetupEx.printStackTrace();
+        }
+    }
+
+    public void rollback(Connection connection) {
+        try {
+            connection.rollback();
+            releaseConnection(connection);
+        } catch (SQLException rollbackEx) {
+            rollbackEx.printStackTrace();
+        }
     }
 }
