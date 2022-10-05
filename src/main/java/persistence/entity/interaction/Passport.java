@@ -1,20 +1,42 @@
 package persistence.entity.interaction;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 
 import java.util.Objects;
 
+@Table(tableName = "passport")
 public class Passport extends BaseEntity {
 
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "country")
     private String country;
+
+    @Column(name = "zip_code")
     private String zipCode;
+
+    @Column(name = "region")
     private String region;
+
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "building")
     private String building;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "email")
     private String email;
 
     public Passport() {

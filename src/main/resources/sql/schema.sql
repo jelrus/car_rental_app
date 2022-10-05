@@ -56,10 +56,10 @@ create table orders(
                        id bigint auto_increment primary key,
                        created datetime(6) not null,
                        updated datetime(6) not null,
-                       withDriver boolean,
-                       leaseTermStart datetime(6),
-                       leaseTermEnd datetime(6),
-                       orderStatus enum('PROCESSING', 'APPROVED', 'REJECTED', 'ACTIVE', 'DAMAGE_REFUND', 'CLOSED')
+                       with_driver boolean,
+                       lease_term_start datetime(6),
+                       lease_term_end datetime(6),
+                       order_status enum('PROCESSING', 'APPROVED', 'REJECTED', 'ACTIVE', 'DAMAGE_REFUND', 'CLOSED')
 );
 
 create table actions(
@@ -85,7 +85,7 @@ create table order_car(
                           id bigint auto_increment primary key,
                           created datetime(6) not null,
                           updated datetime(6) not null,
-                          order_id bigint not null,
+                          order_id bigint not null unique,
                           car_id bigint not null,
                           UNIQUE KEY `oc` (`order_id`, `car_id`),
                           foreign key (order_id) references orders(id) ON DELETE CASCADE,
@@ -96,7 +96,7 @@ create table order_passport(
                                id bigint auto_increment primary key not null,
                                created datetime(6) not null,
                                updated datetime(6) not null,
-                               order_id bigint not null,
+                               order_id bigint not null unique,
                                passport_id bigint not null,
                                UNIQUE KEY `op` (`order_id`, `passport_id`),
                                foreign key (order_id) references orders(id) ON DELETE CASCADE,

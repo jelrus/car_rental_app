@@ -1,19 +1,33 @@
 package persistence.entity.product;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 import persistence.entity.product.type.CarBrand;
 import persistence.entity.product.type.CarQualityType;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Table(tableName = "cars")
 public class Car extends BaseEntity {
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "product_pic")
     private String productPic;
+
+    @Column(name = "brand")
     private CarBrand brand;
+
+    @Column(name = "quality")
     private CarQualityType quality;
+
+    @Column(name = "info")
     private String info;
+
+    @Column(name = "rental_price")
     private BigDecimal rentalPrice;
 
     public Car() {

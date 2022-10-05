@@ -1,15 +1,21 @@
 package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 import persistence.entity.interaction.Order;
 
 import java.util.Collection;
 import java.util.Objects;
 
+@Table(tableName = "user_orders")
 public class UserOrders extends BaseEntity {
 
+    @Column(name = "user_id")
     private Long userId;
-    private Collection<Order> ordersId;
+
+    @Column(name = "order_id")
+    private Long orderId;
 
     public Long getUserId() {
         return userId;
@@ -19,12 +25,12 @@ public class UserOrders extends BaseEntity {
         this.userId = userId;
     }
 
-    public Collection<Order> getOrdersId() {
-        return ordersId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrdersId(Collection<Order> ordersId) {
-        this.ordersId = ordersId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     @Override
@@ -33,11 +39,11 @@ public class UserOrders extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         UserOrders that = (UserOrders) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(ordersId, that.ordersId);
+        return Objects.equals(userId, that.userId) && Objects.equals(orderId, that.orderId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), userId, ordersId);
+        return Objects.hash(super.hashCode(), userId, orderId);
     }
 }

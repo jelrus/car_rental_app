@@ -1,14 +1,20 @@
 package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 
 import java.util.Collection;
 import java.util.Objects;
 
+@Table(tableName = "order_actions")
 public class OrderActions extends BaseEntity {
 
+    @Column(name = "order_id")
     private Long orderId;
-    private Collection<Long> actionId;
+
+    @Column(name = "action_id")
+    private Long actionId;
 
     public OrderActions() {
         super();
@@ -22,11 +28,11 @@ public class OrderActions extends BaseEntity {
         this.orderId = orderId;
     }
 
-    public Collection<Long> getActionId() {
+    public Long getActionId() {
         return actionId;
     }
 
-    public void setActionId(Collection<Long> actionId) {
+    public void setActionId(Long actionId) {
         this.actionId = actionId;
     }
 

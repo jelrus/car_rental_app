@@ -1,6 +1,7 @@
 package persistence.entity.user;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
 import persistence.entity.user.type.UserRole;
 
 import java.math.BigDecimal;
@@ -8,14 +9,31 @@ import java.util.Objects;
 
 public abstract class BaseUser extends BaseEntity {
 
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "profile_pic")
     private String profilePic;
+
+    @Column(name = "balance")
     private BigDecimal balance;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "enabled")
     private Boolean enabled;
+
+    @Column(name = "role_type")
     private UserRole roleType;
 
     public BaseUser() {

@@ -1,12 +1,18 @@
 package persistence.entity.interaction;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 
 import java.util.Objects;
 
+@Table(tableName = "actions")
 public class Action extends BaseEntity {
 
+    @Column(name = "identifier")
     private String identifier;
+
+    @Column(name = "message")
     private String message;
 
     public Action() {

@@ -1,16 +1,26 @@
 package persistence.entity.interaction;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 import persistence.entity.interaction.type.OrderStatus;
 
 import java.util.Date;
 import java.util.Objects;
 
+@Table(tableName = "orders")
 public class Order extends BaseEntity {
 
+    @Column(name = "with_driver")
     private Boolean withDriver;
+
+    @Column(name = "lease_term_start")
     private Date leaseTermStart;
+
+    @Column(name = "lease_term_end")
     private Date leaseTermEnd;
+
+    @Column(name = "order_status")
     private OrderStatus orderStatus;
 
     public Order() {

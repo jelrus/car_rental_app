@@ -1,8 +1,10 @@
 package persistence.entity.user.impl;
 
+import persistence.entity.annotations.Table;
 import persistence.entity.user.BaseUser;
 import persistence.entity.user.type.UserRole;
 
+@Table(tableName = "users")
 public class User extends BaseUser {
 
     public User() {

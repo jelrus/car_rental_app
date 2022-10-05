@@ -1,13 +1,21 @@
 package persistence.entity;
 
+import persistence.entity.annotations.Column;
+
 import java.util.Date;
 import java.util.Objects;
 
 public abstract class BaseEntity {
 
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "created")
     private Date created;
+
+    @Column(name = "updated")
     private Date updated;
+
     private Boolean visible;
 
     public BaseEntity() {

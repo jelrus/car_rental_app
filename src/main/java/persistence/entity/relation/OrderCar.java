@@ -1,12 +1,18 @@
 package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
+import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 
 import java.util.Objects;
 
+@Table(tableName = "order_car")
 public class OrderCar extends BaseEntity {
 
+    @Column(name = "order_id")
     private Long orderId;
+
+    @Column(name = "car_id")
     private Long carId;
 
     public OrderCar() {
