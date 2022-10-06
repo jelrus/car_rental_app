@@ -1,8 +1,10 @@
-package test;
+package util;
 
+import persistence.datatable.DataTableRequest;
 import persistence.entity.annotations.Column;
 import persistence.entity.annotations.Table;
 
+import javax.print.DocFlavor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +106,14 @@ public final class QueryGenerator {
 
     public static String findAll(Class<?> cls) {
         return "SELECT * FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT) + ";";
+    }
+
+    public static String findAllByRequest(Class<?> cls, DataTableRequest req) {
+        int limit = (req.getCurrentPage() - 1) * req.getPageSize();
+        return "SELECT * FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT) +
+               " GROUP BY id " +
+               " ORDER BY " + req.getOrder() + " " + req.getSort() + " " +
+               " LIMIT " + limit + ", " + req.getPageSize() + ";";
     }
 
     public static String count(Class<?> cls) {

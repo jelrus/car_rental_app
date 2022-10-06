@@ -2,12 +2,14 @@ package persistence.entity.user;
 
 import persistence.entity.BaseEntity;
 import persistence.entity.annotations.Column;
+import persistence.entity.annotations.Table;
 import persistence.entity.user.type.UserRole;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public abstract class BaseUser extends BaseEntity {
+@Table(tableName = "users")
+public class BaseUser extends BaseEntity {
 
     @Column(name = "username")
     private String username;
