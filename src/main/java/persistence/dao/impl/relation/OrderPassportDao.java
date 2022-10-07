@@ -4,7 +4,6 @@ import persistence.dao.BaseDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Passport;
-import persistence.entity.product.Car;
 import persistence.entity.relation.OrderPassport;
 
 public interface OrderPassportDao extends BaseDao<OrderPassport> {

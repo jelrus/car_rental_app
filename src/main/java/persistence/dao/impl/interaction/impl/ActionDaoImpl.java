@@ -5,13 +5,10 @@ import persistence.dao.impl.interaction.ActionDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
-import persistence.entity.user.BaseUser;
-import persistence.entity.user.type.UserRole;
 import util.QueryGenerator;
 
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 public class ActionDaoImpl implements ActionDao {
 

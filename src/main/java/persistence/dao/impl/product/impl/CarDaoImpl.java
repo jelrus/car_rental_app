@@ -11,7 +11,6 @@ import util.QueryGenerator;
 
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 public class CarDaoImpl implements CarDao {
 

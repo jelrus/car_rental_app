@@ -5,9 +5,7 @@ import persistence.dao.impl.relation.UserOrdersDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Order;
-import persistence.entity.interaction.Passport;
 import persistence.entity.interaction.type.OrderStatus;
-import persistence.entity.relation.OrderPassport;
 import persistence.entity.relation.UserOrders;
 import util.QueryGenerator;
 
