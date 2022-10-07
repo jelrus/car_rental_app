@@ -2,9 +2,9 @@ package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
 import persistence.entity.annotations.Column;
+import persistence.entity.annotations.MergeField;
 import persistence.entity.annotations.Table;
 
-import java.util.Collection;
 import java.util.Objects;
 
 @Table(tableName = "order_actions")
@@ -13,6 +13,7 @@ public class OrderActions extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
+    @MergeField(name = "action_id")
     @Column(name = "action_id")
     private Long actionId;
 
@@ -48,5 +49,13 @@ public class OrderActions extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), orderId, actionId);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderActions{" + super.toString() +
+                "orderId=" + orderId +
+                ", actionId=" + actionId +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
 import persistence.entity.annotations.Column;
+import persistence.entity.annotations.MergeField;
 import persistence.entity.annotations.Table;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ public class OrderPassport extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
+    @MergeField(name = "passport_id")
     @Column(name = "passport_id")
     private Long passportId;
 

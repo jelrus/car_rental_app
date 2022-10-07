@@ -3,7 +3,6 @@ package persistence.dao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.BaseEntity;
-import persistence.entity.user.BaseUser;
 
 public interface BaseDao<E extends BaseEntity> {
 

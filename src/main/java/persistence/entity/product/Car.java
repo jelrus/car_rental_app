@@ -100,4 +100,16 @@ public class Car extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), title, productPic, brand, quality, info, rentalPrice);
     }
+
+    @Override
+    public String toString() {
+        return "Car{" + super.toString() + '\'' +
+                "title='" + title + '\'' +
+                ", productPic='" + productPic + '\'' +
+                ", brand=" + brand +
+                ", quality=" + quality +
+                ", info='" + info + '\'' +
+                ", rentalPrice=" + rentalPrice +
+                '}';
+    }
 }

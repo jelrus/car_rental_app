@@ -2,9 +2,9 @@ package util;
 
 import persistence.datatable.DataTableRequest;
 import persistence.entity.annotations.Column;
+import persistence.entity.annotations.MergeField;
 import persistence.entity.annotations.Table;
 
-import javax.print.DocFlavor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +30,27 @@ public final class QueryGenerator {
         return superClasses;
     }
 
-    private static List<String> getAnnotatedFields(Class<?> cls) {
+    private static List<String> getAnnotatedColumnFields(Class<?> cls) {
         List<String> annotatedFields = new ArrayList<>();
 
         for (int i = QueryGenerator.getClasses(cls).size() - 1; i >= 0; i--) {
             for (Field f : QueryGenerator.getClasses(cls).get(i).getDeclaredFields()) {
                 if (f.isAnnotationPresent(Column.class)) {
                     annotatedFields.add(f.getAnnotation(Column.class).name());
+                }
+            }
+        }
+
+        return annotatedFields;
+    }
+
+    private static List<String> getAnnotatedMergeFields(Class<?> cls) {
+        List<String> annotatedFields = new ArrayList<>();
+
+        for (int i = QueryGenerator.getClasses(cls).size() - 1; i >= 0; i--) {
+            for (Field f : QueryGenerator.getClasses(cls).get(i).getDeclaredFields()) {
+                if (f.isAnnotationPresent(MergeField.class)) {
+                    annotatedFields.add(f.getAnnotation(MergeField.class).name());
                 }
             }
         }
@@ -51,8 +65,8 @@ public final class QueryGenerator {
                           .append(cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT))
                           .append(" VALUES(");
 
-        for (int i = 0; i < getAnnotatedFields(cls).size(); i++) {
-            if (i != 0 && i != getAnnotatedFields(cls).size() - 1) {
+        for (int i = 0; i < getAnnotatedColumnFields(cls).size(); i++) {
+            if (i != 0 && i != getAnnotatedColumnFields(cls).size() - 1) {
                 createQueryBuilder.append("?, ");
             } else if (i == 0) {
                 createQueryBuilder.append("default, ");
@@ -71,14 +85,14 @@ public final class QueryGenerator {
                           .append(cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT))
                           .append(" SET ");
 
-        for (int i = 0; i < getAnnotatedFields(cls).size(); i++) {
-            if (!getAnnotatedFields(cls).get(i).equals(updateParameter) &&
-                !excludeParameters.contains(getAnnotatedFields(cls).get(i))) {
-                if (i != getAnnotatedFields(cls).size() - 1) {
-                    updateQueryBuilder.append(getAnnotatedFields(cls).get(i))
+        for (int i = 0; i < getAnnotatedColumnFields(cls).size(); i++) {
+            if (!getAnnotatedColumnFields(cls).get(i).equals(updateParameter) &&
+                !excludeParameters.contains(getAnnotatedColumnFields(cls).get(i))) {
+                if (i != getAnnotatedColumnFields(cls).size() - 1) {
+                    updateQueryBuilder.append(getAnnotatedColumnFields(cls).get(i))
                                       .append("=?, ");
                 } else {
-                    updateQueryBuilder.append(getAnnotatedFields(cls).get(i))
+                    updateQueryBuilder.append(getAnnotatedColumnFields(cls).get(i))
                             .append("=? ");
                 }
             }
@@ -118,5 +132,41 @@ public final class QueryGenerator {
 
     public static String count(Class<?> cls) {
         return "SELECT COUNT(*) AS COUNT FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT) +";";
+    }
+
+    public static String findByRelation (Class<?> masterClass,
+                                         Class<?> slaveClass,
+                                         String slaveClassIdentifier,
+                                         String findParam,
+                                         List<String> excludeFields,
+                                         DataTableRequest req) {
+        int limit = (req.getCurrentPage() - 1) * req.getPageSize();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+
+        for (int i = 0; i < getAnnotatedColumnFields(slaveClass).size(); i++) {
+            if (!excludeFields.contains(getAnnotatedColumnFields(slaveClass).get(i))) {
+                if (i != getAnnotatedColumnFields(slaveClass).size() - 1) {
+                    sb.append(slaveClassIdentifier).append(".")
+                      .append(getAnnotatedColumnFields(slaveClass).get(i)).append(", ");
+                } else {
+                    sb.append(slaveClassIdentifier).append(".")
+                      .append(getAnnotatedColumnFields(slaveClass).get(i));
+                }
+            }
+        }
+
+        sb.append(" FROM ")
+          .append(masterClass.getAnnotation(Table.class).tableName())
+          .append(" JOIN ")
+          .append(slaveClass.getAnnotation(Table.class).tableName())
+          .append(" ").append(slaveClassIdentifier).append(" ON ")
+          .append(masterClass.getAnnotation(Table.class).tableName()).append(".")
+          .append(getAnnotatedMergeFields(masterClass).get(1)).append(" = ")
+          .append(slaveClassIdentifier).append(".").append(getAnnotatedMergeFields(slaveClass).get(0))
+          .append(" WHERE ").append(findParam).append(" = ").append("?;");
+
+        return sb.toString();
     }
 }

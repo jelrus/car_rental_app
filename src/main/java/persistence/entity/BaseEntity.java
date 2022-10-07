@@ -1,12 +1,14 @@
 package persistence.entity;
 
 import persistence.entity.annotations.Column;
+import persistence.entity.annotations.MergeField;
 
 import java.util.Date;
 import java.util.Objects;
 
 public abstract class BaseEntity {
 
+    @MergeField(name = "id")
     @Column(name = "id")
     private Long id;
 
@@ -70,5 +72,15 @@ public abstract class BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, created, updated, visible);
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", visible=" + visible +
+                '}';
     }
 }

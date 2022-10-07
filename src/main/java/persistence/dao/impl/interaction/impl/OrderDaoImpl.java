@@ -5,14 +5,12 @@ import persistence.dao.impl.interaction.OrderDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Order;
-import persistence.entity.user.BaseUser;
+import persistence.entity.interaction.type.OrderStatus;
 import util.QueryGenerator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Collections;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 public class OrderDaoImpl implements OrderDao {
 
@@ -54,13 +52,16 @@ public class OrderDaoImpl implements OrderDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(Order.class, "id",
-                    Collections.emptyList()));
+                    List.of("created")));
+            System.out.println(QueryGenerator.updateQuery(Order.class, "id",
+                    List.of("created")));
             ps.setTimestamp(1, new Timestamp(order.getUpdated().getTime()));
             ps.setBoolean(2, order.getWithDriver());
             ps.setTimestamp(3, new Timestamp(order.getLeaseTermStart().getTime()));
             ps.setTimestamp(4, new Timestamp(order.getLeaseTermEnd().getTime()));
             ps.setString(5, order.getOrderStatus().name());
             ps.setLong(6, order.getId());
+
             ps.executeUpdate();
             connection.commit();
         } catch (SQLException updateEx) {
@@ -74,26 +75,145 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_REPEATABLE_READ);
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.deleteQuery(Order.class, "id"));
+            ps.setLong(1, id);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException onDeleteEx) {
+            dsc.rollback(connection);
+            return false;
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+        return true;
     }
 
     @Override
     public boolean existById(Long id) {
-        return false;
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_UNCOMMITTED);
+        int count = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.existBy(Order.class, "id"));
+            ps.setLong(1, id);
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                count = result.getInt("count");
+            }
+
+            connection.commit();
+        } catch (SQLException existEx) {
+            dsc.rollback(connection);
+            return false;
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        return count == 1;
     }
 
     @Override
     public Order findById(Long id) {
-        return null;
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
+
+        Order order = null;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(Order.class, "id"));
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                order = convertResultToOrder(rs);
+            }
+
+            connection.commit();
+        } catch (SQLException findByEx) {
+            dsc.rollback(connection);
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        return order;
     }
 
     @Override
     public DataTableResponse<Order> findAll(DataTableRequest request) {
-        return null;
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
+
+        List<Order> orders = new ArrayList<>();
+        Map<Object, Object> otherParamMap = new HashMap<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(Order.class, request));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                orders.add(convertResultToOrder(rs));
+            }
+
+            connection.commit();
+        } catch (SQLException findAllEx) {
+            dsc.rollback(connection);
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        DataTableResponse<Order> tableResponse = new DataTableResponse<>();
+        tableResponse.setItems(orders);
+        tableResponse.setOtherParamMap(otherParamMap);
+
+        return tableResponse;
     }
 
     @Override
     public long count() {
-        return 0;
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
+
+        int count = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.count(Order.class));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            dsc.rollback(connection);
+        } finally {
+            dsc.rollback(connection);
+        }
+
+        return count;
+    }
+
+    private Order convertResultToOrder(ResultSet rs) {
+        Order order = new Order();
+
+        try {
+            order.setId(rs.getLong("id"));
+            order.setCreated(rs.getTimestamp("created"));
+            order.setUpdated(rs.getTimestamp("updated"));
+            order.setWithDriver(rs.getBoolean("with_driver"));
+            order.setLeaseTermStart(rs.getTimestamp("lease_term_start"));
+            order.setLeaseTermEnd(rs.getTimestamp("lease_term_end"));
+            order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
+        } catch (SQLException resEx) {
+            //TODO: log error
+        }
+
+        return order;
     }
 }

@@ -76,4 +76,14 @@ public class Order extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), withDriver, leaseTermStart, leaseTermEnd, orderStatus);
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + super.toString() +
+                "withDriver=" + withDriver +
+                ", leaseTermStart=" + leaseTermStart +
+                ", leaseTermEnd=" + leaseTermEnd +
+                ", orderStatus=" + orderStatus +
+                '}';
+    }
 }

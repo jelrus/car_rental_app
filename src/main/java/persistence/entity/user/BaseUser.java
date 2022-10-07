@@ -137,4 +137,19 @@ public class BaseUser extends BaseEntity {
         return Objects.hash(super.hashCode(), username, password, firstName, lastName,
                             profilePic, balance, description, enabled, roleType);
     }
+
+    @Override
+    public String toString() {
+        return "BaseUser{" + super.toString() + '\'' +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", profilePic='" + profilePic + '\'' +
+                ", balance=" + balance +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", roleType=" + roleType +
+                '}';
+    }
 }

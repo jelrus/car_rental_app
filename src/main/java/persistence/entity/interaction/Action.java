@@ -50,4 +50,11 @@ public class Action extends BaseEntity {
         return Objects.hash(super.hashCode(), identifier, message);
     }
 
+    @Override
+    public String toString() {
+        return "Action{" + super.toString() + '\'' +
+                "identifier='" + identifier + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

@@ -6,7 +6,7 @@ import persistence.entity.annotations.Table;
 
 import java.util.Objects;
 
-@Table(tableName = "passport")
+@Table(tableName = "passports")
 public class Passport extends BaseEntity {
 
     @Column(name = "first_name")
@@ -145,5 +145,21 @@ public class Passport extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), firstName, lastName, country, zipCode,
                             region, city, street, building, phoneNumber, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Passport{" + super.toString() + '\'' +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", country='" + country + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", region='" + region + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", building='" + building + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

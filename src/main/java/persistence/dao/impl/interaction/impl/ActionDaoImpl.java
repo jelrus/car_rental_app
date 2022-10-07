@@ -11,6 +11,7 @@ import util.QueryGenerator;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class ActionDaoImpl implements ActionDao {
 
@@ -50,7 +51,9 @@ public class ActionDaoImpl implements ActionDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(Action.class, "id",
-                    Collections.emptyList()));
+                    List.of("created")));
+            System.out.println(QueryGenerator.updateQuery(Action.class, "id",
+                    List.of("created")));
             ps.setTimestamp(1, new Timestamp(action.getUpdated().getTime()));
             ps.setString(2, action.getIdentifier());
             ps.setString(3, action.getMessage());
@@ -59,6 +62,7 @@ public class ActionDaoImpl implements ActionDao {
             connection.commit();
         } catch (SQLException updateEx) {
             dsc.rollback(connection);
+            updateEx.printStackTrace();
             return false;
         } finally {
             dsc.releaseConnection(connection);
@@ -120,6 +124,7 @@ public class ActionDaoImpl implements ActionDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(Action.class, "id"));
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -146,6 +151,7 @@ public class ActionDaoImpl implements ActionDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(Action.class, request));
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

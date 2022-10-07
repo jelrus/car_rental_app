@@ -60,13 +60,6 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
 
     @Override
     public boolean releaseConnection(Connection connection) {
-
-        try {
-            connection.close();
-        } catch (SQLException closeEx) {
-            closeEx.printStackTrace();
-        }
-
         connectionPool.add(connection);
         return usedConnections.remove(connection);
     }

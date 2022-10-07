@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(BaseUser.class, "id",
-                                                                                          Collections.emptyList()));
+                                                                                          List.of("created")));
             ps.setTimestamp(1, new Timestamp(user.getUpdated().getTime()));
             ps.setString(2, user.getUsername());
             ps.setString(3, user.getPassword());
@@ -68,6 +68,7 @@ public class UserDaoImpl implements UserDao {
             ps.setBoolean(9, user.getEnabled());
             ps.setString(10, user.getRoleType().name());
             ps.setLong(11, user.getId());
+
             ps.executeUpdate();
             connection.commit();
         } catch (SQLException updateEx) {
@@ -159,6 +160,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(BaseUser.class, "id"));
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -184,6 +186,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(BaseUser.class, "username"));
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

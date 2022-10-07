@@ -11,6 +11,7 @@ import util.QueryGenerator;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class CarDaoImpl implements CarDao {
 
@@ -54,7 +55,7 @@ public class CarDaoImpl implements CarDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(Car.class, "id",
-                    Collections.emptyList()));
+                    List.of("created")));
             ps.setTimestamp(1, new Timestamp(car.getUpdated().getTime()));
             ps.setString(2, car.getTitle());
             ps.setString(3, car.getProductPic());
@@ -62,9 +63,8 @@ public class CarDaoImpl implements CarDao {
             ps.setString(5, car.getQuality().name());
             ps.setString(6, car.getInfo());
             ps.setBigDecimal(7, car.getRentalPrice());
-            ps.executeUpdate();
-            connection.commit();
             ps.setLong(8, car.getId());
+
             ps.executeUpdate();
             connection.commit();
         } catch (SQLException updateEx) {
@@ -130,6 +130,7 @@ public class CarDaoImpl implements CarDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(Car.class, "id"));
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -153,11 +154,11 @@ public class CarDaoImpl implements CarDao {
 
         List<Car> cars = new ArrayList<>();
         Map<Object, Object> otherParamMap = new HashMap<>();
+        System.out.println(QueryGenerator.findAllByRequest(Car.class, request));
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(Car.class, request));
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 cars.add(convertResultToCar(rs));
             }
