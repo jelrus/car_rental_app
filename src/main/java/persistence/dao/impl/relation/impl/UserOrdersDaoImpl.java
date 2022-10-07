@@ -1,11 +1,11 @@
 package persistence.dao.impl.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import persistence.dao.impl.interaction.impl.OrderDaoImpl;
 import persistence.dao.impl.relation.UserOrdersDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Order;
-import persistence.entity.interaction.type.OrderStatus;
 import persistence.entity.relation.UserOrders;
 import util.QueryGenerator;
 
@@ -21,26 +21,30 @@ public class UserOrdersDaoImpl implements UserOrdersDao {
     }
 
     @Override
-    public boolean create(UserOrders userOrders) {
+    public long create(UserOrders userOrders) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(UserOrders.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(UserOrders.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(userOrders.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(userOrders.getUpdated().getTime()));
             ps.setLong(3, userOrders.getUserId());
             ps.setLong(4, userOrders.getOrderId());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -229,6 +233,20 @@ public class UserOrdersDaoImpl implements UserOrdersDao {
         return tableResponse;
     }
 
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
     private UserOrders convertResultToUserOrders(ResultSet rs) {
         UserOrders userOrders = new UserOrders();
 
@@ -239,27 +257,14 @@ public class UserOrdersDaoImpl implements UserOrdersDao {
             userOrders.setUserId(rs.getLong("user_id"));
             userOrders.setOrderId(rs.getLong("order_id"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return userOrders;
     }
 
     private Order convertResultToOrders(ResultSet rs) {
-        Order order = new Order();
-
-        try {
-            order.setId(rs.getLong("id"));
-            order.setCreated(rs.getTimestamp("created"));
-            order.setUpdated(rs.getTimestamp("updated"));
-            order.setWithDriver(rs.getBoolean("with_driver"));
-            order.setLeaseTermStart(rs.getTimestamp("lease_term_start"));
-            order.setLeaseTermEnd(rs.getTimestamp("lease_term_end"));
-            order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
-        } catch (SQLException resEx) {
-            //TODO: log error
-        }
-
-        return order;
+        OrderDaoImpl orderDao = new OrderDaoImpl();
+        return orderDao.convertResultToOrder(rs);
     }
 }

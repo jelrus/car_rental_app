@@ -1,6 +1,8 @@
 package persistence.dao.impl.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import persistence.dao.impl.interaction.ActionDao;
+import persistence.dao.impl.interaction.impl.ActionDaoImpl;
 import persistence.dao.impl.relation.OrderActionsDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -20,26 +22,30 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
     }
 
     @Override
-    public boolean create(OrderActions orderActions) {
+    public long create(OrderActions orderActions) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderActions.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderActions.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(orderActions.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(orderActions.getUpdated().getTime()));
             ps.setLong(3, orderActions.getOrderId());
             ps.setLong(4, orderActions.getActionId());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -228,6 +234,20 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         return tableResponse;
     }
 
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
     private OrderActions convertResultToOrderActions(ResultSet rs) {
         OrderActions orderActions = new OrderActions();
 
@@ -238,25 +258,14 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
             orderActions.setOrderId(rs.getLong("order_id"));
             orderActions.setActionId(rs.getLong("action_id"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return orderActions;
     }
 
     private Action convertResultToActions(ResultSet rs) {
-        Action action = new Action();
-
-        try {
-            action.setId(rs.getLong("id"));
-            action.setCreated(rs.getTimestamp("created"));
-            action.setUpdated(rs.getTimestamp("updated"));
-            action.setIdentifier(rs.getString("identifier"));
-            action.setMessage(rs.getString("message"));
-        } catch (SQLException resEx) {
-            //TODO: log error
-        }
-
-        return action;
+        ActionDaoImpl actionDao = new ActionDaoImpl();
+        return actionDao.convertResultToAction(rs);
     }
 }

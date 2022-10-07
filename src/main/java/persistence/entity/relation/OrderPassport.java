@@ -13,7 +13,7 @@ public class OrderPassport extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @MergeField(name = "passport_id")
+    @MergeField(on = "passport_id")
     @Column(name = "passport_id")
     private Long passportId;
 

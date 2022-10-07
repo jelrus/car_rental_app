@@ -1,6 +1,7 @@
 package persistence.dao.impl.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import persistence.dao.impl.product.impl.CarDaoImpl;
 import persistence.dao.impl.relation.OrderCarDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -22,26 +23,30 @@ public class OrderCarDaoImpl implements OrderCarDao {
     }
 
     @Override
-    public boolean create(OrderCar orderCar) {
+    public long create(OrderCar orderCar) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderCar.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderCar.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(orderCar.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(orderCar.getUpdated().getTime()));
             ps.setLong(3, orderCar.getOrderId());
             ps.setLong(4, orderCar.getCarId());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -231,6 +236,20 @@ public class OrderCarDaoImpl implements OrderCarDao {
         return tableResponse;
     }
 
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
     private OrderCar convertResultToOrderCar(ResultSet rs) {
         OrderCar orderActions = new OrderCar();
 
@@ -241,29 +260,14 @@ public class OrderCarDaoImpl implements OrderCarDao {
             orderActions.setOrderId(rs.getLong("order_id"));
             orderActions.setCarId(rs.getLong("car_id"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return orderActions;
     }
 
     private Car convertResultToCar(ResultSet rs) {
-        Car car = new Car();
-
-        try {
-            car.setId(rs.getLong("id"));
-            car.setCreated(rs.getTimestamp("created"));
-            car.setUpdated(rs.getTimestamp("updated"));
-            car.setTitle(rs.getString("title"));
-            car.setProductPic(rs.getString("product_pic"));
-            car.setBrand(CarBrand.valueOf(rs.getString("brand")));
-            car.setQuality(CarQualityType.valueOf(rs.getString("quality")));
-            car.setInfo(rs.getString("info"));
-            car.setRentalPrice(rs.getBigDecimal("rental_price"));
-        } catch (SQLException resEx) {
-            //TODO: log error
-        }
-
-        return car;
+        CarDaoImpl carDao = new CarDaoImpl();
+        return carDao.convertResultToCar(rs);
     }
 }

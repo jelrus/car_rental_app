@@ -4,9 +4,7 @@ import persistence.entity.BaseEntity;
 import persistence.entity.annotations.Column;
 import persistence.entity.annotations.MergeField;
 import persistence.entity.annotations.Table;
-import persistence.entity.interaction.Order;
 
-import java.util.Collection;
 import java.util.Objects;
 
 @Table(tableName = "user_orders")
@@ -15,7 +13,7 @@ public class UserOrders extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @MergeField(name = "order_id")
+    @MergeField(on = "order_id")
     @Column(name = "order_id")
     private Long orderId;
 

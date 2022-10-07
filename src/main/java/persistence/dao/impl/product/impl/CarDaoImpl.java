@@ -21,12 +21,15 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public boolean create(Car car) {
+    public long create(Car car) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_REPEATABLE_READ);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Car.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Car.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(car.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(car.getUpdated().getTime()));
             ps.setString(3, car.getTitle());
@@ -36,15 +39,16 @@ public class CarDaoImpl implements CarDao {
             ps.setString(7, car.getInfo());
             ps.setBigDecimal(8, car.getRentalPrice());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -201,7 +205,21 @@ public class CarDaoImpl implements CarDao {
         return count;
     }
 
-    private Car convertResultToCar(ResultSet rs) {
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
+    public Car convertResultToCar(ResultSet rs) {
         Car car = new Car();
 
         try {
@@ -215,7 +233,7 @@ public class CarDaoImpl implements CarDao {
             car.setInfo(rs.getString("info"));
             car.setRentalPrice(rs.getBigDecimal("rental_price"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return car;

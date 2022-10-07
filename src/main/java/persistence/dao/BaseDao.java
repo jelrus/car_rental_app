@@ -4,9 +4,11 @@ import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.BaseEntity;
 
+import java.sql.PreparedStatement;
+
 public interface BaseDao<E extends BaseEntity> {
 
-    boolean create(E entity);
+    long create(E entity);
 
     boolean update(E entity);
 

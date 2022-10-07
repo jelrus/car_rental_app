@@ -20,12 +20,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean create(BaseUser user) {
+    public long create(BaseUser user) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(BaseUser.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(BaseUser.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(user.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(user.getUpdated().getTime()));
             ps.setString(3, user.getUsername());
@@ -38,21 +41,23 @@ public class UserDaoImpl implements UserDao {
             ps.setBoolean(10, user.getEnabled());
             ps.setString(11, user.getRoleType().name());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
     public boolean update(BaseUser user) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_REPEATABLE_READ);
+
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(BaseUser.class, "id",
@@ -258,6 +263,20 @@ public class UserDaoImpl implements UserDao {
         return count;
     }
 
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
     private BaseUser convertResultToUser(ResultSet rs) {
         BaseUser baseUser = new BaseUser();
 
@@ -275,7 +294,7 @@ public class UserDaoImpl implements UserDao {
             baseUser.setEnabled(rs.getBoolean("enabled"));
             baseUser.setRoleType(UserRole.valueOf(rs.getString("role_type")));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return baseUser;

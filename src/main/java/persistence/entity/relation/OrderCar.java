@@ -13,7 +13,7 @@ public class OrderCar extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @MergeField(name = "car_id")
+    @MergeField(on = "car_id")
     @Column(name = "car_id")
     private Long carId;
 

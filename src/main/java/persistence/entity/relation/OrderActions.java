@@ -13,7 +13,7 @@ public class OrderActions extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @MergeField(name = "action_id")
+    @MergeField(on = "action_id")
     @Column(name = "action_id")
     private Long actionId;
 

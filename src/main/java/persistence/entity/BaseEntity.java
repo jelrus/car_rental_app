@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class BaseEntity {
 
-    @MergeField(name = "id")
+    @MergeField(on = "id")
     @Column(name = "id")
     private Long id;
 

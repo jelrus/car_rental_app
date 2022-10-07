@@ -1,6 +1,7 @@
 package persistence.dao.impl.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import persistence.dao.impl.interaction.impl.PassportDaoImpl;
 import persistence.dao.impl.relation.OrderPassportDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -20,26 +21,30 @@ public class OrderPassportDaoImpl implements OrderPassportDao {
     }
 
     @Override
-    public boolean create(OrderPassport orderPassport) {
+    public long create(OrderPassport orderPassport) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderPassport.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderPassport.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(orderPassport.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(orderPassport.getUpdated().getTime()));
             ps.setLong(3, orderPassport.getOrderId());
             ps.setLong(4, orderPassport.getPassportId());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -228,6 +233,20 @@ public class OrderPassportDaoImpl implements OrderPassportDao {
         return tableResponse;
     }
 
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
     private OrderPassport convertResultToOrderPassport(ResultSet rs) {
         OrderPassport orderPassport = new OrderPassport();
 
@@ -238,33 +257,14 @@ public class OrderPassportDaoImpl implements OrderPassportDao {
             orderPassport.setOrderId(rs.getLong("order_id"));
             orderPassport.setPassportId(rs.getLong("passport_id"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return orderPassport;
     }
 
     private Passport convertResultToPassport(ResultSet rs) {
-        Passport passport = new Passport();
-
-        try {
-            passport.setId(rs.getLong("id"));
-            passport.setCreated(rs.getTimestamp("created"));
-            passport.setUpdated(rs.getTimestamp("updated"));
-            passport.setFirstName(rs.getString("first_name"));
-            passport.setLastName(rs.getString("last_name"));
-            passport.setCountry(rs.getString("country"));
-            passport.setZipCode(rs.getString("zip_code"));
-            passport.setRegion(rs.getString("region"));
-            passport.setCity(rs.getString("city"));
-            passport.setStreet(rs.getString("street"));
-            passport.setBuilding(rs.getString("building"));
-            passport.setPhoneNumber(rs.getString("phone_number"));
-            passport.setEmail(rs.getString("email"));
-        } catch (SQLException resEx) {
-            //TODO: log error
-        }
-
-        return passport;
+        PassportDaoImpl passportDao = new PassportDaoImpl();
+        return passportDao.convertResultToPassport(rs);
     }
 }

@@ -20,12 +20,15 @@ public class PassportDaoImpl implements PassportDao {
     }
 
     @Override
-    public boolean create(Passport passport) {
+    public long create(Passport passport) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Passport.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Passport.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(passport.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(passport.getUpdated().getTime()));
             ps.setString(3, passport.getFirstName());
@@ -38,17 +41,17 @@ public class PassportDaoImpl implements PassportDao {
             ps.setString(10, passport.getBuilding());
             ps.setString(11, passport.getPhoneNumber());
             ps.setString(12, passport.getEmail());
-
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -208,7 +211,21 @@ public class PassportDaoImpl implements PassportDao {
         return count;
     }
 
-    private Passport convertResultToPassport(ResultSet rs) {
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
+    public Passport convertResultToPassport(ResultSet rs) {
         Passport passport = new Passport();
 
         try {
@@ -226,7 +243,7 @@ public class PassportDaoImpl implements PassportDao {
             passport.setPhoneNumber(rs.getString("phone_number"));
             passport.setEmail(rs.getString("email"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return passport;

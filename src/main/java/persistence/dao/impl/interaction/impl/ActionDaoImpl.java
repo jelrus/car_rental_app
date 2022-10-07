@@ -19,26 +19,30 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public boolean create(Action action) {
+    public long create(Action action) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
+        long generatedKey = -1;
+
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Action.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(Action.class),
+                                                               Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, new Timestamp(action.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(action.getUpdated().getTime()));
             ps.setString(3, action.getIdentifier());
             ps.setString(4, action.getMessage());
             ps.executeUpdate();
+            generatedKey = generateKeys(ps);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
-            return false;
+            return generatedKey;
         } finally {
             dsc.releaseConnection(connection);
         }
 
-        return true;
+        return generatedKey;
     }
 
     @Override
@@ -48,8 +52,6 @@ public class ActionDaoImpl implements ActionDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(Action.class, "id",
-                    List.of("created")));
-            System.out.println(QueryGenerator.updateQuery(Action.class, "id",
                     List.of("created")));
             ps.setTimestamp(1, new Timestamp(action.getUpdated().getTime()));
             ps.setString(2, action.getIdentifier());
@@ -194,7 +196,21 @@ public class ActionDaoImpl implements ActionDao {
         return count;
     }
 
-    private Action convertResultToAction(ResultSet rs) {
+    private long generateKeys(PreparedStatement ps) {
+        long genKey = -1;
+
+        try (ResultSet keys = ps.getGeneratedKeys()) {
+            while (keys.next()) {
+                genKey = keys.getLong(1);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+
+        return genKey;
+    }
+
+    public Action convertResultToAction(ResultSet rs) {
         Action action = new Action();
 
         try {
@@ -204,7 +220,7 @@ public class ActionDaoImpl implements ActionDao {
             action.setIdentifier(rs.getString("identifier"));
             action.setMessage(rs.getString("message"));
         } catch (SQLException resEx) {
-            //TODO: log error
+            resEx.printStackTrace();
         }
 
         return action;

@@ -50,7 +50,7 @@ public final class QueryGenerator {
         for (int i = QueryGenerator.getClasses(cls).size() - 1; i >= 0; i--) {
             for (Field f : QueryGenerator.getClasses(cls).get(i).getDeclaredFields()) {
                 if (f.isAnnotationPresent(MergeField.class)) {
-                    annotatedFields.add(f.getAnnotation(MergeField.class).name());
+                    annotatedFields.add(f.getAnnotation(MergeField.class).on());
                 }
             }
         }
@@ -169,4 +169,6 @@ public final class QueryGenerator {
 
         return sb.toString();
     }
+
+    //TODO: query generator for M21 && 121
 }
