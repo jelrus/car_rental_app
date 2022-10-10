@@ -1,5 +1,8 @@
 package service.impl.user;
 
-public interface AdminService extends UserService {
+import persistence.entity.user.BaseUser;
+import persistence.entity.user.impl.Admin;
+import service.BaseService;
 
+public interface AdminService extends BaseService<BaseUser> {
 }
