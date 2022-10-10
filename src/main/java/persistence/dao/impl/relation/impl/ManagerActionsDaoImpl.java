@@ -2,42 +2,40 @@ package persistence.dao.impl.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
 import persistence.dao.impl.interaction.impl.ActionDaoImpl;
-import persistence.dao.impl.relation.OrderActionsDao;
+import persistence.dao.impl.relation.ManagerActionsDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
-import persistence.entity.relation.OrderActions;
+import persistence.entity.relation.ManagerActions;
 import util.QueryGenerator;
 
 import java.sql.*;
 import java.util.*;
 
-public class OrderActionsDaoImpl implements OrderActionsDao {
+public class ManagerActionsDaoImpl implements ManagerActionsDao {
 
     private final DataSourceConnectionImpl dsc;
 
-    public OrderActionsDaoImpl() {
+    public ManagerActionsDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
     }
 
     @Override
-    public long create(OrderActions orderActions) {
+    public long create(ManagerActions managerActions) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
         long generatedKey = -1;
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderActions.class),
-                                                               Statement.RETURN_GENERATED_KEYS);
-            System.out.println(ps);
-            ps.setTimestamp(1, new Timestamp(orderActions.getCreated().getTime()));
-            ps.setTimestamp(2, new Timestamp(orderActions.getUpdated().getTime()));
-            ps.setLong(3, orderActions.getOrderId());
-            ps.setLong(4, orderActions.getActionId());
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(ManagerActions.class),
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setTimestamp(1, new Timestamp(managerActions.getCreated().getTime()));
+            ps.setTimestamp(2, new Timestamp(managerActions.getUpdated().getTime()));
+            ps.setLong(3, managerActions.getManagerId());
+            ps.setLong(4, managerActions.getActionId());
             ps.executeUpdate();
             generatedKey = generateKeys(ps);
-            System.out.println(generatedKey);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
@@ -50,17 +48,17 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
     }
 
     @Override
-    public boolean update(OrderActions orderActions) {
+    public boolean update(ManagerActions managerActions) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_REPEATABLE_READ);
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(OrderActions.class,
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(ManagerActions.class,
                     "id", List.of("created")));
-            ps.setTimestamp(1, new Timestamp(orderActions.getUpdated().getTime()));
-            ps.setLong(2, orderActions.getOrderId());
-            ps.setLong(3, orderActions.getActionId());
-            ps.setLong(4, orderActions.getId());
+            ps.setTimestamp(1, new Timestamp(managerActions.getUpdated().getTime()));
+            ps.setLong(2, managerActions.getManagerId());
+            ps.setLong(3, managerActions.getActionId());
+            ps.setLong(4, managerActions.getId());
             ps.executeUpdate();
             connection.commit();
         } catch (SQLException updateEx) {
@@ -78,8 +76,8 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         dsc.setupConnection(connection, Connection.TRANSACTION_REPEATABLE_READ);
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.deleteQuery(OrderActions.class,
-                                                                            "id"));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.deleteQuery(ManagerActions.class,
+                    "id"));
             ps.setLong(1, id);
             ps.executeUpdate();
             connection.commit();
@@ -99,7 +97,7 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         int count = 0;
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.existBy(OrderActions.class, "id"));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.existBy(ManagerActions.class, "id"));
             ps.setLong(1, id);
             ResultSet result = ps.executeQuery();
 
@@ -119,19 +117,19 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
     }
 
     @Override
-    public OrderActions findById(Long id) {
+    public ManagerActions findById(Long id) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
-        OrderActions orderActions = null;
+        ManagerActions managerActions = null;
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(OrderActions.class, "id"));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(ManagerActions.class, "id"));
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                orderActions = convertResultToOrderActions(rs);
+                managerActions = convertResultToManagerActions(rs);
             }
 
             connection.commit();
@@ -141,23 +139,23 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
             dsc.releaseConnection(connection);
         }
 
-        return orderActions;
+        return managerActions;
     }
 
     @Override
-    public DataTableResponse<OrderActions> findAll(DataTableRequest request) {
+    public DataTableResponse<ManagerActions> findAll(DataTableRequest request) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
-        List<OrderActions> orderActions = new ArrayList<>();
+        List<ManagerActions> managerActions = new ArrayList<>();
         Map<Object, Object> otherParamMap = new HashMap<>();
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(OrderActions.class, request));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(ManagerActions.class, request));
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                orderActions.add(convertResultToOrderActions(rs));
+                managerActions.add(convertResultToManagerActions(rs));
             }
 
             connection.commit();
@@ -167,8 +165,8 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
             dsc.releaseConnection(connection);
         }
 
-        DataTableResponse<OrderActions> tableResponse = new DataTableResponse<>();
-        tableResponse.setItems(orderActions);
+        DataTableResponse<ManagerActions> tableResponse = new DataTableResponse<>();
+        tableResponse.setItems(managerActions);
         tableResponse.setOtherParamMap(otherParamMap);
 
         return tableResponse;
@@ -182,7 +180,7 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         int count = 0;
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.count(OrderActions.class));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.count(ManagerActions.class));
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -200,7 +198,7 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
     }
 
     @Override
-    public DataTableResponse<Action> findActionsByOrder(Long orderId, DataTableRequest request) {
+    public DataTableResponse<Action> findActionsByManager(Long orderId, DataTableRequest request) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
@@ -208,12 +206,12 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         Map<Object, Object> otherParamMap = new HashMap<>();
 
         try {
-            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findByRelation(OrderActions.class,
-                                                                                             Action.class,
-                                                                                             "a",
-                                                                                             "order_id",
-                                                                                             Collections.emptyList(),
-                                                                                             request));
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findByRelation(ManagerActions.class,
+                    Action.class,
+                    "a",
+                    "order_id",
+                    Collections.emptyList(),
+                    request));
             ps.setLong(1, orderId);
             ResultSet rs = ps.executeQuery();
 
@@ -249,20 +247,20 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         return genKey;
     }
 
-    private OrderActions convertResultToOrderActions(ResultSet rs) {
-        OrderActions orderActions = new OrderActions();
+    private ManagerActions convertResultToManagerActions(ResultSet rs) {
+        ManagerActions managerActions = new ManagerActions();
 
         try {
-            orderActions.setId(rs.getLong("id"));
-            orderActions.setCreated(rs.getTimestamp("created"));
-            orderActions.setUpdated(rs.getTimestamp("updated"));
-            orderActions.setOrderId(rs.getLong("order_id"));
-            orderActions.setActionId(rs.getLong("action_id"));
+            managerActions.setId(rs.getLong("id"));
+            managerActions.setCreated(rs.getTimestamp("created"));
+            managerActions.setUpdated(rs.getTimestamp("updated"));
+            managerActions.setManagerId(rs.getLong("order_id"));
+            managerActions.setActionId(rs.getLong("action_id"));
         } catch (SQLException resEx) {
             resEx.printStackTrace();
         }
 
-        return orderActions;
+        return managerActions;
     }
 
     private Action convertResultToActions(ResultSet rs) {

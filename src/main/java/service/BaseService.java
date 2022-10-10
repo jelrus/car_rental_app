@@ -6,11 +6,11 @@ import persistence.entity.BaseEntity;
 
 public interface BaseService<E extends BaseEntity> {
 
-    void create(E entity);
+    long create(E entity);
 
-    void update(E entity);
+    boolean update(E entity);
 
-    void delete(Long id);
+    boolean delete(Long id);
 
     E findById(Long id);
 

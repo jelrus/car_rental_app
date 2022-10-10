@@ -1,4 +1,5 @@
 drop table if exists order_actions;
+drop table if exists manager_actions;
 drop table if exists order_passport;
 drop table if exists order_car;
 drop table if exists user_orders;
@@ -112,4 +113,15 @@ create table order_actions(
                               UNIQUE KEY `oas` (`order_id`, `action_id`),
                               foreign key (order_id) references orders(id) ON DELETE CASCADE,
                               foreign key (action_id) references actions(id) ON DELETE CASCADE
+);
+
+create table manager_actions(
+                                id bigint auto_increment primary key not null,
+                                created datetime(6) not null,
+                                updated datetime(6) not null,
+                                user_id bigint not null,
+                                action_id bigint not null,
+                                UNIQUE KEY `mas` (`user_id`, `action_id`),
+                                foreign key (user_id) references users(id) ON DELETE CASCADE,
+                                foreign key (action_id) references actions(id) ON DELETE CASCADE
 );

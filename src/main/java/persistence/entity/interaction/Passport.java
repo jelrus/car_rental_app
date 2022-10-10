@@ -15,6 +15,8 @@ public class Passport extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    //TODO:age
+
     @Column(name = "country")
     private String country;
 

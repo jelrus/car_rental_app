@@ -1,4 +1,7 @@
 package service.impl.interaction;
 
-public interface ActionService {
+import persistence.entity.interaction.Action;
+import service.BaseService;
+
+public interface ActionService extends BaseService<Action> {
 }

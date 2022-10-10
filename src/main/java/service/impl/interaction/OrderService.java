@@ -1,4 +1,7 @@
 package service.impl.interaction;
 
-public interface OrderService {
+import persistence.entity.interaction.Order;
+import service.BaseService;
+
+public interface OrderService extends BaseService<Order> {
 }

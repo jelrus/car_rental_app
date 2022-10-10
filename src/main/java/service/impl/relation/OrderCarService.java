@@ -1,4 +1,7 @@
 package service.impl.relation;
 
-public interface OrderCarService {
+import persistence.entity.relation.OrderCar;
+import service.BaseService;
+
+public interface OrderCarService extends BaseService<OrderCar> {
 }

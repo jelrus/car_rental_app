@@ -42,6 +42,7 @@ public class UserDaoImpl implements UserDao {
             ps.setString(11, user.getRoleType().name());
             ps.executeUpdate();
             generatedKey = generateKeys(ps);
+            System.out.println(generatedKey);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
