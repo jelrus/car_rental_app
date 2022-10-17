@@ -8,5 +8,5 @@ import persistence.entity.relation.ManagerActions;
 
 public interface ManagerActionsDao extends BaseDao<ManagerActions> {
 
-    DataTableResponse<Action> findActionsByManager(Long orderId, DataTableRequest request);
+    DataTableResponse<Action> findActionsByManager(Long userId, DataTableRequest request);
 }

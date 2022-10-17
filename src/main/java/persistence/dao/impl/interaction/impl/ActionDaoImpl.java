@@ -34,7 +34,6 @@ public class ActionDaoImpl implements ActionDao {
             ps.setString(4, action.getMessage());
             ps.executeUpdate();
             generatedKey = generateKeys(ps);
-            System.out.println(generatedKey);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);

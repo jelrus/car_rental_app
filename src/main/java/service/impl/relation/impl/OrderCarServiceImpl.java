@@ -4,6 +4,7 @@ import persistence.dao.impl.relation.OrderCarDao;
 import persistence.dao.impl.relation.impl.OrderCarDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
+import persistence.entity.product.Car;
 import persistence.entity.relation.OrderCar;
 import service.impl.relation.OrderCarService;
 
@@ -38,5 +39,10 @@ public class OrderCarServiceImpl implements OrderCarService {
     @Override
     public DataTableResponse<OrderCar> findAll(DataTableRequest request) {
         return orderCarDao.findAll(request);
+    }
+
+    @Override
+    public DataTableResponse<Car> findCarByOrder(Long orderId, DataTableRequest request) {
+        return orderCarDao.findCarByOrder(orderId, request);
     }
 }

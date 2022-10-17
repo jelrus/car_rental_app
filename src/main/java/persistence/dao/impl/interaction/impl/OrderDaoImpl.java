@@ -56,8 +56,6 @@ public class OrderDaoImpl implements OrderDao {
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.updateQuery(Order.class, "id",
                     List.of("created")));
-            System.out.println(QueryGenerator.updateQuery(Order.class, "id",
-                    List.of("created")));
             ps.setTimestamp(1, new Timestamp(order.getUpdated().getTime()));
             ps.setBoolean(2, order.getWithDriver());
             ps.setTimestamp(3, new Timestamp(order.getLeaseTermStart().getTime()));

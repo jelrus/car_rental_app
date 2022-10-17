@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +15,7 @@ public final class PropertyReader {
         InputStream propsStream = null;
 
         try {
-            propsStream = new FileInputStream(propsFileName);
+            propsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propsFileName);
             properties.load(propsStream);
         } catch (IOException e) {
             e.printStackTrace();

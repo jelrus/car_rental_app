@@ -15,7 +15,8 @@ public class Passport extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    //TODO:age
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "country")
     private String country;
@@ -59,6 +60,14 @@ public class Passport extends BaseEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getCountry() {
@@ -131,7 +140,7 @@ public class Passport extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Passport passport = (Passport) o;
-        return Objects.equals(firstName, passport.firstName) &&
+        return age == passport.age && Objects.equals(firstName, passport.firstName) &&
                Objects.equals(lastName, passport.lastName) &&
                Objects.equals(country, passport.country) &&
                Objects.equals(zipCode, passport.zipCode) &&
@@ -145,8 +154,9 @@ public class Passport extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, country, zipCode,
-                            region, city, street, building, phoneNumber, email);
+        return Objects.hash(super.hashCode(), firstName, lastName, age,
+                            country, zipCode, region, city, street, building,
+                            phoneNumber, email);
     }
 
     @Override
@@ -154,6 +164,7 @@ public class Passport extends BaseEntity {
         return "Passport{" + super.toString() + '\'' +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 ", country='" + country + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", region='" + region + '\'' +

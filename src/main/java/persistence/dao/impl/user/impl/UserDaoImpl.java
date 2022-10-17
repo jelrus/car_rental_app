@@ -42,7 +42,6 @@ public class UserDaoImpl implements UserDao {
             ps.setString(11, user.getRoleType().name());
             ps.executeUpdate();
             generatedKey = generateKeys(ps);
-            System.out.println(generatedKey);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);
@@ -192,6 +191,32 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findBy(BaseUser.class, "username"));
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                user = convertResultToUser(rs);
+            }
+
+            connection.commit();
+        } catch (SQLException findByEx) {
+            dsc.rollback(connection);
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        return user;
+    }
+
+    @Override
+    public BaseUser findByUsernamePassword(String username, String password) {
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_UNCOMMITTED);
+
+        BaseUser user = null;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(QueryGenerator.findByLoginPassword(BaseUser.class));
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 

@@ -41,4 +41,13 @@ public class DataTableResponse<E extends BaseEntity> {
     public void setOtherParamMap(Map<Object, Object> otherParamMap) {
         this.otherParamMap = otherParamMap;
     }
+
+    @Override
+    public String toString() {
+        return "DataTableResponse{" +
+                "items=" + items +
+                ", itemsSize=" + itemsSize +
+                ", otherParamMap=" + otherParamMap +
+                '}';
+    }
 }

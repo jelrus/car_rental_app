@@ -4,6 +4,7 @@ import persistence.dao.impl.relation.OrderActionsDao;
 import persistence.dao.impl.relation.impl.OrderActionsDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
+import persistence.entity.interaction.Action;
 import persistence.entity.relation.OrderActions;
 import service.impl.relation.OrderActionsService;
 
@@ -38,5 +39,10 @@ public class OrderActionsServiceImpl implements OrderActionsService {
     @Override
     public DataTableResponse<OrderActions> findAll(DataTableRequest request) {
         return orderActionsDao.findAll(request);
+    }
+
+    @Override
+    public DataTableResponse<Action> findActionsByOrder(Long orderId, DataTableRequest request) {
+        return orderActionsDao.findActionsByOrder(orderId, request);
     }
 }

@@ -36,6 +36,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public BaseUser findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public BaseUser findByUsernamePassword(String username, String password) {
+        return userDao.findByUsernamePassword(username, password);
+    }
+
+    @Override
     public DataTableResponse<BaseUser> findAll(DataTableRequest request) {
         return userDao.findAll(request);
     }

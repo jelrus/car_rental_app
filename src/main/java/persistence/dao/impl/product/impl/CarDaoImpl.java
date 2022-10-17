@@ -157,11 +157,11 @@ public class CarDaoImpl implements CarDao {
 
         List<Car> cars = new ArrayList<>();
         Map<Object, Object> otherParamMap = new HashMap<>();
-        System.out.println(QueryGenerator.findAllByRequest(Car.class, request));
 
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findAllByRequest(Car.class, request));
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 cars.add(convertResultToCar(rs));
             }

@@ -118,6 +118,11 @@ public final class QueryGenerator {
                 " WHERE " + findParameter +"=?;";
     }
 
+    public static String findByLoginPassword(Class<?> cls) {
+        return "SELECT * FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT)  +
+                " WHERE username=? AND password=?";
+    }
+
     public static String findAll(Class<?> cls) {
         return "SELECT * FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT) + ";";
     }
@@ -126,7 +131,7 @@ public final class QueryGenerator {
         int limit = (req.getCurrentPage() - 1) * req.getPageSize();
         return "SELECT * FROM " + cls.getAnnotation(Table.class).tableName().toUpperCase(Locale.ROOT) +
                " GROUP BY id " +
-               " ORDER BY " + req.getOrder() + " " + req.getSort() + " " +
+               " ORDER BY " + req.getSort() + " " + req.getOrder() + " " +
                " LIMIT " + limit + ", " + req.getPageSize() + ";";
     }
 
@@ -169,6 +174,4 @@ public final class QueryGenerator {
 
         return sb.toString();
     }
-
-    //TODO: query generator for M21 && 121
 }

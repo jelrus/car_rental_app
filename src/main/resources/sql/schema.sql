@@ -20,9 +20,9 @@ create table users(
                       last_name nvarchar(255),
                       profile_pic nvarchar(255),
                       balance decimal(12,2),
-                      description nvarchar(255),
+                      description text,
                       enabled boolean,
-                      role_type enum('ADMIN', 'MANAGER', 'USER')
+                      role_type enum('ADMIN', 'MANAGER', 'USER') not null
                    );
 
 create table cars(
@@ -33,7 +33,7 @@ create table cars(
                      product_pic nvarchar(255),
                      brand enum('BMW', 'MERCEDES', 'HONDA', 'TOYOTA'),
                      quality enum('MPV', 'LUXURY', 'SPORTS', 'SUV'),
-                     info nvarchar(255),
+                     info text,
                      rental_price decimal(12,2)
 );
 
@@ -43,6 +43,7 @@ create table passports(
                           updated datetime(6) not null,
                           first_name nvarchar(255),
                           last_name nvarchar(255),
+                          age int,
                           country nvarchar(255),
                           zip_code nvarchar(255),
                           region nvarchar(255),
@@ -68,7 +69,7 @@ create table actions(
                         created datetime(6) not null,
                         updated datetime(6) not null,
                         identifier nvarchar(255),
-                        message nvarchar(255)
+                        message text
 );
 
 create table user_orders(
@@ -78,8 +79,8 @@ create table user_orders(
                             user_id bigint not null,
                             order_id bigint not null,
                             UNIQUE KEY `uos` (`user_id`, `order_id`),
-                            foreign key (user_id) references users(id) ON DELETE CASCADE,
-                            foreign key (order_id) references orders(id) ON DELETE CASCADE
+                            foreign key (user_id) references users(id) ON UPDATE CASCADE,
+                            foreign key (order_id) references orders(id) ON UPDATE CASCADE
 );
 
 create table order_car(
@@ -89,8 +90,8 @@ create table order_car(
                           order_id bigint not null unique,
                           car_id bigint not null,
                           UNIQUE KEY `oc` (`order_id`, `car_id`),
-                          foreign key (order_id) references orders(id) ON DELETE CASCADE,
-                          foreign key (car_id) references cars(id) ON DELETE CASCADE
+                          foreign key (order_id) references orders(id) ON UPDATE CASCADE,
+                          foreign key (car_id) references cars(id) ON UPDATE CASCADE
 );
 
 create table order_passport(
@@ -100,8 +101,8 @@ create table order_passport(
                                order_id bigint not null unique,
                                passport_id bigint not null,
                                UNIQUE KEY `op` (`order_id`, `passport_id`),
-                               foreign key (order_id) references orders(id) ON DELETE CASCADE,
-                               foreign key (passport_id) references passports(id)  ON DELETE CASCADE
+                               foreign key (order_id) references orders(id) ON UPDATE CASCADE,
+                               foreign key (passport_id) references passports(id)  ON UPDATE CASCADE
 );
 
 create table order_actions(
@@ -111,8 +112,8 @@ create table order_actions(
                               order_id bigint not null,
                               action_id bigint not null,
                               UNIQUE KEY `oas` (`order_id`, `action_id`),
-                              foreign key (order_id) references orders(id) ON DELETE CASCADE,
-                              foreign key (action_id) references actions(id) ON DELETE CASCADE
+                              foreign key (order_id) references orders(id) ON UPDATE CASCADE,
+                              foreign key (action_id) references actions(id) ON UPDATE CASCADE
 );
 
 create table manager_actions(
@@ -122,6 +123,6 @@ create table manager_actions(
                                 user_id bigint not null,
                                 action_id bigint not null,
                                 UNIQUE KEY `mas` (`user_id`, `action_id`),
-                                foreign key (user_id) references users(id) ON DELETE CASCADE,
-                                foreign key (action_id) references actions(id) ON DELETE CASCADE
+                                foreign key (user_id) references users(id) ON UPDATE CASCADE,
+                                foreign key (action_id) references actions(id) ON UPDATE CASCADE
 );

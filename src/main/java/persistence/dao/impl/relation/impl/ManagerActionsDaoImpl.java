@@ -198,7 +198,7 @@ public class ManagerActionsDaoImpl implements ManagerActionsDao {
     }
 
     @Override
-    public DataTableResponse<Action> findActionsByManager(Long orderId, DataTableRequest request) {
+    public DataTableResponse<Action> findActionsByManager(Long userId, DataTableRequest request) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
 
@@ -209,10 +209,10 @@ public class ManagerActionsDaoImpl implements ManagerActionsDao {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.findByRelation(ManagerActions.class,
                     Action.class,
                     "a",
-                    "order_id",
+                    "user_id",
                     Collections.emptyList(),
                     request));
-            ps.setLong(1, orderId);
+            ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -254,7 +254,7 @@ public class ManagerActionsDaoImpl implements ManagerActionsDao {
             managerActions.setId(rs.getLong("id"));
             managerActions.setCreated(rs.getTimestamp("created"));
             managerActions.setUpdated(rs.getTimestamp("updated"));
-            managerActions.setManagerId(rs.getLong("order_id"));
+            managerActions.setManagerId(rs.getLong("user_id"));
             managerActions.setActionId(rs.getLong("action_id"));
         } catch (SQLException resEx) {
             resEx.printStackTrace();

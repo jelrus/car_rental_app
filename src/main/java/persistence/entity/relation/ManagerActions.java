@@ -10,7 +10,7 @@ import java.util.Objects;
 @Table(tableName = "manager_actions")
 public class ManagerActions extends BaseEntity {
 
-    @Column(name = "manager_id")
+    @Column(name = "user_id")
     private Long managerId;
 
     @MergeField(on = "action_id")

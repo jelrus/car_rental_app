@@ -4,6 +4,7 @@ import persistence.dao.impl.relation.OrderPassportDao;
 import persistence.dao.impl.relation.impl.OrderPassportDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
+import persistence.entity.interaction.Passport;
 import persistence.entity.relation.OrderPassport;
 import service.impl.relation.OrderPassportService;
 
@@ -38,5 +39,10 @@ public class OrderPassportServiceImpl implements OrderPassportService {
     @Override
     public DataTableResponse<OrderPassport> findAll(DataTableRequest request) {
         return orderPassportDao.findAll(request);
+    }
+
+    @Override
+    public DataTableResponse<Passport> findPassportByOrder(Long orderId, DataTableRequest request) {
+        return orderPassportDao.findPassportByOrder(orderId, request);
     }
 }

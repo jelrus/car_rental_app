@@ -5,7 +5,6 @@ import persistence.dao.impl.user.impl.UserDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.user.BaseUser;
-import persistence.entity.user.impl.Admin;
 import service.impl.user.AdminService;
 
 
@@ -38,7 +37,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public BaseUser findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public BaseUser findByUsernamePassword(String username, String password) {
+        return userDao.findByUsernamePassword(username, password);
+    }
+
+    @Override
     public DataTableResponse<BaseUser> findAll(DataTableRequest request) {
         return userDao.findAll(request);
+    }
+
+    @Override
+    public boolean muteUser(Long userId) {
+        BaseUser baseUser = userDao.findById(userId);
+        baseUser.setEnabled(!baseUser.getEnabled());
+        return userDao.update(baseUser);
     }
 }

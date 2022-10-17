@@ -41,7 +41,6 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
 
     private static Connection createConnection(String url, String user, String password) {
         Connection connection = null;
-
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {

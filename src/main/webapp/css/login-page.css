@@ -1,0 +1,75 @@
+#main-login-card{
+    width: 402px;
+    height: 602px;
+    margin: auto;
+    border-radius: 2%;
+}
+
+#card-login-header{
+    font-size: 32px;
+    font-weight: bold;
+    color: #000000d4;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+#login-form{
+    margin: 50px 60px 150px;
+    border: 0;
+}
+
+#username-group{
+    margin-bottom: 20px;
+}
+
+#password-group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#login-button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #ffae00e0;
+    border-color: orange;
+    font-weight: bold;
+}
+
+#sign-up-section{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#sign-up-button{
+    color: #000000d4;
+    background-color: white;
+    font-weight: bold;
+    border-color: white;
+}
+
+.form-control:focus{
+    color: #212529;
+    background-color: #fff;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 0 0 0.25rem #ffc1074d;
+}
+
+.btn-primary:focus{
+    color: #212529;
+    background-color: #fff;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 0 0 0.25rem #ffc1074d;
+}
+
+.btn:focus{
+    color: #212529;
+    background-color: #fff;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 0 0 0.25rem #ffc1074d;
+}

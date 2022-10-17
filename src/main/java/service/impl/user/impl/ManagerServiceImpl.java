@@ -9,7 +9,6 @@ import service.impl.user.ManagerService;
 
 public class ManagerServiceImpl implements ManagerService {
 
-
     private final UserDao userDao;
 
     public ManagerServiceImpl() {
@@ -34,6 +33,16 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public BaseUser findById(Long id) {
         return userDao.findById(id);
+    }
+
+    @Override
+    public BaseUser findByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public BaseUser findByUsernamePassword(String username, String password) {
+        return userDao.findByUsernamePassword(username, password);
     }
 
     @Override

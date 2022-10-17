@@ -4,6 +4,7 @@ import persistence.dao.impl.relation.ManagerActionsDao;
 import persistence.dao.impl.relation.impl.ManagerActionsDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
+import persistence.entity.interaction.Action;
 import persistence.entity.relation.ManagerActions;
 import service.impl.relation.ManagerActionsService;
 
@@ -38,5 +39,10 @@ public class ManagerActionsServiceImpl implements ManagerActionsService {
     @Override
     public DataTableResponse<ManagerActions> findAll(DataTableRequest request) {
         return managerActionsDao.findAll(request);
+    }
+
+    @Override
+    public DataTableResponse<Action> findActionsByManager(Long userId, DataTableRequest request) {
+        return managerActionsDao.findActionsByManager(userId, request);
     }
 }

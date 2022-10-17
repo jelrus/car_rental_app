@@ -30,14 +30,12 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
         try {
             PreparedStatement ps = connection.prepareStatement(QueryGenerator.createQuery(OrderActions.class),
                                                                Statement.RETURN_GENERATED_KEYS);
-            System.out.println(ps);
             ps.setTimestamp(1, new Timestamp(orderActions.getCreated().getTime()));
             ps.setTimestamp(2, new Timestamp(orderActions.getUpdated().getTime()));
             ps.setLong(3, orderActions.getOrderId());
             ps.setLong(4, orderActions.getActionId());
             ps.executeUpdate();
             generatedKey = generateKeys(ps);
-            System.out.println(generatedKey);
             connection.commit();
         } catch (SQLException createEx) {
             dsc.rollback(connection);

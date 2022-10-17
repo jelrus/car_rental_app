@@ -1,0 +1,97 @@
+#dashboard-page-body{
+    background-image: url(https://images.unsplash.com/photo-1494783367193-149034c05e8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);
+}
+
+#dashboard-main-card{
+    color: #000000d4;
+    margin-left: 40px;
+    margin-right: 40px;
+    float:none;
+    flex-direction: column;
+    border-color: wheat;
+    background-color: white;
+}
+
+#dashboard-header{
+    background-color: #ffae00e0;
+    font-weight: bold;
+}
+
+#dashboard-menu-nav{
+    font-size: medium;
+    border: 0 white;
+    background-color: #ffae0087;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-radius: 0;
+}
+
+#dashboard-menu-nav-card{
+    padding: 0;
+    font-size: inherit;
+    text-align: inherit;
+    border-radius: inherit;
+    background-color: inherit;
+    border-color: inherit;
+}
+
+#main-nav-link{
+    color: #000000d4;
+    text-decoration: none;
+    padding: 5px 10px;
+    font-size: small;
+    text-align: left;
+    border-radius: 0;
+    background-color: blanchedalmond;
+    border-color: blanchedalmond;
+}
+
+#dashboard-menu-card-body{
+    margin: 200px 0 350px;
+}
+
+#personal-menu-card{
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-color: #000000c2;
+    border-radius: 0;
+    border-right-width: 1px;
+}
+
+#admin-menu-card{
+    border-left-width: 0;
+    border-bottom-width: 0;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-radius: 0;
+    border-color: #000000c2;
+}
+
+#car-menu-card{
+    border: 0;
+}
+
+.col-menu{
+    font-size: x-large;
+    padding-right: 0;
+    padding-left: 30px;
+}
+
+.row-menu{
+    text-decoration: none;
+    font-size: x-large;
+    padding-bottom: 10px;
+    color: #000000c2;
+}
+
+.custom-am{
+    color: #000000c2;
+    text-decoration: none;
+    font-size: large;
+    padding-left: 30px;
+}
+
+.custom-am:hover{
+    color: #ffae00e0;
+}

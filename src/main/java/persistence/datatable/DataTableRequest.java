@@ -38,4 +38,14 @@ public class DataTableRequest {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
+
+    @Override
+    public String toString() {
+        return "DataTableRequest{" +
+                "sort='" + sort + '\'' +
+                ", order='" + order + '\'' +
+                ", currentPage=" + currentPage +
+                ", pageSize=" + pageSize +
+                '}';
+    }
 }
