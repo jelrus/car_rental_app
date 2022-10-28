@@ -4,19 +4,17 @@ import facade.relation.OrderActionsFacade;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
-import persistence.entity.relation.ManagerActions;
 import persistence.entity.relation.OrderActions;
-import service.impl.relation.OrderActionsService;
-import service.impl.relation.impl.OrderActionsServiceImpl;
-import util.DtoConverter;
-import util.RequestUtil;
+import service.relation.OrderActionsService;
+import service.relation.impl.OrderActionsServiceImpl;
+import util.facade.DtoConverter;
+import util.request.RequestUtil;
 import view.dto.request.PageAndSizeData;
 import view.dto.request.SortData;
 import view.dto.request.relation.OrderActionsDtoRequest;
 import view.dto.response.PageData;
 import view.dto.response.interaction.ActionDtoResponse;
 import view.dto.response.interaction.OrderDtoResponse;
-import view.dto.response.relation.ManagerActionsDtoResponse;
 import view.dto.response.relation.OrderActionsDtoResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,23 +30,21 @@ public class OrderActionsFacadeImpl implements OrderActionsFacade {
     }
 
     @Override
-    public long create(OrderActionsDtoRequest orderActionsDtoRequest) {
+    public Long create(OrderActionsDtoRequest dtoReq) {
         OrderActions orderActions = new OrderActions();
-        orderActions.setOrderId(orderActionsDtoRequest.getOrderId());
-        orderActions.setActionId(orderActionsDtoRequest.getActionId());
+        orderActionSetFields(orderActions, dtoReq);
         return orderActionsService.create(orderActions);
     }
 
     @Override
-    public boolean update(OrderActionsDtoRequest orderActionsDtoRequest, Long id) {
+    public Boolean update(OrderActionsDtoRequest dtoReq, Long id) {
         OrderActions orderActions = orderActionsService.findById(id);
-        orderActions.setOrderId(orderActionsDtoRequest.getOrderId());
-        orderActions.setActionId(orderActionsDtoRequest.getActionId());
+        orderActionSetFields(orderActions, dtoReq);
         return orderActionsService.update(orderActions);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         return orderActionsService.delete(id);
     }
 
@@ -58,41 +54,61 @@ public class OrderActionsFacadeImpl implements OrderActionsFacade {
     }
 
     @Override
-    public PageData<OrderActionsDtoResponse> findAll(HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
+    public List<OrderActionsDtoResponse> findAll() {
+        return orderActionsService.findAll().stream().map(OrderActionsDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageData<OrderActionsDtoResponse> findAll(HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
         DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
-        DataTableResponse<OrderActions> oActs = orderActionsService.findAll(dataTableRequest);
-        List<OrderActionsDtoResponse> responseList = oActsToDtoList(oActs);
+        DataTableResponse<OrderActions> orderActions = orderActionsService.findAll(dataTableRequest);
+        List<OrderActionsDtoResponse> responseList = toDtoList(orderActions);
         PageData<OrderActionsDtoResponse> pageData = DtoConverter.dtoRespToPageAndSortData(responseList, pageAndSizeData, sortData);
-        pageData.setItemsSize(oActs.getItemsSize());
+        pageData.setItemsSize(orderActions.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
         return pageData;
     }
 
     @Override
-    public PageData<ActionDtoResponse> findActionsByOrder(Long orderId, HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
-        DataTableRequest tableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
-        DataTableResponse<Action> actions = orderActionsService.findActionsByOrder(orderId, tableRequest);
-        List<ActionDtoResponse> responseList = actionsToDtoList(actions);
+    public List<ActionDtoResponse> findActionsByOrder(Long orderId) {
+        return orderActionsService.findActionsByOrder(orderId).stream().map(ActionDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ActionDtoResponse> findActionsByOrderFiltered(Long orderId) {
+        return orderActionsService.findActionsByOrderFiltered(orderId).stream().map(ActionDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDtoResponse findOrderByAction(Long actionId) {
+        return new OrderDtoResponse(orderActionsService.findOrderByAction(actionId));
+    }
+
+    @Override
+    public PageData<ActionDtoResponse> findActionsByOrder(Long orderId, HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
+        DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
+        DataTableResponse<Action> actions = orderActionsService.findActionsByOrder(orderId, dataTableRequest);
+        List<ActionDtoResponse> responseList = toActionsDtoList(actions);
         PageData<ActionDtoResponse> pageData = DtoConverter.dtoRespToPageAndSortData(responseList, pageAndSizeData, sortData);
         pageData.setItemsSize(actions.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
         return pageData;
     }
 
-    private List<ActionDtoResponse> actionsToDtoList(DataTableResponse<Action> mActs) {
-        return mActs.getItems().stream()
-                               .map(ActionDtoResponse::new)
-                               .collect(Collectors.toList());
+    private void orderActionSetFields(OrderActions orderActions, OrderActionsDtoRequest dto) {
+        orderActions.setOrderId(dto.getOrderId());
+        orderActions.setActionId(dto.getActionId());
     }
 
+    private List<OrderActionsDtoResponse> toDtoList(DataTableResponse<OrderActions> orderActions) {
+        return orderActions.getItems().stream().map(OrderActionsDtoResponse::new).collect(Collectors.toList());
+    }
 
-    private List<OrderActionsDtoResponse> oActsToDtoList(DataTableResponse<OrderActions> oActs) {
-        return oActs.getItems().stream()
-                               .map(OrderActionsDtoResponse::new)
-                               .collect(Collectors.toList());
+    private List<ActionDtoResponse> toActionsDtoList(DataTableResponse<Action> actions) {
+        return actions.getItems().stream().map(ActionDtoResponse::new).collect(Collectors.toList());
     }
 }

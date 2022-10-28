@@ -5,16 +5,17 @@ import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
 import persistence.entity.relation.ManagerActions;
-import service.impl.relation.ManagerActionsService;
-import service.impl.relation.impl.ManagerActionsServiceImpl;
-import util.DtoConverter;
-import util.RequestUtil;
+import service.relation.ManagerActionsService;
+import service.relation.impl.ManagerActionsServiceImpl;
+import util.facade.DtoConverter;
+import util.request.RequestUtil;
 import view.dto.request.PageAndSizeData;
 import view.dto.request.SortData;
 import view.dto.request.relation.ManagerActionsDtoRequest;
 import view.dto.response.PageData;
 import view.dto.response.interaction.ActionDtoResponse;
 import view.dto.response.relation.ManagerActionsDtoResponse;
+import view.dto.response.user.UserDtoResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,23 +30,21 @@ public class ManagerActionsFacadeImpl implements ManagerActionsFacade {
     }
 
     @Override
-    public long create(ManagerActionsDtoRequest managerActionsDtoRequest) {
+    public Long create(ManagerActionsDtoRequest dtoReq) {
         ManagerActions managerActions = new ManagerActions();
-        managerActions.setManagerId(managerActionsDtoRequest.getUserId());
-        managerActions.setActionId(managerActions.getActionId());
+        managerActionSetFields(managerActions, dtoReq);
         return managerActionsService.create(managerActions);
     }
 
     @Override
-    public boolean update(ManagerActionsDtoRequest managerActionsDtoRequest, Long id) {
+    public Boolean update(ManagerActionsDtoRequest dtoReq, Long id) {
         ManagerActions managerActions = managerActionsService.findById(id);
-        managerActions.setManagerId(managerActionsDtoRequest.getUserId());
-        managerActions.setActionId(managerActions.getActionId());
+        managerActionSetFields(managerActions, dtoReq);
         return managerActionsService.update(managerActions);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         return managerActionsService.delete(id);
     }
 
@@ -55,41 +54,56 @@ public class ManagerActionsFacadeImpl implements ManagerActionsFacade {
     }
 
     @Override
-    public PageData<ManagerActionsDtoResponse> findAll(HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
+    public List<ManagerActionsDtoResponse> findAll() {
+        return managerActionsService.findAll().stream().map(ManagerActionsDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageData<ManagerActionsDtoResponse> findAll(HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
         DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
-        DataTableResponse<ManagerActions> mActs = managerActionsService.findAll(dataTableRequest);
-        List<ManagerActionsDtoResponse> responseList = mActsToDtoList(mActs);
+        DataTableResponse<ManagerActions> managerActions = managerActionsService.findAll(dataTableRequest);
+        List<ManagerActionsDtoResponse> responseList = toDtoList(managerActions);
         PageData<ManagerActionsDtoResponse> pageData = DtoConverter.dtoRespToPageAndSortData(responseList, pageAndSizeData, sortData);
-        pageData.setItemsSize(mActs.getItemsSize());
+        pageData.setItemsSize(managerActions.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
         return pageData;
     }
 
     @Override
-    public PageData<ActionDtoResponse> findActionsByManager(Long userId, HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
-        DataTableRequest tableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
-        DataTableResponse<Action> actions = managerActionsService.findActionsByManager(userId, tableRequest);
-        List<ActionDtoResponse> responseList = actionsToDtoList(actions);
+    public List<ActionDtoResponse> findActionsByManager(Long managerId) {
+        return managerActionsService.findActionsByManager(managerId).stream().map(ActionDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDtoResponse findManagerByAction(Long actionId) {
+        return new UserDtoResponse(managerActionsService.findManagerByAction(actionId));
+    }
+
+    @Override
+    public PageData<ActionDtoResponse> findActionsByManager(Long managerId, HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
+        DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
+        DataTableResponse<Action> actions = managerActionsService.findActionsByManager(managerId, dataTableRequest);
+        List<ActionDtoResponse> responseList = toActionsDtoList(actions);
         PageData<ActionDtoResponse> pageData = DtoConverter.dtoRespToPageAndSortData(responseList, pageAndSizeData, sortData);
         pageData.setItemsSize(actions.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
         return pageData;
     }
 
-    private List<ActionDtoResponse> actionsToDtoList(DataTableResponse<Action> mActs) {
-        return mActs.getItems().stream()
-                    .map(ActionDtoResponse::new)
-                    .collect(Collectors.toList());
+    private void managerActionSetFields(ManagerActions managerActions, ManagerActionsDtoRequest dto) {
+        managerActions.setUserId(dto.getUserId());
+        managerActions.setActionId(dto.getActionId());
     }
 
+    private List<ManagerActionsDtoResponse> toDtoList(DataTableResponse<ManagerActions> managerActions) {
+        return managerActions.getItems().stream().map(ManagerActionsDtoResponse::new).collect(Collectors.toList());
+    }
 
-    private List<ManagerActionsDtoResponse> mActsToDtoList(DataTableResponse<ManagerActions> mActs) {
-        return mActs.getItems().stream()
-                               .map(ManagerActionsDtoResponse::new)
-                               .collect(Collectors.toList());
+    private List<ActionDtoResponse> toActionsDtoList(DataTableResponse<Action> actions) {
+        return actions.getItems().stream().map(ActionDtoResponse::new).collect(Collectors.toList());
     }
 }

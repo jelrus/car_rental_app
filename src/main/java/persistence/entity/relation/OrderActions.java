@@ -1,20 +1,13 @@
 package persistence.entity.relation;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.MergeField;
-import persistence.entity.annotations.Table;
 
+import java.util.List;
 import java.util.Objects;
 
-@Table(tableName = "order_actions")
 public class OrderActions extends BaseEntity {
 
-    @Column(name = "order_id")
     private Long orderId;
-
-    @MergeField(on = "action_id")
-    @Column(name = "action_id")
     private Long actionId;
 
     public OrderActions() {
@@ -43,7 +36,8 @@ public class OrderActions extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         OrderActions that = (OrderActions) o;
-        return Objects.equals(orderId, that.orderId) && Objects.equals(actionId, that.actionId);
+        return Objects.equals(orderId, that.orderId) &&
+               Objects.equals(actionId, that.actionId);
     }
 
     @Override

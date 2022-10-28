@@ -1,42 +1,22 @@
 package persistence.entity.user;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.Table;
-import persistence.entity.user.type.UserRole;
+import persistence.entity.user.type.RoleType;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@Table(tableName = "users")
 public class BaseUser extends BaseEntity {
 
-    @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "profile_pic")
     private String profilePic;
-
-    @Column(name = "balance")
     private BigDecimal balance;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "enabled")
     private Boolean enabled;
-
-    @Column(name = "role_type")
-    private UserRole roleType;
+    private RoleType roleType;
 
     public BaseUser() {
         super();
@@ -79,16 +59,16 @@ public class BaseUser extends BaseEntity {
         return profilePic;
     }
 
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
     public BigDecimal getBalance() {
         return balance;
     }
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
     }
 
     public String getDescription() {
@@ -107,11 +87,11 @@ public class BaseUser extends BaseEntity {
         this.enabled = enabled;
     }
 
-    public UserRole getRoleType() {
+    public RoleType getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(UserRole roleType) {
+    public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
     }
 
@@ -134,13 +114,13 @@ public class BaseUser extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, firstName, lastName,
-                            profilePic, balance, description, enabled, roleType);
+        return Objects.hash(super.hashCode(), username, password, firstName, lastName, profilePic,
+                            balance, description, enabled, roleType);
     }
 
     @Override
     public String toString() {
-        return "BaseUser{" + super.toString() + '\'' +
+        return "BaseUser{" + super.toString() +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +

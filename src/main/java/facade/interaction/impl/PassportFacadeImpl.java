@@ -4,10 +4,10 @@ import facade.interaction.PassportFacade;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Passport;
-import service.impl.interaction.PassportService;
-import service.impl.interaction.impl.PassportServiceImpl;
-import util.DtoConverter;
-import util.RequestUtil;
+import service.interaction.PassportService;
+import service.interaction.impl.PassportServiceImpl;
+import util.facade.DtoConverter;
+import util.request.RequestUtil;
 import view.dto.request.PageAndSizeData;
 import view.dto.request.SortData;
 import view.dto.request.interaction.PassportDtoRequest;
@@ -27,21 +27,21 @@ public class PassportFacadeImpl implements PassportFacade {
     }
 
     @Override
-    public long create(PassportDtoRequest passportDtoRequest) {
+    public Long create(PassportDtoRequest dtoReq) {
         Passport passport = new Passport();
-        dtoToPassport(passport, passportDtoRequest);
+        passportSetFields(passport, dtoReq);
         return passportService.create(passport);
     }
 
     @Override
-    public boolean update(PassportDtoRequest passportDtoRequest, Long id) {
+    public Boolean update(PassportDtoRequest dtoReq, Long id) {
         Passport passport = passportService.findById(id);
-        dtoToPassport(passport, passportDtoRequest);
+        passportSetFields(passport, dtoReq);
         return passportService.update(passport);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         return passportService.delete(id);
     }
 
@@ -51,9 +51,14 @@ public class PassportFacadeImpl implements PassportFacade {
     }
 
     @Override
-    public PageData<PassportDtoResponse> findAll(HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
+    public List<PassportDtoResponse> findAll() {
+        return passportService.findAll().stream().map(PassportDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageData<PassportDtoResponse> findAll(HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
         DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
         DataTableResponse<Passport> passports = passportService.findAll(dataTableRequest);
         List<PassportDtoResponse> responseList = toDtoList(passports);
@@ -63,23 +68,21 @@ public class PassportFacadeImpl implements PassportFacade {
         return pageData;
     }
 
-    private void dtoToPassport(Passport passport, PassportDtoRequest passportDtoRequest) {
-        passport.setFirstName(passportDtoRequest.getFirstName());
-        passport.setLastName(passportDtoRequest.getLastName());
-        passport.setAge(passportDtoRequest.getAge());
-        passport.setCountry(passportDtoRequest.getCountry());
-        passport.setZipCode(passport.getZipCode());
-        passport.setRegion(passport.getRegion());
-        passport.setCity(passport.getCity());
-        passport.setStreet(passport.getStreet());
-        passport.setBuilding(passport.getBuilding());
-        passport.setPhoneNumber(passport.getPhoneNumber());
-        passport.setEmail(passport.getEmail());
+    private void passportSetFields(Passport passport, PassportDtoRequest dto) {
+        passport.setFirstName(dto.getFirstName());
+        passport.setLastName(dto.getLastName());
+        passport.setBirthDate(dto.getBirthDate());
+        passport.setCountry(dto.getCountry());
+        passport.setZipCode(dto.getZipCode());
+        passport.setRegion(dto.getRegion());
+        passport.setCity(dto.getCity());
+        passport.setStreet(dto.getStreet());
+        passport.setBuilding(dto.getBuilding());
+        passport.setPhoneNumber(dto.getPhoneNumber());
+        passport.setEmail(dto.getEmail());
     }
 
-    private List<PassportDtoResponse> toDtoList(DataTableResponse<Passport> passports) {
-        return passports.getItems().stream()
-                                   .map(PassportDtoResponse::new)
-                                   .collect(Collectors.toList());
+    private List<PassportDtoResponse> toDtoList(DataTableResponse<Passport> actions) {
+        return actions.getItems().stream().map(PassportDtoResponse::new).collect(Collectors.toList());
     }
 }

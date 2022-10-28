@@ -1,34 +1,21 @@
 package persistence.entity.product;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.Table;
 import persistence.entity.product.type.CarBrand;
-import persistence.entity.product.type.CarQualityType;
+import persistence.entity.product.type.CarQuality;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@Table(tableName = "cars")
 public class Car extends BaseEntity {
 
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "product_pic")
     private String productPic;
-
-    @Column(name = "brand")
-    private CarBrand brand;
-
-    @Column(name = "quality")
-    private CarQualityType quality;
-
-    @Column(name = "info")
+    private CarBrand carBrand;
+    private CarQuality carQuality;
     private String info;
-
-    @Column(name = "rental_price")
     private BigDecimal rentalPrice;
+    private Boolean enabled;
 
     public Car() {
         super();
@@ -50,20 +37,20 @@ public class Car extends BaseEntity {
         this.productPic = productPic;
     }
 
-    public CarBrand getBrand() {
-        return brand;
+    public CarBrand getCarBrand() {
+        return carBrand;
     }
 
-    public void setBrand(CarBrand brand) {
-        this.brand = brand;
+    public void setCarBrand(CarBrand carBrand) {
+        this.carBrand = carBrand;
     }
 
-    public CarQualityType getQuality() {
-        return quality;
+    public CarQuality getCarQuality() {
+        return carQuality;
     }
 
-    public void setQuality(CarQualityType quality) {
-        this.quality = quality;
+    public void setCarQuality(CarQuality carQuality) {
+        this.carQuality = carQuality;
     }
 
     public String getInfo() {
@@ -82,6 +69,14 @@ public class Car extends BaseEntity {
         this.rentalPrice = rentalPrice;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,15 +85,16 @@ public class Car extends BaseEntity {
         Car car = (Car) o;
         return Objects.equals(title, car.title) &&
                Objects.equals(productPic, car.productPic) &&
-               brand == car.brand &&
-               quality == car.quality &&
+               carBrand == car.carBrand &&
+               carQuality == car.carQuality &&
                Objects.equals(info, car.info) &&
-               Objects.equals(rentalPrice, car.rentalPrice);
+               Objects.equals(rentalPrice, car.rentalPrice) &&
+               Objects.equals(enabled, car.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, productPic, brand, quality, info, rentalPrice);
+        return Objects.hash(super.hashCode(), title, productPic, carBrand, carQuality, info, rentalPrice, enabled);
     }
 
     @Override
@@ -106,10 +102,11 @@ public class Car extends BaseEntity {
         return "Car{" + super.toString() + '\'' +
                 "title='" + title + '\'' +
                 ", productPic='" + productPic + '\'' +
-                ", brand=" + brand +
-                ", quality=" + quality +
+                ", carBrand=" + carBrand +
+                ", carQuality=" + carQuality +
                 ", info='" + info + '\'' +
                 ", rentalPrice=" + rentalPrice +
+                ", enabled=" + enabled +
                 '}';
     }
 }

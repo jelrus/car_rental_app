@@ -3,13 +3,14 @@ package view.dto.response.interaction;
 import persistence.entity.interaction.Passport;
 import view.dto.response.DtoResponse;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class PassportDtoResponse extends DtoResponse {
 
     private String firstName;
     private String lastName;
-    private int age;
+    private Date birthDate;
     private String country;
     private String zipCode;
     private String region;
@@ -23,7 +24,7 @@ public class PassportDtoResponse extends DtoResponse {
         super(passport.getId(), passport.getCreated(), passport.getUpdated(), passport.getVisible());
         setFirstName(passport.getFirstName());
         setLastName(passport.getLastName());
-        setAge(passport.getAge());
+        setBirthDate(passport.getBirthDate());
         setCountry(passport.getCountry());
         setZipCode(passport.getZipCode());
         setRegion(passport.getRegion());
@@ -50,12 +51,12 @@ public class PassportDtoResponse extends DtoResponse {
         this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getCountry() {
@@ -126,10 +127,11 @@ public class PassportDtoResponse extends DtoResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         PassportDtoResponse that = (PassportDtoResponse) o;
-        return age == that.age &&
-               Objects.equals(firstName, that.firstName) &&
+        return Objects.equals(firstName, that.firstName) &&
                Objects.equals(lastName, that.lastName) &&
+               Objects.equals(birthDate, that.birthDate) &&
                Objects.equals(country, that.country) &&
                Objects.equals(zipCode, that.zipCode) &&
                Objects.equals(region, that.region) &&
@@ -142,16 +144,16 @@ public class PassportDtoResponse extends DtoResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, age, country, zipCode,
-                            region, city, street, building, phoneNumber, email);
+        return Objects.hash(super.hashCode(), firstName, lastName, birthDate, country, zipCode, region, city,
+                            street, building, phoneNumber, email);
     }
 
     @Override
     public String toString() {
-        return "PassportDtoResponse{" + super.toString() + '\'' +
+        return "PassportDtoResponse{" + super.toString() +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
+                ", birthDate=" + birthDate +
                 ", country='" + country + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", region='" + region + '\'' +

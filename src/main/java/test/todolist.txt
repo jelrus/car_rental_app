@@ -1,0 +1,9 @@
+Product page - Filters
+Action on status change {} Invoice Generator
+find orders by user filtered
+
+1. AuthFilter for permissions (?!)
+2. Validations + encrypt (service + controller)
+- Global error handler
+------------------------------
+4. Test + logs + internationalization

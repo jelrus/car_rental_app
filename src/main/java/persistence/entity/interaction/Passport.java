@@ -1,45 +1,22 @@
 package persistence.entity.interaction;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.Table;
 
+import java.util.Date;
 import java.util.Objects;
 
-@Table(tableName = "passports")
 public class Passport extends BaseEntity {
 
-    @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "age")
-    private int age;
-
-    @Column(name = "country")
+    private Date birthDate;
     private String country;
-
-    @Column(name = "zip_code")
     private String zipCode;
-
-    @Column(name = "region")
     private String region;
-
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "street")
     private String street;
-
-    @Column(name = "building")
     private String building;
-
-    @Column(name = "phone_number")
     private String phoneNumber;
-
-    @Column(name = "email")
     private String email;
 
     public Passport() {
@@ -62,12 +39,12 @@ public class Passport extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getCountry() {
@@ -140,8 +117,9 @@ public class Passport extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Passport passport = (Passport) o;
-        return age == passport.age && Objects.equals(firstName, passport.firstName) &&
+        return Objects.equals(firstName, passport.firstName) &&
                Objects.equals(lastName, passport.lastName) &&
+               Objects.equals(birthDate, passport.birthDate) &&
                Objects.equals(country, passport.country) &&
                Objects.equals(zipCode, passport.zipCode) &&
                Objects.equals(region, passport.region) &&
@@ -154,17 +132,16 @@ public class Passport extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, age,
-                            country, zipCode, region, city, street, building,
-                            phoneNumber, email);
+        return Objects.hash(super.hashCode(), firstName, lastName, birthDate, country, zipCode,
+                            region, city, street, building, phoneNumber, email);
     }
 
     @Override
     public String toString() {
-        return "Passport{" + super.toString() + '\'' +
+        return "Passport{" + super.toString() +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
+                ", birthDate=" + birthDate +
                 ", country='" + country + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", region='" + region + '\'' +

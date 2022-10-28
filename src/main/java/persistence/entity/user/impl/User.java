@@ -1,24 +1,27 @@
 package persistence.entity.user.impl;
 
-import persistence.entity.annotations.Table;
 import persistence.entity.user.BaseUser;
-import persistence.entity.user.type.UserRole;
+import persistence.entity.user.type.RoleType;
 
-@Table(tableName = "users")
 public class User extends BaseUser {
 
     public User() {
         super();
-        setRoleType(UserRole.USER);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
+        setRoleType(RoleType.ROLE_USER);
     }
 
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + super.toString() +"}";
     }
 }

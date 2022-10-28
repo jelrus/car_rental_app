@@ -6,17 +6,15 @@ import view.dto.response.PageData;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static util.RequestUtil.DEFAULT_ORDER_PARAM_VALUE;
+import static util.request.RequestUtil.DEFAULT_ORDER_PARAM_VALUE;
 
 public class AbstractServlet extends HttpServlet {
 
-    protected static class HeaderName {
+    public static class HeaderName {
 
         private String columnName;
         private String tableName;
@@ -113,35 +111,16 @@ public class AbstractServlet extends HttpServlet {
         }
     }
 
-    protected void initDataTable(
-            PageData<? extends DtoResponse> response,
-            HeaderName[] columnNames,
-            HttpServletRequest model) {
-        List<HeaderData> headerDataList = new ArrayList<>();
-        for (HeaderName headerName : columnNames) {
-            HeaderData data = new HeaderData();
-            data.setHeaderName(headerName.getColumnName());
-            if (StringUtils.isBlank(headerName.getTableName())) {
-                data.setSortable(false);
-            } else {
-                data.setSortable(true);
-                data.setSort(headerName.getDbName());
-                if (response.getSort().equals(headerName.getDbName())) {
-                    data.setActive(true);
-                    data.setOrder(response.getOrder());
-                } else {
-                    data.setActive(false);
-                    data.setOrder(DEFAULT_ORDER_PARAM_VALUE);
-                }
-            }
-            headerDataList.add(data);
+    public String createURL(HttpServletRequest req) {
+        Map<String, String[]> parameterMap = req.getParameterMap();
+        StringBuilder sb = new StringBuilder("?");
+        for (Map.Entry<String, String[]> m: parameterMap.entrySet()) {
+            sb.append(m.getKey()).append("=").append(m.getValue()[0]).append("&");
         }
-        model.setAttribute("headerDataList", headerDataList);
-        model.setAttribute("pageData", response);
+        return sb.toString();
     }
 
-
-    protected <RES extends DtoResponse> List<HeaderData> getHeaderDataList(HeaderName[] columnNames, PageData<RES> response) {
+    public  <RES extends DtoResponse> List<HeaderData> getHeaderDataList(HeaderName[] columnNames, PageData<RES> response) {
         List<HeaderData> headerDataList = new ArrayList<>();
         for (HeaderName headerName : columnNames) {
             HeaderData data = new HeaderData();

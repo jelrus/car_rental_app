@@ -10,10 +10,10 @@ public class UserOrdersDtoResponse extends DtoResponse {
     private Long userId;
     private Long orderId;
 
-    public UserOrdersDtoResponse(UserOrders uOrds) {
-        super(uOrds.getId(), uOrds.getCreated(), uOrds.getUpdated(), uOrds.getVisible());
-        setUserId(uOrds.getUserId());
-        setOrderId(uOrds.getOrderId());
+    public UserOrdersDtoResponse(UserOrders userOrders) {
+        super(userOrders.getId(), userOrders.getCreated(), userOrders.getUpdated(), userOrders.getVisible());
+        setUserId(userOrders.getUserId());
+        setOrderId(userOrders.getOrderId());
     }
 
     public Long getUserId() {
@@ -36,12 +36,21 @@ public class UserOrdersDtoResponse extends DtoResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         UserOrdersDtoResponse that = (UserOrdersDtoResponse) o;
         return Objects.equals(userId, that.userId) && Objects.equals(orderId, that.orderId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, orderId);
+        return Objects.hash(super.hashCode(), userId, orderId);
+    }
+
+    @Override
+    public String toString() {
+        return "UserOrdersDtoResponse{" + super.toString() +
+                "userId=" + userId +
+                ", orderId=" + orderId +
+                '}';
     }
 }

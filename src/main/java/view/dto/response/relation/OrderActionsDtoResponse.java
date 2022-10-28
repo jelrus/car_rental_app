@@ -3,7 +3,6 @@ package view.dto.response.relation;
 import persistence.entity.relation.OrderActions;
 import view.dto.response.DtoResponse;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class OrderActionsDtoResponse extends DtoResponse {
@@ -11,10 +10,10 @@ public class OrderActionsDtoResponse extends DtoResponse {
     private Long orderId;
     private Long actionId;
 
-    public OrderActionsDtoResponse(OrderActions oActs) {
-        super(oActs.getId(), oActs.getCreated(), oActs.getUpdated(), oActs.getVisible());
-        setOrderId(oActs.getOrderId());
-        setActionId(oActs.getActionId());
+    public OrderActionsDtoResponse(OrderActions orderActions) {
+        super(orderActions.getId(), orderActions.getCreated(), orderActions.getUpdated(), orderActions.getVisible());
+        setOrderId(orderActions.getOrderId());
+        setActionId(orderActions.getActionId());
     }
 
     public Long getOrderId() {
@@ -37,13 +36,14 @@ public class OrderActionsDtoResponse extends DtoResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         OrderActionsDtoResponse that = (OrderActionsDtoResponse) o;
         return Objects.equals(orderId, that.orderId) && Objects.equals(actionId, that.actionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, actionId);
+        return Objects.hash(super.hashCode(), orderId, actionId);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package view.dto.request.product;
 
-import persistence.entity.annotations.Column;
 import persistence.entity.product.type.CarBrand;
-import persistence.entity.product.type.CarQualityType;
+import persistence.entity.product.type.CarQuality;
 import view.dto.request.DtoRequest;
 
 import java.math.BigDecimal;
@@ -12,10 +11,11 @@ public class CarDtoRequest extends DtoRequest {
 
     private String title;
     private String productPic;
-    private CarBrand brand;
-    private CarQualityType quality;
+    private CarBrand carBrand;
+    private CarQuality carQuality;
     private String info;
     private BigDecimal rentalPrice;
+    private Boolean enabled;
 
     public String getTitle() {
         return title;
@@ -33,20 +33,20 @@ public class CarDtoRequest extends DtoRequest {
         this.productPic = productPic;
     }
 
-    public CarBrand getBrand() {
-        return brand;
+    public CarBrand getCarBrand() {
+        return carBrand;
     }
 
-    public void setBrand(CarBrand brand) {
-        this.brand = brand;
+    public void setCarBrand(CarBrand carBrand) {
+        this.carBrand = carBrand;
     }
 
-    public CarQualityType getQuality() {
-        return quality;
+    public CarQuality getCarQuality() {
+        return carQuality;
     }
 
-    public void setQuality(CarQualityType quality) {
-        this.quality = quality;
+    public void setCarQuality(CarQuality carQuality) {
+        this.carQuality = carQuality;
     }
 
     public String getInfo() {
@@ -65,6 +65,14 @@ public class CarDtoRequest extends DtoRequest {
         this.rentalPrice = rentalPrice;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,15 +80,16 @@ public class CarDtoRequest extends DtoRequest {
         CarDtoRequest that = (CarDtoRequest) o;
         return Objects.equals(title, that.title) &&
                Objects.equals(productPic, that.productPic) &&
-               brand == that.brand &&
-               quality == that.quality &&
+               carBrand == that.carBrand &&
+               carQuality == that.carQuality &&
                Objects.equals(info, that.info) &&
-               Objects.equals(rentalPrice, that.rentalPrice);
+               Objects.equals(rentalPrice, that.rentalPrice) &&
+               Objects.equals(enabled, that.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, productPic, brand, quality, info, rentalPrice);
+        return Objects.hash(title, productPic, carBrand, carQuality, info, rentalPrice, enabled);
     }
 
     @Override
@@ -88,10 +97,11 @@ public class CarDtoRequest extends DtoRequest {
         return "CarDtoRequest{" +
                 "title='" + title + '\'' +
                 ", productPic='" + productPic + '\'' +
-                ", brand=" + brand +
-                ", quality=" + quality +
+                ", carBrand=" + carBrand +
+                ", carQuality=" + carQuality +
                 ", info='" + info + '\'' +
                 ", rentalPrice=" + rentalPrice +
+                ", enabled=" + enabled +
                 '}';
     }
 }

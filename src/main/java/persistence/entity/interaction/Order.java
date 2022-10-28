@@ -1,27 +1,18 @@
 package persistence.entity.interaction;
 
 import persistence.entity.BaseEntity;
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.Table;
 import persistence.entity.interaction.type.OrderStatus;
 
 import java.util.Date;
 import java.util.Objects;
 
-@Table(tableName = "orders")
 public class Order extends BaseEntity {
 
-    @Column(name = "with_driver")
     private Boolean withDriver;
-
-    @Column(name = "lease_term_start")
-    private Date leaseTermStart;
-
-    @Column(name = "lease_term_end")
-    private Date leaseTermEnd;
-
-    @Column(name = "order_status")
+    private Date start;
+    private Date end;
     private OrderStatus orderStatus;
+    private Boolean enabled;
 
     public Order() {
         super();
@@ -36,20 +27,20 @@ public class Order extends BaseEntity {
         this.withDriver = withDriver;
     }
 
-    public Date getLeaseTermStart() {
-        return leaseTermStart;
+    public Date getStart() {
+        return start;
     }
 
-    public void setLeaseTermStart(Date leaseTermStart) {
-        this.leaseTermStart = leaseTermStart;
+    public void setStart(Date start) {
+        this.start = start;
     }
 
-    public Date getLeaseTermEnd() {
-        return leaseTermEnd;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setLeaseTermEnd(Date leaseTermEnd) {
-        this.leaseTermEnd = leaseTermEnd;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public OrderStatus getOrderStatus() {
@@ -60,6 +51,14 @@ public class Order extends BaseEntity {
         this.orderStatus = orderStatus;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,23 +66,25 @@ public class Order extends BaseEntity {
         if (!super.equals(o)) return false;
         Order order = (Order) o;
         return Objects.equals(withDriver, order.withDriver) &&
-               Objects.equals(leaseTermStart, order.leaseTermStart) &&
-               Objects.equals(leaseTermEnd, order.leaseTermEnd) &&
-               orderStatus == order.orderStatus;
+               Objects.equals(start, order.start) &&
+               Objects.equals(end, order.end) &&
+               orderStatus == order.orderStatus &&
+               Objects.equals(enabled, order.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), withDriver, leaseTermStart, leaseTermEnd, orderStatus);
+        return Objects.hash(super.hashCode(), withDriver, start, end, orderStatus, enabled);
     }
 
     @Override
     public String toString() {
         return "Order{" + super.toString() +
                 "withDriver=" + withDriver +
-                ", leaseTermStart=" + leaseTermStart +
-                ", leaseTermEnd=" + leaseTermEnd +
+                ", start=" + start +
+                ", end=" + end +
                 ", orderStatus=" + orderStatus +
+                ", enabled=" + enabled +
                 '}';
     }
 }

@@ -1,15 +1,13 @@
 package persistence.entity.user.impl;
 
-import persistence.entity.annotations.Table;
 import persistence.entity.user.BaseUser;
-import persistence.entity.user.type.UserRole;
+import persistence.entity.user.type.RoleType;
 
-@Table(tableName = "users")
 public class Manager extends BaseUser {
 
     public Manager() {
         super();
-        setRoleType(UserRole.MANAGER);
+        setRoleType(RoleType.ROLE_MANAGER);
     }
 
     @Override
@@ -20,5 +18,10 @@ public class Manager extends BaseUser {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Manager{" + super.toString() + "}";
     }
 }

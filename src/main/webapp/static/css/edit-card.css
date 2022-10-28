@@ -1,0 +1,231 @@
+#action-form{
+    margin: 0;
+    border: 0;
+    padding-left: 30px;
+}
+
+#identifier-group{
+    font-size: large;
+    margin-bottom: 20px;
+}
+
+#message-group{
+    font-size: large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#order-status-group{
+    font-size: large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#brand-group{
+    font-size: large;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+#brand-group-edit{
+    font-size: medium;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+#quality-group{
+    font-size: large;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+#quality-group-edit{
+    font-size: medium;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+#username-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#password-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#first-name-group-order{
+    font-size: inherit;
+    padding-bottom: 0;
+    margin: 0 0 20px;
+}
+
+#last-name-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#last-name-group-order{
+    font-size: inherit;
+    padding-bottom: 0;
+    margin: 0 0 20px;
+}
+
+#birthdate-col{
+    margin-bottom: 20px;
+}
+
+#profile-pic-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#balance-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#description-group{
+    font-size: inherit;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+#country-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#zip-code-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#region-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#city-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#street-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#building-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#phone-number-group{
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+#card-create-order{
+    margin-top: 100px;
+}
+
+#edit-action-menu-card{
+    border: 0;
+}
+
+#order-create-pic{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+#car-details{
+    margin-bottom: 48px;
+}
+
+#start-date-col{
+    margin-bottom: 20px
+}
+
+#end-date-col{
+    margin-bottom: 20px
+}
+
+.row-car-details{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.row-details{
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-decoration: underline;
+    font-size: large;
+}
+
+#edit-old-action-menu-card{
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-color: #000000c2;
+    border-radius: 0;
+    border-right-width: 1px;
+    padding-right: 50px;
+}
+
+#create-new-user-menu-card{
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-color: #000000c2;
+    border-radius: 0;
+    border-right-width: 0px;
+    padding-right: 50px;
+}
+
+#create-new-action-menu-card{
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-color: #000000c2;
+    border-radius: 0;
+    border-right-width: 0px;
+    padding-right: 50px;
+}
+
+#description-text-area{
+    width: 225%;
+}
+
+#action-edit-form-holder{
+    padding-bottom: 0;
+}
+
+#car-edit-form-holder{
+    padding-bottom: 0;
+    font-size: medium;
+}
+
+#profile-edit-form-holder{
+    padding-bottom: 0;
+    font-size: medium;
+}
+
+#apply-edit-action-button{
+    margin-top: 10px;
+    margin-bottom: 0;
+    width: 100%;
+    background-color: #ffae00e0;
+    border-color: orange;
+    font-weight: bold;
+}
+
+#action-old-values-table{
+    margin-left: 30px;
+}

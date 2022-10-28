@@ -1,7 +1,6 @@
 drop table if exists order_actions;
 drop table if exists manager_actions;
-drop table if exists order_passport;
-drop table if exists order_car;
+drop table if exists order_car_passport;
 drop table if exists user_orders;
 
 drop table if exists actions;
@@ -22,7 +21,7 @@ create table users(
                       balance decimal(12,2),
                       description text,
                       enabled boolean,
-                      role_type enum('ADMIN', 'MANAGER', 'USER') not null
+                      role_type enum('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER') not null
                    );
 
 create table cars(
@@ -34,7 +33,8 @@ create table cars(
                      brand enum('BMW', 'MERCEDES', 'HONDA', 'TOYOTA'),
                      quality enum('MPV', 'LUXURY', 'SPORTS', 'SUV'),
                      info text,
-                     rental_price decimal(12,2)
+                     rental_price decimal(12,2),
+                     enabled boolean
 );
 
 create table passports(
@@ -43,7 +43,7 @@ create table passports(
                           updated datetime(6) not null,
                           first_name nvarchar(255),
                           last_name nvarchar(255),
-                          age int,
+                          birth_date datetime(6),
                           country nvarchar(255),
                           zip_code nvarchar(255),
                           region nvarchar(255),
@@ -59,9 +59,11 @@ create table orders(
                        created datetime(6) not null,
                        updated datetime(6) not null,
                        with_driver boolean,
-                       lease_term_start datetime(6),
-                       lease_term_end datetime(6),
-                       order_status enum('PROCESSING', 'APPROVED', 'REJECTED', 'ACTIVE', 'DAMAGE_REFUND', 'CLOSED')
+                       start datetime(6),
+                       end datetime(6),
+                       order_status enum('PROCESSING', 'APPROVED', 'REJECTED', 'ACTIVE', 'CAR_INSPECTION',
+                                         'DAMAGE_REFUND', 'CLOSED'),
+                       enabled boolean
 );
 
 create table actions(
@@ -69,7 +71,8 @@ create table actions(
                         created datetime(6) not null,
                         updated datetime(6) not null,
                         identifier nvarchar(255),
-                        message text
+                        message text,
+                        enabled boolean
 );
 
 create table user_orders(
@@ -79,30 +82,21 @@ create table user_orders(
                             user_id bigint not null,
                             order_id bigint not null,
                             UNIQUE KEY `uos` (`user_id`, `order_id`),
-                            foreign key (user_id) references users(id) ON UPDATE CASCADE,
-                            foreign key (order_id) references orders(id) ON UPDATE CASCADE
+                            foreign key (user_id) references users(id) ON DELETE CASCADE,
+                            foreign key (order_id) references orders(id) ON DELETE CASCADE
 );
 
-create table order_car(
+create table order_car_passport(
                           id bigint auto_increment primary key,
                           created datetime(6) not null,
                           updated datetime(6) not null,
                           order_id bigint not null unique,
                           car_id bigint not null,
-                          UNIQUE KEY `oc` (`order_id`, `car_id`),
-                          foreign key (order_id) references orders(id) ON UPDATE CASCADE,
-                          foreign key (car_id) references cars(id) ON UPDATE CASCADE
-);
-
-create table order_passport(
-                               id bigint auto_increment primary key not null,
-                               created datetime(6) not null,
-                               updated datetime(6) not null,
-                               order_id bigint not null unique,
-                               passport_id bigint not null,
-                               UNIQUE KEY `op` (`order_id`, `passport_id`),
-                               foreign key (order_id) references orders(id) ON UPDATE CASCADE,
-                               foreign key (passport_id) references passports(id)  ON UPDATE CASCADE
+                          passport_id bigint not null,
+                          UNIQUE KEY `ocp` (`order_id`, `car_id`, `passport_id`),
+                          foreign key (order_id) references orders(id) ON DELETE CASCADE,
+                          foreign key (car_id) references cars(id) ON DELETE CASCADE,
+                          foreign key (passport_id) references passports(id) ON DELETE CASCADE
 );
 
 create table order_actions(
@@ -112,8 +106,8 @@ create table order_actions(
                               order_id bigint not null,
                               action_id bigint not null,
                               UNIQUE KEY `oas` (`order_id`, `action_id`),
-                              foreign key (order_id) references orders(id) ON UPDATE CASCADE,
-                              foreign key (action_id) references actions(id) ON UPDATE CASCADE
+                              foreign key (order_id) references orders(id) ON DELETE CASCADE,
+                              foreign key (action_id) references actions(id) ON DELETE CASCADE
 );
 
 create table manager_actions(
@@ -123,6 +117,6 @@ create table manager_actions(
                                 user_id bigint not null,
                                 action_id bigint not null,
                                 UNIQUE KEY `mas` (`user_id`, `action_id`),
-                                foreign key (user_id) references users(id) ON UPDATE CASCADE,
-                                foreign key (action_id) references actions(id) ON UPDATE CASCADE
+                                foreign key (user_id) references users(id) ON DELETE CASCADE,
+                                foreign key (action_id) references actions(id) ON DELETE CASCADE
 );

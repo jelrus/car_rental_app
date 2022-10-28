@@ -1,6 +1,7 @@
 package view.dto.response;
 
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class DtoResponse {
 
@@ -46,6 +47,22 @@ public abstract class DtoResponse {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DtoResponse that = (DtoResponse) o;
+        return Objects.equals(id, that.id) &&
+               Objects.equals(created, that.created) &&
+               Objects.equals(updated, that.updated) &&
+               Objects.equals(visible, that.visible);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, created, updated, visible);
     }
 
     @Override

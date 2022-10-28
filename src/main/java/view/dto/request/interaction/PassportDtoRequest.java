@@ -2,13 +2,14 @@ package view.dto.request.interaction;
 
 import view.dto.request.DtoRequest;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class PassportDtoRequest extends DtoRequest {
 
     private String firstName;
     private String lastName;
-    private Integer age;
+    private Date birthDate;
     private String country;
     private String zipCode;
     private String region;
@@ -34,12 +35,12 @@ public class PassportDtoRequest extends DtoRequest {
         this.lastName = lastName;
     }
 
-    public Integer getAge() {
-        return age;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getCountry() {
@@ -113,7 +114,7 @@ public class PassportDtoRequest extends DtoRequest {
         PassportDtoRequest that = (PassportDtoRequest) o;
         return Objects.equals(firstName, that.firstName) &&
                Objects.equals(lastName, that.lastName) &&
-               Objects.equals(age, that.age) &&
+               Objects.equals(birthDate, that.birthDate) &&
                Objects.equals(country, that.country) &&
                Objects.equals(zipCode, that.zipCode) &&
                Objects.equals(region, that.region) &&
@@ -126,15 +127,15 @@ public class PassportDtoRequest extends DtoRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, age, country, zipCode, region, city, street, building, phoneNumber, email);
+        return Objects.hash(firstName, lastName, birthDate, country, zipCode, region, city, street, building, phoneNumber, email);
     }
 
     @Override
     public String toString() {
-        return "PassportDtoRequest{" +
+        return "PassportDtoRequest{" + super.toString() +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
+                ", birthDate=" + birthDate +
                 ", country='" + country + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", region='" + region + '\'' +

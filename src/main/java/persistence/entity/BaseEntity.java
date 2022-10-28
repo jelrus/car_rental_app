@@ -1,29 +1,23 @@
 package persistence.entity;
 
-import persistence.entity.annotations.Column;
-import persistence.entity.annotations.MergeField;
-
 import java.util.Date;
 import java.util.Objects;
 
 public abstract class BaseEntity {
 
-    @MergeField(on = "id")
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "created")
     private Date created;
-
-    @Column(name = "updated")
     private Date updated;
-
     private Boolean visible;
 
     public BaseEntity() {
         this.created = new Date();
         this.updated = new Date();
         this.visible = true;
+    }
+
+    public void onPreUpdate() {
+        this.updated = new Date();
     }
 
     public Long getId() {

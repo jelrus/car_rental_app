@@ -5,20 +5,25 @@ import persistence.datatable.DataTableResponse;
 import persistence.entity.BaseEntity;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 public interface BaseDao<E extends BaseEntity> {
 
-    long create(E entity);
+    Long create(E entity);
 
-    boolean update(E entity);
+    Boolean update(E entity);
 
-    boolean delete(Long id);
+    Boolean delete(Long id);
 
-    boolean existById(Long id);
+    Boolean existById(Long id);
 
     E findById(Long id);
 
+    List<E> findAll();
+
     DataTableResponse<E> findAll(DataTableRequest request);
 
-    long count();
+    Integer count();
+
+    Long generateKeys(PreparedStatement ps);
 }

@@ -4,13 +4,14 @@ import facade.interaction.ActionFacade;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
-import service.impl.interaction.ActionService;
-import service.impl.interaction.impl.ActionServiceImpl;
-import util.DtoConverter;
-import util.RequestUtil;
+import service.interaction.ActionService;
+import service.interaction.impl.ActionServiceImpl;
+import util.facade.DtoConverter;
+import util.request.RequestUtil;
 import view.dto.request.PageAndSizeData;
 import view.dto.request.SortData;
 import view.dto.request.interaction.ActionDtoRequest;
+import view.dto.request.interaction.MessageDtoRequest;
 import view.dto.response.PageData;
 import view.dto.response.interaction.ActionDtoResponse;
 
@@ -27,21 +28,21 @@ public class ActionFacadeImpl implements ActionFacade {
     }
 
     @Override
-    public long create(ActionDtoRequest actionDtoRequest) {
+    public Long create(ActionDtoRequest dtoReq) {
         Action action = new Action();
-        action.setMessage(actionDtoRequest.getMessage());
+        actionSetFields(action, dtoReq);
         return actionService.create(action);
     }
 
     @Override
-    public boolean update(ActionDtoRequest actionDtoRequest, Long id) {
+    public Boolean update(ActionDtoRequest dtoReq, Long id) {
         Action action = actionService.findById(id);
-        action.setMessage(actionDtoRequest.getMessage());
+        actionSetFields(action, dtoReq);
         return actionService.update(action);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         return actionService.delete(id);
     }
 
@@ -51,9 +52,14 @@ public class ActionFacadeImpl implements ActionFacade {
     }
 
     @Override
-    public PageData<ActionDtoResponse> findAll(HttpServletRequest request) {
-        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(request);
-        SortData sortData = RequestUtil.generateSortData(request);
+    public List<ActionDtoResponse> findAll() {
+        return actionService.findAll().stream().map(ActionDtoResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageData<ActionDtoResponse> findAll(HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
         DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
         DataTableResponse<Action> actions = actionService.findAll(dataTableRequest);
         List<ActionDtoResponse> responseList = toDtoList(actions);
@@ -63,9 +69,40 @@ public class ActionFacadeImpl implements ActionFacade {
         return pageData;
     }
 
+    @Override
+    public Boolean updateMessage(MessageDtoRequest dtoReq, Long id) {
+        Action action = actionService.findById(id);
+        action.setMessage(dtoReq.getMessage());
+        return actionService.updateMessage(action);
+    }
+
+    @Override
+    public Boolean updateAccess(ActionDtoRequest dtoReq, Long id) {
+        Action action = actionService.findById(id);
+        actionSetFields(action, dtoReq);
+        return actionService.updateAccess(action);
+    }
+
+    @Override
+    public PageData<ActionDtoResponse> findAllFiltered(HttpServletRequest req) {
+        PageAndSizeData pageAndSizeData = RequestUtil.generatePageAndSizeData(req);
+        SortData sortData = RequestUtil.generateSortData(req);
+        DataTableRequest dataTableRequest = DtoConverter.pageAndSortDataToDtoReq(pageAndSizeData, sortData);
+        DataTableResponse<Action> actions = actionService.findAllFiltered(dataTableRequest);
+        List<ActionDtoResponse> responseList = toDtoList(actions);
+        PageData<ActionDtoResponse> pageData = DtoConverter.dtoRespToPageAndSortData(responseList, pageAndSizeData, sortData);
+        pageData.setItemsSize(actions.getItemsSize());
+        pageData.initPaginationState(pageData.getCurrentPage());
+        return pageData;
+    }
+
+    private void actionSetFields(Action action, ActionDtoRequest dto) {
+        action.setIdentifier(dto.getIdentifier());
+        action.setMessage(dto.getMessage());
+        action.setEnabled(dto.getEnabled());
+    }
+
     private List<ActionDtoResponse> toDtoList(DataTableResponse<Action> actions) {
-        return actions.getItems().stream()
-                                 .map(ActionDtoResponse::new)
-                                 .collect(Collectors.toList());
+        return actions.getItems().stream().map(ActionDtoResponse::new).collect(Collectors.toList());
     }
 }

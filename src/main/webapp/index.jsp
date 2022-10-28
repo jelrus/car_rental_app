@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="links.jspf"%>
-<jsp:useBean id="user" scope="session" type="persistence.entity.user.BaseUser"/>
-<jsp:useBean id="cars" scope="request" type="java.util.List"/>
+<jsp:useBean id="user" scope="session" type="view.dto.response.user.UserDtoResponse"/>
 
 <html>
 <head>
@@ -16,18 +15,18 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a href="/" id="link-main-open">
+                        <a href="${pageContext.request.contextPath}/" id="link-main-open">
                             <i class="fa fa-solid fa-car fa-lg"></i>
                             Car Rental
                         </a>
                     </li>
                 </ul>
             </div>
-            <a href="/login" id="link-login">
+            <a href="${pageContext.request.contextPath}/login" id="link-login">
                 <i class="fa fa-solid fa-right-to-bracket fa-sm"></i>
-                Sign Up
+                Login
             </a>
-            <a href="/registration" id="link-register">
+            <a href="${pageContext.request.contextPath}/registration" id="link-register">
                 <i class="fa fa-solid fa-user-plus fa-sm"></i>
                 Register
             </a>
@@ -46,11 +45,11 @@
                     </li>
                 </ul>
             </div>
-            <a href="/user/profile" id="link-profile">
+            <a href="${pageContext.request.contextPath}/user/profile" id="link-profile">
                 <img src="${user.profilePic}" id="profile-pic-nav">
                     ${user.username}
             </a>
-            <a href="/logout" id="link-logout">
+            <a href="${pageContext.request.contextPath}/logout" id="link-logout">
                 <i class="fa fa-solid fa-right-from-bracket"></i>
                 Logout
             </a>
@@ -72,16 +71,16 @@
                 <h6 id="brand-h6">Brand</h6>
                 <div class="btn-group-vertical" data-toggle="buttons" id="brand-buttons-group">
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> BMW
+                        <input type="checkbox" checked autocomplete="off" name="bmw"> BMW
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> Mercedes
+                        <input type="checkbox" checked autocomplete="off" name="mercedes"> Mercedes
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> Toyota
+                        <input type="checkbox" checked autocomplete="off" name="toyota"> Toyota
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> Honda
+                        <input type="checkbox" checked autocomplete="off" name="honda"> Honda
                     </label>
                 </div>
             </div>
@@ -92,16 +91,16 @@
                 <h6 id="quality-h6">Quality</h6>
                 <div class="btn-group-vertical" data-toggle="buttons" id="quality-buttons-group">
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> MPV
+                        <input type="checkbox" checked autocomplete="off" name="mpv"> MPV
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> Luxury
+                        <input type="checkbox" checked autocomplete="off" name="=luxury"> Luxury
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> Sports
+                        <input type="checkbox" checked autocomplete="off" name="sports"> Sports
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off"> SUV
+                        <input type="checkbox" checked autocomplete="off" name="suv"> SUV
                     </label>
                 </div>
             </div>
@@ -141,10 +140,11 @@
 
         <div class="container" id="product-container">
             <div class="row row-cols-5" id="product-grid">
-                <c:forEach var="car" items="${cars}">
+                <jsp:useBean id="cars" scope="request" type="view.dto.response.PageData"/>
+                <c:forEach var="car" items="${cars.items}">
                     <div class="col" id="product-col">
                         <div class="card" id="product-card">
-                            <a href="/product=${car.id}" class="btn btn-light" id="custom-a-href">
+                            <a href="${pageContext.request.contextPath}/product/?id=${car.id}" class="btn btn-light" id="custom-a-href">
                             <div class="card-body m-2" id="product-card-body">
                                 <img src="${car.productPic}" id="product-pic-main">
                                 <div class="card-header" id="product-header-main">
@@ -154,11 +154,11 @@
                                     <table>
                                         <tr>
                                             <td class="car-product-cll">Brand</td>
-                                            <td class="car-product-clr">${car.brand}</td>
+                                            <td class="car-product-clr">${car.carBrand}</td>
                                         </tr>
                                         <tr>
                                             <td class="car-product-cll">Quality</td>
-                                            <td class="car-product-clr">${car.quality}</td>
+                                            <td class="car-product-clr">${car.carQuality}</td>
                                         </tr>
                                         <tr>
                                             <td class="car-product-cll">Rental price</td>

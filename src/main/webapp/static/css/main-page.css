@@ -1,0 +1,396 @@
+#open-nav{
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+    background-color: darkorange;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#main-page-body{
+    background-image: url(https://images.unsplash.com/photo-1494783367193-149034c05e8f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);
+}
+
+#link-main-open{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: large;
+}
+
+#link-main-logged{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: large;
+}
+
+#link-login{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: small;
+    padding-right: 20px;
+}
+
+#link-register{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: small;
+}
+
+#link-profile{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: small;
+    padding-right: 20px;
+}
+
+#link-logout{
+    text-decoration: none;
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: small;
+}
+
+#profile-pic-nav{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+#product-group{
+    color: #000000d4;
+    margin-left: 40px;
+    margin-right: 40px;
+    float:none;
+    flex-direction: row;
+    border-color: wheat;
+    height: 802px;
+}
+
+#product-filter-card{
+    font-family: SansSerif, sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    text-decoration: none;
+    width: 10%;
+    border-color: wheat;
+    color: inherit;
+    border-top-width: 0;
+}
+#product-filter-card-body{
+    padding: 0;
+    border-radius: 0;
+    background-color: white;
+    color: inherit;
+}
+
+#product-page-card{
+    color: #000000d4;
+    font-family: SansSerif, sans-serif;
+    font-weight: normal;
+    font-size: medium;
+    text-decoration: none;
+    width: 90%;
+    background-color: white;
+}
+
+#product-page-card-top{
+    padding: 8px 16px;
+    background-color: #ffae00e0;
+    border-radius: 0;
+    border-top-width: 1px;
+    margin-top: 0;
+    flex: 0;
+}
+
+#product-card-header{
+    text-align: center;
+    color: #000000d4;
+    font-weight: bold;
+    background-color: #ffae0038;
+    border: 0;
+}
+
+#product-div{
+    border-top-width: 1px;
+    margin-bottom: 1px;
+}
+
+#filter-header{
+    background-color: #ffae00e0;
+    border-radius: 0;
+    color: #000000d4;
+    border-bottom-width: 0;
+}
+
+#filter-div{
+    margin-bottom: 0;
+}
+
+#sorting-header{
+    float:none;
+    flex-direction: row;
+    border: 0;
+}
+
+#car-title-header{
+    margin-top: 50px;
+    margin-left: 120px;
+    text-decoration: none;
+    font-size: x-large;
+    padding-bottom: 10px;
+    color: #000000c2;
+}
+
+#info-car-card-body{
+    margin-top: 20px;
+    margin-bottom: 200px;
+}
+
+#order-create-header{
+    text-align: center;
+    font-size: x-large;
+    background-color: #ffae00e0;
+    padding-left: 0;
+}
+
+#div-car-order{
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: auto;
+}
+
+#pic-car-col{
+    width: 40%;
+    padding: 0;
+}
+
+#profile-car-pic{
+    width: 100%;
+    height: 100%;
+}
+
+#car-description-header{
+    margin-left: 0;
+    margin-right: 0;
+    font-size: large;
+    font-weight: bolder;
+    width: 250%;
+    padding-bottom: 20px;
+}
+
+#car-description-body{
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 20px;
+    font-size: medium;
+    text-align: justify;
+    width: 250%;
+}
+
+#brand-group{
+    padding: 8px 16px;
+    color: inherit;
+    float: none;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 0;
+    background-color: inherit;
+}
+
+#brand-h6{
+    padding-left: 0;
+    padding-right: 0;
+    font-weight: bold;
+}
+
+#brand-buttons-group{
+    background-color: inherit;
+    color: inherit;
+}
+
+#quality-group{
+    float:none;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 0;
+    background-color: inherit;
+    padding: 8px 16px;
+    color: inherit;
+}
+
+#quality-h6 {
+    padding-left: 0;
+    padding-right: 0;
+    font-weight: bold;
+}
+
+#quality-buttons-group{
+    background-color: inherit;
+    color: inherit;
+}
+
+.btn.btn-secondary{
+    background-color: white;
+    color: black;
+}
+
+.btn.btn-secondary:active{
+    background-color: white;
+    color: black;
+}
+
+.btn.btn-secondary:focus{
+    background-color: white;
+    color: black;
+}
+
+.btn.btn-secondary:focus.active{
+    background-color: white;
+    color: black;
+}
+
+#sort-group{
+    float:none;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 0;
+    font-size: small;
+    background-color: inherit;
+    color: inherit;
+}
+
+#sorting-header{
+    background-color: inherit;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    border-bottom-width: 8px;
+    color: inherit;
+    font-weight: bold;
+}
+
+#sorting-dropdown-menu{
+    font-size: small;
+    background-color: inherit;
+    padding: 8px 16px;
+    color: inherit;
+}
+
+#sorting-list{
+    text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: inherit;
+    position: absolute;
+    transform: translate3d(0px, 37px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
+    color: inherit;
+}
+
+#product-container{
+    max-width: 100%;
+    border-bottom-width: 8px;
+    padding: 8px 16px;
+}
+
+#product-col{
+    padding-left: 0;
+    padding-right: 0;
+    border: 0;
+}
+
+#product-card{
+    border: 0;
+    background-color: white;
+}
+
+#product-card-body{
+    color: #000000d4;
+    background-color: #fff3e9;
+    border: 1px solid rgba(246, 189, 123, 0.94);
+}
+
+#product-pic-main{
+    max-width: 100%;
+
+    border: 0;
+}
+
+#product-info-card{
+    color: #000000d4;
+    background-color: inherit;
+    border: 0;
+}
+
+#product-header-main{
+    padding-left: 8px;
+    text-align: left;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: bold;
+}
+
+#custom-a-href{
+    padding: 0;
+    background-color: inherit;
+    border: 0;
+}
+
+.car-product-cll{
+    text-align: left;
+    padding-top: 5px;
+    padding-left: 10px;
+    color: #000000d4;
+    max-width: 50%;
+    font-size: small;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: bold;
+}
+
+.car-product-clr{
+    text-align: left;
+    padding-top: 5px;
+    padding-right: 10px;
+    color: #000000d4;
+    max-width: 50%;
+    font-size: small;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.custom-a{
+    color: inherit;
+    text-decoration: none;
+    font-size: small;
+}
+
+.btn-secondary{
+    padding-left: 0;
+    font-size: small;
+    border: 0;
+    text-align: left;
+}
+
+.fa{
+    line-height: inherit;
+    padding-right: 5px;
+}
+
+.btn-secondary.active{
+    padding-left: 0;
+    padding-right: 0;
+    background-color: inherit;
+    color: inherit;
+}

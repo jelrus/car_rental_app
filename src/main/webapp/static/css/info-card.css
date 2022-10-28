@@ -1,0 +1,181 @@
+#action-info-card{
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-color: #000000c2;
+    border-radius: 0;
+    border-right-width: 1px;
+}
+
+#info-menu-card-body{
+    margin: 200px 0 0;
+}
+
+#suspension-col{
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#suspension-card{
+    border: 0;
+    font-size: larger;
+    text-align: center;
+    align-items: center;
+}
+
+#suspension-form{
+    margin-top: 30px;
+    text-align: center;
+    margin-right: 16px;
+}
+
+#edit-profile-menu-card-body{
+     margin: 200px 0;
+}
+
+#manager-menu-card{
+    border-left-width: 0;
+    border-bottom-width: 0;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-radius: 0;
+    border-color: #000000c2;
+    height: 100%;
+}
+
+#order-menu-card{
+    border-left-width: 0;
+    border-bottom-width: 0;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-radius: 0;
+    border-color: #000000c2;
+    height: 100%;
+}
+
+#user-menu-card{
+    border: 0;
+    height: 100%;
+}
+
+#personal-menu-card-info{
+    border-radius: 0;
+    border: 0 solid black;
+    border-right-width: 1px;
+}
+
+#manager-menu-card-info{
+    border: 0;
+}
+
+#order-menu-card-info{
+    border-radius: 0;
+    border: 0 solid black;
+    border-right-width: 1px;
+    border-left: 1px solid;
+    padding-left: 30px;
+}
+
+#div-edit{
+    margin-top: 50px;
+    margin-bottom: 300px;
+    width: 50%;
+}
+
+#car-order{
+    margin-top: 20px;
+}
+
+#order-link{
+    color: #000000c2;
+    text-decoration: none;
+    font-size: large;
+    font-weight: bold;
+}
+
+#edit-header{
+    padding-left: 0;
+    text-align: center;
+    font-size: x-large;
+    background-color: #ffae00e0;
+    margin-left: 330px;
+    width: 1175px;
+    height: 35px;
+}
+
+#product-card-shorthand{
+    align-items: baseline;
+}
+
+#product-order-href{
+    text-decoration: none;
+    color: black;
+}
+
+#card-accordion-body-1{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#card-accordion-body-2{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#card-accordion-body-3{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#card-accordion-body-4{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#divider-table{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    opacity: .6;
+}
+
+.custom-am-header{
+    color: #000000c2;
+    text-decoration: none;
+    font-size: x-large;
+    padding-left: 30px;
+}
+
+.custom-am-header:hover{
+    color: #ffae00e0;
+}
+
+.col-row-menu{
+    text-decoration: none;
+    font-size: x-large;
+    padding-bottom: 10px;
+    color: #000000c2;
+}
+
+.btn.btn-secondary{
+    color: #000000c2;
+    background-color: white;
+    font-size: inherit;
+}
+
+.custom-table{
+    font-size: large;
+    padding-right: 0;
+    margin-right: 30px;
+}
+
+.col.header{
+    font-size: large;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+.row.header{
+    margin: 0;
+    padding-left: 25px;
+}

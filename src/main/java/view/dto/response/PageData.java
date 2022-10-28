@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PageData<RESP extends DtoResponse> {
-
     private int currentPage;
     private int pageSize;
     private int totalPageSize;

@@ -41,8 +41,8 @@ public class ManagerActionsDtoRequest extends DtoRequest {
     @Override
     public String toString() {
         return "ManagerActionsDtoRequest{" +
-                "userId=" + userId +
-                ", actionId=" + actionId +
+                "userId='" + userId + '\'' +
+                ", actionId='" + actionId + '\'' +
                 '}';
     }
 }
