@@ -1,6 +1,8 @@
 package persistence.dao.relation.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.relation.OrderActionsDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class OrderActionsDaoImpl implements OrderActionsDao {
 
     private final DataSourceConnectionImpl dsc;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public OrderActionsDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
@@ -236,7 +240,7 @@ public class OrderActionsDaoImpl implements OrderActionsDao {
                 genKey = keys.getLong(1);
             }
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            LOGGER_ERROR.error("Key(s) generation failed");
         }
 
         return genKey;

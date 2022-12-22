@@ -89,6 +89,11 @@ public class CarFacadeImpl implements CarFacade {
         return pageData;
     }
 
+    @Override
+    public List<CarDtoResponse> findAllFiltered() {
+        return carService.findAllFiltered().stream().map(CarDtoResponse::new).collect(Collectors.toList());
+    }
+
     private void carSetFields(Car car, CarDtoRequest dto) {
         car.setTitle(dto.getTitle());
         car.setProductPic(dto.getProductPic());

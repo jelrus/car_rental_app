@@ -1,5 +1,9 @@
 package service.user.impl;
 
+import exceptions.EntityNotFoundException;
+import exceptions.InputException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.user.UserDao;
 import persistence.dao.user.impl.UserDaoImpl;
 import persistence.datatable.DataTableRequest;
@@ -13,35 +17,52 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
+    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
+    private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
+
     public UserServiceImpl() {
         this.userDao = new UserDaoImpl();
     }
 
     @Override
     public Long create(BaseUser user) {
-        //validate username, password, firstName, lastName, profilePic, balance, description, enabled, roleType
-        /*validate(user);*/
-        /*isExistByUsernamePassword(user.getUsername(), user.getPassword());*/
+        LOGGER_INFO.info("User creating started");
+        if (!userDao.existByUsername(user.getUsername())) {
+            validate(user);
+            Long userId = userDao.create(user);
+            LOGGER_INFO.info("User " + userId + " creating finished");
+        } else {
+            LOGGER_WARNING.warn("User credentials are incorrect");
+            throw new InputException("User creating failed");
+        }
         return userDao.create(user);
     }
 
     @Override
     public Boolean update(BaseUser user) {
-        //validate username, password, firstName, lastName, profilePic, balance, description, enabled, roleType
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " updating started");
+
+        if (exist(user)) {
+            validate(user);
+            LOGGER_INFO.info("Action " + user.getId() + " updating finished");
+        }
+
         return userDao.update(user);
     }
 
     @Override
     public Boolean delete(Long id) {
-        /*isExist(id);*/
+        LOGGER_WARNING.warn("User " + id +  " deleting started");
+
+        if (exist(findById(id))) {
+            LOGGER_WARNING.warn("User " + id +  " deleting finished");
+        }
+
         return userDao.delete(id);
     }
 
     @Override
     public BaseUser findById(Long id) {
-        /*isExist(id);*/
         return userDao.findById(id);
     }
 
@@ -59,47 +80,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean updateSecurityInfo(BaseUser user) {
-        //validate username, password
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " updating started");
+
+        if (exist(user)) {
+            validate(user);
+            LOGGER_INFO.info("User " + user.getId() + " updating finished");
+        }
+
         return userDao.updateSecurityInfo(user);
     }
 
     @Override
     public Boolean updateInfo(BaseUser user) {
-        //validate firstName, lastName, profilePic, description
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " info updating started");
         return userDao.updateInfo(user);
     }
 
     @Override
     public Boolean updateBalance(BaseUser user) {
-        //validate balance
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " balance updating started");
         return userDao.updateBalance(user);
     }
 
     @Override
     public Boolean updateAccess(BaseUser user) {
-        //validate enabled
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " access updating started");
         return userDao.updateAccess(user);
     }
 
     @Override
     public Boolean updateRole(BaseUser user) {
-        //validate roleType
-        /*validate(user);
-        isExist(user.getId());*/
+        LOGGER_INFO.info("User " + user.getId() +  " role updating started");
         return userDao.updateRole(user);
     }
 
     @Override
     public BaseUser findByUsernamePassword(String username, String password) {
-        /*isExistByUsernamePassword(username, password);*/
         return userDao.findByUsernamePassword(username, password);
     }
 
@@ -113,20 +129,24 @@ public class UserServiceImpl implements UserService {
         return userDao.findAllUsers(request);
     }
 
-    private void validate(BaseUser user) {
-        //validations
-        //exception if failed
-    }
+    private void validate(BaseUser baseUser) {
+        if (baseUser.getUsername().isEmpty() || baseUser.getUsername().isBlank()) {
+            LOGGER_WARNING.warn("Empty or blank username");
+            throw new InputException("Incorrect Input");
+        }
 
-    private void isExist(Long id) {
-        if (userDao.existById(id)) {
-            throw new RuntimeException("already exist");
+        if (baseUser.getPassword().isEmpty() || baseUser.getPassword().isBlank()) {
+            LOGGER_WARNING.warn("Empty or blank password");
+            throw new InputException("Incorrect Input");
         }
     }
 
-    private void isExistByUsernamePassword(String username, String password) {
-        if (userDao.existByUsernamePassword(username, password)) {
-            throw new RuntimeException("already exist");
+    private boolean exist(BaseUser baseUser) {
+        if (findById(baseUser.getId()) != null) {
+            return true;
+        } else {
+            LOGGER_WARNING.warn("Entity not found");
+            throw new EntityNotFoundException("User not found");
         }
     }
 }

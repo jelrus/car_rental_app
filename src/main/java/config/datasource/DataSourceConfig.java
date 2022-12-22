@@ -14,7 +14,6 @@ public class DataSourceConfig {
 
     public DataSourceConfig() {
         Properties properties = PropertyReader.loadProperties("/properties/db-connection.properties");
-        /*Properties properties = PropertyReader.loadProperties("src/main/resources/properties/db-connection.properties");*/
         this.url = properties.getProperty("url");
         this.username = properties.getProperty("username");
         this.password = properties.getProperty("password");

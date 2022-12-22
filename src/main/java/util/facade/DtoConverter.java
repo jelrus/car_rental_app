@@ -10,8 +10,7 @@ import java.util.List;
 
 public final class DtoConverter {
 
-    private DtoConverter() {
-    }
+    private DtoConverter() {}
 
     public static DataTableRequest pageAndSortDataToDtoReq(PageAndSizeData pageAndSizeData, SortData sortData) {
         DataTableRequest dataTableRequest = new DataTableRequest();

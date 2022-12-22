@@ -23,7 +23,7 @@
         </ul>
     </div>
     <a href="${pageContext.request.contextPath}/moderator/dashboard" id="link-profile">
-        <img src="${user.profilePic}" id="profile-pic-nav">
+        <img src="${user.profilePic}" id="profile-pic-nav" alt="">
         ${user.username}
     </a>
     <a href="${pageContext.request.contextPath}/logout" id="link-logout">
@@ -88,6 +88,12 @@
                                         <option>${s}</option>
                                     </c:forEach>
                                 </select>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label id="damage-refund-section">
+                                <textarea name="damageRefund" id="damage-refund">Damage refund section!&#10;Input damage cost in format: [damaged item] , [cost];
+                                </textarea>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary" id="apply-edit-action-button">Create</button>

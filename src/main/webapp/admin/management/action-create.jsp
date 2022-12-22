@@ -24,7 +24,7 @@
         </ul>
     </div>
     <a href="${pageContext.request.contextPath}/admin/dashboard" id="link-profile">
-        <img src="${user.profilePic}" id="profile-pic-nav">
+        <img src="${user.profilePic}" id="profile-pic-nav" alt="">
         ${user.username}
     </a>
     <a href="${pageContext.request.contextPath}/logout" id="link-logout">
@@ -49,7 +49,8 @@
         <a href="${pageContext.request.contextPath}/admin/management/order/?id=${order.id}" id="order-nav-link">
             <div class="card" id="dashboard-menu-nav-order">Order</div>
         </a>
-        <a href="${pageContext.request.contextPath}/admin/management/action/new/?orderId=${order.id}" id="action-new-nav-link">
+        <a href="${pageContext.request.contextPath}/admin/management/action/new/?orderId=${order.id}"
+           id="action-new-nav-link">
             <div class="card" id="dashboard-menu-nav-action-new">Action Creator</div>
         </a>
     </nav>
@@ -89,6 +90,12 @@
                                         <option>${s}</option>
                                     </c:forEach>
                                 </select>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label id="damage-refund-section">
+                                <textarea name="damageRefund" id="damage-refund">Damage refund section!&#10;Input damage cost in format: [damaged item] , [cost];
+                                </textarea>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary" id="apply-edit-action-button">Create</button>

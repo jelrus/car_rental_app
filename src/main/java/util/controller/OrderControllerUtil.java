@@ -2,10 +2,13 @@ package util.controller;
 
 import facade.interaction.OrderFacade;
 import facade.interaction.impl.OrderFacadeImpl;
+import facade.relation.InvoicesOrderFacade;
 import facade.relation.OrderActionsFacade;
 import facade.relation.OrderCarPassportFacade;
+import facade.relation.impl.InvoicesOrderFacadeImpl;
 import facade.relation.impl.OrderActionsFacadeImpl;
 import facade.relation.impl.OrderCarPassportFacadeImpl;
+import persistence.entity.relation.InvoicesOrder;
 import view.controller.AbstractServlet;
 import view.dto.request.interaction.OrderDtoRequest;
 import view.dto.response.PageData;
@@ -13,6 +16,7 @@ import view.dto.response.interaction.ActionDtoResponse;
 import view.dto.response.interaction.OrderDtoResponse;
 import view.dto.response.interaction.PassportDtoResponse;
 import view.dto.response.product.CarDtoResponse;
+import view.dto.response.relation.InvoicesOrderDtoResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,6 +26,7 @@ public class OrderControllerUtil extends AbstractServlet {
     private final OrderFacade orderFacade = new OrderFacadeImpl();
     private final OrderCarPassportFacade ocpFacade = new OrderCarPassportFacadeImpl();
     private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl();
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
 
     public void deleteOrderPost(HttpServletRequest req) {
         orderFacade.delete(Long.parseLong(req.getParameter("id")));
@@ -54,7 +59,8 @@ public class OrderControllerUtil extends AbstractServlet {
         OrderDtoResponse orderResp = orderFacade.findById(Long.parseLong(req.getParameter("id")));
         CarDtoResponse carResp = ocpFacade.findCarByOrder(Long.parseLong(req.getParameter("id")));
         PassportDtoResponse passportResp = ocpFacade.findPassportByOrder(Long.parseLong(req.getParameter("id")));
-
+        List<InvoicesOrderDtoResponse> invoices = invoicesOrderFacade.findAllByOrder(Long.parseLong(req.getParameter("id")));
+        req.setAttribute("invoices", invoices);
         req.setAttribute("order", orderResp);
         req.setAttribute("car", carResp);
         req.setAttribute("passport", passportResp);

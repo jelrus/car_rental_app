@@ -1,5 +1,7 @@
 package service.relation.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.relation.ManagerActionsDao;
 import persistence.dao.relation.impl.ManagerActionsDaoImpl;
 import persistence.datatable.DataTableRequest;
@@ -15,33 +17,33 @@ public class ManagerActionsServiceImpl implements ManagerActionsService {
 
     private final ManagerActionsDao managerActionsDao;
 
+    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
+    private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
+
     public ManagerActionsServiceImpl() {
         this.managerActionsDao = new ManagerActionsDaoImpl();
     }
 
     @Override
     public Long create(ManagerActions managerActions) {
-        /*validate(managerActions);
-        isExist(managerActions.getId());*/
+        LOGGER_INFO.info("Relation between manager and action created");
         return managerActionsDao.create(managerActions);
     }
 
     @Override
     public Boolean update(ManagerActions managerActions) {
-        /*validate(managerActions);
-        isExist(managerActions.getId());*/
+        LOGGER_INFO.info("Relation " + managerActions.getId() + " between manager and action updated");
         return managerActionsDao.update(managerActions);
     }
 
     @Override
     public Boolean delete(Long id) {
-        /*isExist(id);*/
+        LOGGER_WARNING.warn("Relation " + id + " between manager and action deleted");
         return managerActionsDao.delete(id);
     }
 
     @Override
     public ManagerActions findById(Long id) {
-        /*isExist(id);*/
         return managerActionsDao.findById(id);
     }
 
@@ -59,30 +61,16 @@ public class ManagerActionsServiceImpl implements ManagerActionsService {
 
     @Override
     public List<Action> findActionsByManager(Long managerId) {
-        //validation if empty or exist?
         return managerActionsDao.findActionsByManager(managerId);
     }
 
     @Override
     public BaseUser findManagerByAction(Long actionId) {
-        //validation if empty or exist?
         return managerActionsDao.findManagerByAction(actionId);
     }
 
     @Override
     public DataTableResponse<Action> findActionsByManager(Long managerId, DataTableRequest request) {
-        //validation if empty or exist?
         return managerActionsDao.findActionsByManager(managerId, request);
-    }
-
-    private void validate(ManagerActions managerActions) {
-        //validations
-        //exception if failed
-    }
-
-    private void isExist(Long id) {
-        if (!managerActionsDao.existById(id)) {
-            throw new RuntimeException("entity not found");
-        }
     }
 }

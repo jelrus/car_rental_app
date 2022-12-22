@@ -1,6 +1,8 @@
 package persistence.dao.product.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.product.CarDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -19,6 +21,8 @@ import java.util.Map;
 public class CarDaoImpl implements CarDao {
 
     private final DataSourceConnectionImpl dsc;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public CarDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
@@ -289,6 +293,31 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
+    public List<Car> findAllFiltered() {
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
+
+        List<Car> actions = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(CarQueries.FIND_ALL_FILTERED);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                actions.add(ResultSetConverter.convertResultToCar(rs));
+            }
+
+            connection.commit();
+        } catch (SQLException findAllEx) {
+            dsc.rollback(connection);
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        return actions;
+    }
+
+    @Override
     public Long generateKeys(PreparedStatement ps) {
         long genKey = -1;
 
@@ -297,7 +326,7 @@ public class CarDaoImpl implements CarDao {
                 genKey = keys.getLong(1);
             }
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            LOGGER_ERROR.error("Key(s) generation failed");
         }
 
         return genKey;

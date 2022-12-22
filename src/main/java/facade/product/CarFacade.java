@@ -8,10 +8,13 @@ import view.dto.response.interaction.OrderDtoResponse;
 import view.dto.response.product.CarDtoResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface CarFacade extends BaseFacade<CarDtoRequest, CarDtoResponse> {
 
     Boolean updateAccess(CarDtoRequest dtoReq, Long id);
 
     PageData<CarDtoResponse> findAllFiltered(HttpServletRequest req);
+
+    List<CarDtoResponse> findAllFiltered();
 }

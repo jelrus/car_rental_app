@@ -2,6 +2,8 @@ package config.datasource.impl;
 
 import config.datasource.DataSourceConfig;
 import config.datasource.DataSourceConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +17,8 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
     private static List<Connection> connectionPool;
     private static List<Connection> usedConnections;
     private static DataSourceConnectionImpl instance;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     private DataSourceConnectionImpl() {
         dsc = new DataSourceConfig();
@@ -44,7 +48,7 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER_ERROR.error("Connection creation failed");
         }
 
         return connection;
@@ -83,7 +87,7 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(txIsoLevel);
         } catch (SQLException connSetupEx) {
-            connSetupEx.printStackTrace();
+            LOGGER_ERROR.error("Connection setup failed");
         }
     }
 
@@ -92,7 +96,7 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
             connection.rollback();
             releaseConnection(connection);
         } catch (SQLException rollbackEx) {
-            rollbackEx.printStackTrace();
+            LOGGER_ERROR.error("Connection rolled back");
         }
     }
 }

@@ -25,7 +25,7 @@
         </ul>
     </div>
     <a href="${pageContext.request.contextPath}/admin/dashboard" id="link-profile">
-        <img src="${user.profilePic}" id="profile-pic-nav">
+        <img src="${user.profilePic}" id="profile-pic-nav" alt="">
         ${user.username}
     </a>
     <a href="${pageContext.request.contextPath}/logout" id="link-logout">
@@ -59,38 +59,38 @@
                             <tr>
                                 <c:forEach var="columnHeader" items="${headerDataList}">
                                     <td>
-                                    <c:if test="${columnHeader.sortable}">
-                                        <c:if test="${columnHeader.active}">
-                                            <span>${columnHeader.headerName}</span>
-                                            <c:choose>
-                                                <c:when test="${columnHeader.order == 'desc'}">
-                                                    <i class="fa fa-sort-desc float-right sort" aria-hidden="true"
-                                                       data-sort="${columnHeader.sort}"
-                                                       data-order="${columnHeader.order}"
-                                                       onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
-                                                    </i>
-                                                </c:when>
-                                                <c:when test="${columnHeader.order == 'asc'}">
-                                                    <i class="fa fa-sort-asc float-right sort" aria-hidden="true"
-                                                       data-sort="${columnHeader.sort}"
-                                                       data-order="${columnHeader.order}"
-                                                       onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
-                                                    </i>
-                                                </c:when>
-                                            </c:choose>
+                                        <c:if test="${columnHeader.sortable}">
+                                            <c:if test="${columnHeader.active}">
+                                                <span>${columnHeader.headerName}</span>
+                                                <c:choose>
+                                                    <c:when test="${columnHeader.order == 'desc'}">
+                                                        <i class="fa fa-sort-desc float-right sort" aria-hidden="true"
+                                                           data-sort="${columnHeader.sort}"
+                                                           data-order="${columnHeader.order}"
+                                                           onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
+                                                        </i>
+                                                    </c:when>
+                                                    <c:when test="${columnHeader.order == 'asc'}">
+                                                        <i class="fa fa-sort-asc float-right sort" aria-hidden="true"
+                                                           data-sort="${columnHeader.sort}"
+                                                           data-order="${columnHeader.order}"
+                                                           onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
+                                                        </i>
+                                                    </c:when>
+                                                </c:choose>
+                                            </c:if>
+                                            <c:if test="${!columnHeader.active}">
+                                                <span>${columnHeader.headerName}</span>
+                                                <i class="fa fa-sort float-right sort" aria-hidden="true"
+                                                   data-sort="${columnHeader.sort}"
+                                                   data-order="${columnHeader.order}"
+                                                   onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
+                                                </i>
+                                            </c:if>
+                                            <c:if test="${!columnHeader.sortable}">
+                                                ${columnHeader.headerName}
+                                            </c:if>
                                         </c:if>
-                                        <c:if test="${!columnHeader.active}">
-                                            <span>${columnHeader.headerName}</span>
-                                            <i class="fa fa-sort float-right sort" aria-hidden="true"
-                                               data-sort="${columnHeader.sort}"
-                                               data-order="${columnHeader.order}"
-                                               onclick="runSort(this.getAttribute('data-sort'), this.getAttribute('data-order'))">
-                                            </i>
-                                        </c:if>
-                                        <c:if test="${!columnHeader.sortable}">
-                                            ${columnHeader.headerName}
-                                        </c:if>
-                                    </c:if>
                                     </td>
                                 </c:forEach>
                             </tr>
@@ -110,12 +110,14 @@
                                         <form action="${pageContext.request.contextPath}/admin/management/actions/hide/?id=${action.id}"
                                               method="post" id="hide-form">
                                             <c:if test="${action.enabled == true}">
-                                            <button class="btn btn-danger"
-                                                    type="submit">Hide</button>
+                                                <button class="btn btn-danger"
+                                                        type="submit">Hide
+                                                </button>
                                             </c:if>
                                             <c:if test="${action.enabled == false}">
                                                 <button class="btn btn-danger"
-                                                        type="submit">Show</button>
+                                                        type="submit">Show
+                                                </button>
                                             </c:if>
                                         </form>
                                     </td>
@@ -125,7 +127,9 @@
                                             <button class="btn btn-danger"
                                                     type="submit"
                                                     onclick="return confirm('Warning! This action may lead to consequences on customer side. ' +
-                                                                           'Better use Disable option instead. Remove?')">Delete</button>
+                                                                           'Better use Disable option instead. Remove?')">
+                                                Delete
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -141,7 +145,8 @@
                                 </div>
                                 <div class="p-1">
                                     <div class="dropdown dropup">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuLink"
+                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                id="dropdownMenuLink"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span>${pageData.pageSize}</span>
                                         </button>
@@ -210,7 +215,7 @@
               data-page="${pageData.currentPage}"
               data-size="${pageData.pageSize}"
               id="pageData">
-    </span>
+        </span>
 
 
         <script src="../../static/js/pagination.js"></script>

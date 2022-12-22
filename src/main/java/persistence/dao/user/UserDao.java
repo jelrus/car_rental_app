@@ -19,6 +19,8 @@ public interface UserDao extends BaseDao<BaseUser> {
 
     Boolean existByUsernamePassword(String username, String password);
 
+    Boolean existByUsername(String username);
+
     BaseUser findByUsernamePassword(String username, String password);
 
     DataTableResponse<BaseUser> findAllManagers(DataTableRequest request);

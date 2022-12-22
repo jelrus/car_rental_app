@@ -88,10 +88,10 @@
 }
 
 #order-link{
-    color: #000000c2;
     text-decoration: none;
     font-size: large;
     font-weight: bold;
+    color: white;
 }
 
 #edit-header{
@@ -131,6 +131,21 @@
 #card-accordion-body-4{
     padding-top: 40px;
     padding-bottom: 40px;
+}
+
+#card-accordion-body-5{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#invoice-row{
+    text-align: center;
+    color: black;
+}
+
+#download-pdf{
+    color: black;
+    font-size: large;
 }
 
 #divider-table{

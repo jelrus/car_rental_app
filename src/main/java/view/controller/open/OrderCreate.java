@@ -1,5 +1,6 @@
 package view.controller.open;
 
+import exceptions.DateInputException;
 import facade.interaction.OrderFacade;
 import facade.interaction.PassportFacade;
 import facade.interaction.impl.OrderFacadeImpl;
@@ -10,6 +11,8 @@ import facade.relation.OrderCarPassportFacade;
 import facade.relation.UserOrdersFacade;
 import facade.relation.impl.OrderCarPassportFacadeImpl;
 import facade.relation.impl.UserOrdersFacadeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.entity.interaction.type.OrderStatus;
 import persistence.entity.user.type.RoleType;
 import view.dto.request.interaction.OrderDtoRequest;
@@ -39,6 +42,7 @@ public class OrderCreate extends HttpServlet {
     private final OrderCarPassportFacade orderCarPassportFacade = new OrderCarPassportFacadeImpl();
     private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl();
 
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -70,7 +74,6 @@ public class OrderCreate extends HttpServlet {
             ocpReq.setCarId(carResponse.getId());
             ocpReq.setOrderId(orderId);
             ocpReq.setPassportId(passportId);
-            System.out.println(ocpReq);
             orderCarPassportFacade.create(ocpReq);
 
             UserOrdersDtoRequest userOrdersReq = new UserOrdersDtoRequest();
@@ -87,7 +90,7 @@ public class OrderCreate extends HttpServlet {
             orderRequest.setStart(parseDateFromString(req.getParameter("start")));
             orderRequest.setEnd(parseDateFromString(req.getParameter("end")));
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER_ERROR.error("Start or end dates are incorrect");
         }
 
         orderRequest.setWithDriver(Objects.equals(req.getParameter("withDriver"), "on"));
@@ -102,7 +105,7 @@ public class OrderCreate extends HttpServlet {
         try {
             passportRequest.setBirthDate(parseDateFromString(req.getParameter("birthDate")));
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER_ERROR.error("Birth date is incorrect");
         }
 
         passportRequest.setCountry(req.getParameter("country"));

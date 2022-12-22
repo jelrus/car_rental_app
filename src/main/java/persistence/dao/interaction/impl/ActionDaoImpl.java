@@ -1,6 +1,8 @@
 package persistence.dao.interaction.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.interaction.ActionDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -18,6 +20,8 @@ import java.util.Map;
 public class ActionDaoImpl implements ActionDao {
 
     private final DataSourceConnectionImpl dsc;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public ActionDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
@@ -234,7 +238,6 @@ public class ActionDaoImpl implements ActionDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(ActionQueries.UPDATE_MESSAGE);
-            System.out.println();
             ps.setTimestamp(1, new Timestamp(action.getUpdated().getTime()));
             ps.setString(2, action.getMessage());
             ps.setLong(3, action.getId());
@@ -311,7 +314,7 @@ public class ActionDaoImpl implements ActionDao {
                 genKey = keys.getLong(1);
             }
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            LOGGER_ERROR.error("Key(s) generation failed");
         }
 
         return genKey;

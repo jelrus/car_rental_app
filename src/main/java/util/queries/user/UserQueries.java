@@ -18,6 +18,7 @@ public final class UserQueries {
     public static final String EXIST = "SELECT COUNT(*) AS count FROM users WHERE id=?;";
     public static final String COUNT = "SELECT COUNT(*) AS count FROM users;";
     public static final String FIND_BY_ID = "SELECT * FROM users WHERE id = ?;";
+    public static final String EXIST_BY_USERNAME = "SELECT COUNT(*) AS count FROM users WHERE username=?;";
     public static final String EXIST_BY_USERNAME_PASSWORD = "SELECT COUNT(*) AS count FROM users WHERE username=? AND password=?;";
     public static final String FIND_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE username=? AND password=?;";
     public static final String FIND_ALL = "SELECT * FROM users;";

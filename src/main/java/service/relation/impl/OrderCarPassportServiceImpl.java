@@ -1,7 +1,7 @@
 package service.relation.impl;
 
-import facade.interaction.OrderFacade;
-import facade.interaction.impl.OrderFacadeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.interaction.OrderDao;
 import persistence.dao.interaction.impl.OrderDaoImpl;
 import persistence.dao.relation.OrderCarPassportDao;
@@ -12,12 +12,9 @@ import persistence.entity.interaction.Order;
 import persistence.entity.interaction.Passport;
 import persistence.entity.product.Car;
 import persistence.entity.relation.OrderCarPassport;
-import service.interaction.OrderService;
-import service.interaction.impl.OrderServiceImpl;
 import service.relation.OrderCarPassportService;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +23,9 @@ public class OrderCarPassportServiceImpl implements OrderCarPassportService {
     private final OrderCarPassportDao orderCarPassportDao;
     private final OrderDao orderDao;
 
+    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
+    private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
+
     public OrderCarPassportServiceImpl() {
         this.orderCarPassportDao = new OrderCarPassportDaoImpl();
         this.orderDao = new OrderDaoImpl();
@@ -33,27 +33,24 @@ public class OrderCarPassportServiceImpl implements OrderCarPassportService {
 
     @Override
     public Long create(OrderCarPassport orderCarPassport) {
-        /*validate(orderCarPassport);
-        isExist(orderCarPassport.getId());*/
+        LOGGER_INFO.info("Relation between order, car and passport created");
         return orderCarPassportDao.create(orderCarPassport);
     }
 
     @Override
     public Boolean update(OrderCarPassport orderCarPassport) {
-        /*validate(orderCarPassport);
-        isExist(orderCarPassport.getId());*/
+        LOGGER_INFO.info("Relation " + orderCarPassport.getId() + " between order, car and passport updated");
         return orderCarPassportDao.update(orderCarPassport);
     }
 
     @Override
     public Boolean delete(Long id) {
-        /*isExist(id);*/
+        LOGGER_WARNING.warn("Relation " + id + " between order, car and passport deleted");
         return orderCarPassportDao.delete(id);
     }
 
     @Override
     public OrderCarPassport findById(Long id) {
-        /*isExist(id);*/
         return orderCarPassportDao.findById(id);
     }
 
@@ -85,16 +82,5 @@ public class OrderCarPassportServiceImpl implements OrderCarPassportService {
         Car car = orderCarPassportDao.findCarByOrder(orderId);
         return BigDecimal.valueOf(TimeUnit.DAYS.convert(order.getEnd().getTime() - order.getStart().getTime(),
                                   TimeUnit.MILLISECONDS) * car.getRentalPrice().doubleValue());
-    }
-
-    private void validate(OrderCarPassport orderCarPassport) {
-        //validations
-        //exception if failed
-    }
-
-    private void isExist(Long id) {
-        if (!orderCarPassportDao.existById(id)) {
-            throw new RuntimeException("entity not found");
-        }
     }
 }

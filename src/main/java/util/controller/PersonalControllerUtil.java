@@ -2,9 +2,11 @@ package util.controller;
 
 import facade.interaction.OrderFacade;
 import facade.interaction.impl.OrderFacadeImpl;
+import facade.relation.InvoicesOrderFacade;
 import facade.relation.OrderActionsFacade;
 import facade.relation.OrderCarPassportFacade;
 import facade.relation.UserOrdersFacade;
+import facade.relation.impl.InvoicesOrderFacadeImpl;
 import facade.relation.impl.OrderActionsFacadeImpl;
 import facade.relation.impl.OrderCarPassportFacadeImpl;
 import facade.relation.impl.UserOrdersFacadeImpl;
@@ -19,6 +21,7 @@ import view.dto.response.interaction.ActionDtoResponse;
 import view.dto.response.interaction.OrderDtoResponse;
 import view.dto.response.interaction.PassportDtoResponse;
 import view.dto.response.product.CarDtoResponse;
+import view.dto.response.relation.InvoicesOrderDtoResponse;
 import view.dto.response.user.UserDtoResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,7 @@ public class PersonalControllerUtil extends AbstractServlet {
     private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl();
     private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl();
     private final OrderControllerUtil orderControllerUtil = new OrderControllerUtil();
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
 
     public void editPersonalProfilePost(HttpServletRequest req) {
         UserDtoResponse userDtoResponse = (UserDtoResponse) req.getSession().getAttribute("user");
@@ -47,7 +51,8 @@ public class PersonalControllerUtil extends AbstractServlet {
         CarDtoResponse carResp = ocpFacade.findCarByOrder(Long.parseLong(req.getParameter("id")));
         PassportDtoResponse passportResp = ocpFacade.findPassportByOrder(Long.parseLong(req.getParameter("id")));
         List<ActionDtoResponse> actions = oasFacade.findActionsByOrderFiltered(Long.parseLong(req.getParameter("id")));
-
+        List<InvoicesOrderDtoResponse> invoices = invoicesOrderFacade.findAllByOrder(Long.parseLong(req.getParameter("id")));
+        req.setAttribute("invoices", invoices);
         req.setAttribute("order", orderResp);
         req.setAttribute("car", carResp);
         req.setAttribute("passport", passportResp);

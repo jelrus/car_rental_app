@@ -5,6 +5,7 @@
 <jsp:useBean id="order" scope="request" type="view.dto.response.interaction.OrderDtoResponse"/>
 <jsp:useBean id="car" scope="request" type="view.dto.response.product.CarDtoResponse"/>
 <jsp:useBean id="passport" scope="request" type="view.dto.response.interaction.PassportDtoResponse"/>
+<jsp:useBean id="invoices" scope="request" type="java.util.List"/>
 <jsp:useBean id="actions" scope="request" type="java.util.List"/>
 <jsp:useBean id="fullCost" scope="request" type="java.math.BigDecimal"/>
 
@@ -26,7 +27,7 @@
         </ul>
     </div>
     <a href="${pageContext.request.contextPath}/admin/dashboard" id="link-profile">
-        <img src="${user.profilePic}" id="profile-pic-nav">
+        <img src="${user.profilePic}" id="profile-pic-nav" alt="">
         ${user.username}
     </a>
     <a href="${pageContext.request.contextPath}/logout" id="link-logout">
@@ -139,7 +140,7 @@
                                     ${car.title}
                                 </div>
                                 <div class="col">
-                                    <img src="${car.productPic}" id="product-info-image">
+                                    <img src="${car.productPic}" id="product-info-image" alt="">
                                 </div>
                                 <div class="col">${car.carBrand.carBrand}</div>
                                 <div class="col">${car.carQuality.carQuality}</div>
@@ -255,6 +256,36 @@
                             </div>
                         </c:forEach>
                         <div class="col"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFive">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive"
+                                aria-expanded="true" aria-controls="collapseFive" id="order-invoices-link"
+                                onclick="$('#collapseFive').collapse('toggle')">
+                            Invoices
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                    <div class="card-body" id="card-accordion-body-5">
+                        <div class="row row-cols-3">
+                            <div class="col"></div>
+                            <div class="col">
+                                <c:forEach var="invoice" items="${invoices}">
+                                    <div class="row" id="invoice-row">
+                                        <a href="${pageContext.request.contextPath}/download/invoice/?id=${invoice.id}"
+                                           download="" id="download-pdf">
+                                            <i class="fa fa-solid fa-file-pdf"></i>
+                                                ${invoice.fileLink}
+                                        </a>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <div class="col"></div>
+                        </div>
                     </div>
                 </div>
             </div>

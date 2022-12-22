@@ -15,6 +15,15 @@
     margin-bottom: 10px;
 }
 
+#damage-refund-section{
+    font-size: large;
+}
+
+#damage-refund{
+    width: 275%;
+    height: fit-content;
+}
+
 #order-status-group{
     font-size: large;
     margin-top: 10px;
@@ -185,7 +194,7 @@
     border-bottom-width: 0;
     border-color: #000000c2;
     border-radius: 0;
-    border-right-width: 0px;
+    border-right-width: 0;
     padding-right: 50px;
 }
 
@@ -195,7 +204,7 @@
     border-bottom-width: 0;
     border-color: #000000c2;
     border-radius: 0;
-    border-right-width: 0px;
+    border-right-width: 0;
     padding-right: 50px;
 }
 

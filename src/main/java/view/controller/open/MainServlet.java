@@ -5,6 +5,7 @@ import facade.product.impl.CarFacadeImpl;
 import persistence.entity.product.Car;
 import persistence.entity.user.BaseUser;
 import persistence.entity.user.type.RoleType;
+import view.controller.AbstractServlet;
 import view.dto.response.PageData;
 import view.dto.response.product.CarDtoResponse;
 import view.dto.response.user.UserDtoResponse;
@@ -15,10 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
 
 @WebServlet("")
-public class MainServlet extends HttpServlet {
+public class MainServlet extends AbstractServlet {
 
     private final CarFacade carFacade = new CarFacadeImpl();
 
@@ -32,7 +33,23 @@ public class MainServlet extends HttpServlet {
         }
 
         PageData<CarDtoResponse> cars = carFacade.findAllFiltered(req);
-        req.setAttribute("cars", cars);
+        AbstractServlet.HeaderName[] columnNames = getColumnNamesForCars();
+        List<HeaderData> headerData = getHeaderDataList(columnNames, cars);
+        req.setAttribute("headerDataList", headerData);
+        req.setAttribute("pageData", cars);
+        req.setAttribute( "createUrl", "/");
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect(req.getContextPath() + createURL(req));
+    }
+
+    private AbstractServlet.HeaderName[] getColumnNamesForCars() {
+        return new AbstractServlet.HeaderName[]{
+                new AbstractServlet.HeaderName("Title", "title", "title"),
+                new AbstractServlet.HeaderName("Price", "rentalPrice", "rental_price"),
+        };
     }
 }

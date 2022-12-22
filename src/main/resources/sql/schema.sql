@@ -1,3 +1,4 @@
+drop table if exists invoices_order;
 drop table if exists order_actions;
 drop table if exists manager_actions;
 drop table if exists order_car_passport;
@@ -119,4 +120,15 @@ create table manager_actions(
                                 UNIQUE KEY `mas` (`user_id`, `action_id`),
                                 foreign key (user_id) references users(id) ON DELETE CASCADE,
                                 foreign key (action_id) references actions(id) ON DELETE CASCADE
+);
+
+create table invoices_order(
+                              id bigint auto_increment primary key not null,
+                              created datetime(6) not null,
+                              updated datetime(6) not null,
+                              file_link nvarchar(255),
+                              order_id bigint not null,
+                              enabled boolean not null,
+                              KEY `o` (`order_id`),
+                              foreign key (order_id) references orders(id) ON DELETE CASCADE
 );

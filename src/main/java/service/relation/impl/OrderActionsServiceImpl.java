@@ -1,5 +1,7 @@
 package service.relation.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.relation.OrderActionsDao;
 import persistence.dao.relation.impl.OrderActionsDaoImpl;
 import persistence.datatable.DataTableRequest;
@@ -15,33 +17,33 @@ public class OrderActionsServiceImpl implements OrderActionsService {
 
     private final OrderActionsDao orderActionsDao;
 
+    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
+    private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
+
     public OrderActionsServiceImpl() {
         this.orderActionsDao = new OrderActionsDaoImpl();
     }
 
     @Override
     public Long create(OrderActions orderActions) {
-        /*validate(orderActions);
-        isExist(orderActions.getId());*/
+        LOGGER_INFO.info("Relation between order and action created");
         return orderActionsDao.create(orderActions);
     }
 
     @Override
     public Boolean update(OrderActions orderActions) {
-        /*validate(orderActions);
-        isExist(orderActions.getId());*/
+        LOGGER_INFO.info("Relation " + orderActions.getId() + " between order and action updated");
         return orderActionsDao.update(orderActions);
     }
 
     @Override
     public Boolean delete(Long id) {
-        /*isExist(id);*/
+        LOGGER_WARNING.warn("Relation " + id + " between order and action deleted");
         return orderActionsDao.delete(id);
     }
 
     @Override
     public OrderActions findById(Long id) {
-        /*isExist(id);*/
         return orderActionsDao.findById(id);
     }
 
@@ -59,7 +61,6 @@ public class OrderActionsServiceImpl implements OrderActionsService {
 
     @Override
     public List<Action> findActionsByOrder(Long orderId) {
-        //validation if empty or exist?
         return orderActionsDao.findActionsByOrder(orderId);
     }
 
@@ -76,16 +77,5 @@ public class OrderActionsServiceImpl implements OrderActionsService {
     @Override
     public DataTableResponse<Action> findActionsByOrder(Long orderId, DataTableRequest request) {
         return orderActionsDao.findActionsByOrder(orderId, request);
-    }
-
-    private void validate(OrderActions orderActions) {
-        //validations
-        //exception if failed
-    }
-
-    private void isExist(Long id) {
-        if (!orderActionsDao.existById(id)) {
-            throw new RuntimeException("entity not found");
-        }
     }
 }

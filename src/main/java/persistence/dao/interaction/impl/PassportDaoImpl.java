@@ -1,6 +1,8 @@
 package persistence.dao.interaction.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.interaction.PassportDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -18,6 +20,8 @@ import java.util.Map;
 public class PassportDaoImpl implements PassportDao {
 
     private final DataSourceConnectionImpl dsc;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public PassportDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
@@ -252,7 +256,7 @@ public class PassportDaoImpl implements PassportDao {
                 genKey = keys.getLong(1);
             }
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            LOGGER_ERROR.error("Key(s) generation failed");
         }
 
         return genKey;

@@ -1,6 +1,8 @@
 package persistence.dao.user.impl;
 
 import config.datasource.impl.DataSourceConnectionImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.dao.user.UserDao;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
@@ -19,6 +21,8 @@ import java.util.Map;
 public class UserDaoImpl implements UserDao {
 
     private final DataSourceConnectionImpl dsc;
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public UserDaoImpl() {
         this.dsc = DataSourceConnectionImpl.getInstance();
@@ -384,6 +388,33 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Boolean existByUsername(String username) {
+        Connection connection = dsc.getConnection();
+        dsc.setupConnection(connection, Connection.TRANSACTION_READ_UNCOMMITTED);
+
+        int count = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(UserQueries.EXIST_BY_USERNAME);
+            ps.setString(1, username);
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                count = result.getInt("count");
+            }
+
+            connection.commit();
+        } catch (SQLException existEx) {
+            dsc.rollback(connection);
+            return false;
+        } finally {
+            dsc.releaseConnection(connection);
+        }
+
+        return count == 1;
+    }
+
+    @Override
     public BaseUser findByUsernamePassword(String username, String password) {
         Connection connection = dsc.getConnection();
         dsc.setupConnection(connection, Connection.TRANSACTION_READ_COMMITTED);
@@ -420,7 +451,6 @@ public class UserDaoImpl implements UserDao {
 
         try {
             PreparedStatement ps = connection.prepareStatement(UserQueries.findAllByRole(request));
-            System.out.println(UserQueries.findAllByRole(request));
             ps.setString(1, RoleType.ROLE_MANAGER.name());
             ResultSet rs = ps.executeQuery();
 
@@ -482,7 +512,7 @@ public class UserDaoImpl implements UserDao {
                 genKey = keys.getLong(1);
             }
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            LOGGER_ERROR.error("Key(s) generation failed");
         }
 
         return genKey;

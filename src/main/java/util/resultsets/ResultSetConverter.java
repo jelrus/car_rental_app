@@ -1,5 +1,7 @@
 package util.resultsets;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.entity.interaction.Action;
 import persistence.entity.interaction.Order;
 import persistence.entity.interaction.Passport;
@@ -7,10 +9,7 @@ import persistence.entity.interaction.type.OrderStatus;
 import persistence.entity.product.Car;
 import persistence.entity.product.type.CarBrand;
 import persistence.entity.product.type.CarQuality;
-import persistence.entity.relation.ManagerActions;
-import persistence.entity.relation.OrderActions;
-import persistence.entity.relation.OrderCarPassport;
-import persistence.entity.relation.UserOrders;
+import persistence.entity.relation.*;
 import persistence.entity.user.BaseUser;
 import persistence.entity.user.type.RoleType;
 
@@ -18,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class ResultSetConverter {
+
+    private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
     public static Action convertResultToAction(ResultSet rs) {
         Action action = new Action();
@@ -30,7 +31,7 @@ public final class ResultSetConverter {
             action.setMessage(rs.getString("message"));
             action.setEnabled(rs.getBoolean("enabled"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("Action result set failure");
         }
 
         return action;
@@ -49,7 +50,7 @@ public final class ResultSetConverter {
             order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
             order.setEnabled(rs.getBoolean("enabled"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("Order result set converting failure");
         }
 
         return order;
@@ -74,7 +75,7 @@ public final class ResultSetConverter {
             passport.setPhoneNumber(rs.getString("phone_number"));
             passport.setEmail(rs.getString("email"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("Passport result set converting failure");
         }
 
         return passport;
@@ -90,7 +91,7 @@ public final class ResultSetConverter {
             managerActions.setUserId(rs.getLong("user_id"));
             managerActions.setActionId(rs.getLong("action_id"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("ManagerActions result set converting failure");
         }
 
         return managerActions;
@@ -106,7 +107,7 @@ public final class ResultSetConverter {
             orderActions.setOrderId(rs.getLong("order_id"));
             orderActions.setActionId(rs.getLong("action_id"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("OrderActions result set converting failure");
         }
 
         return orderActions;
@@ -123,7 +124,7 @@ public final class ResultSetConverter {
             orderCarPassport.setCarId(rs.getLong("car_id"));
             orderCarPassport.setPassportId(rs.getLong("passport_id"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("OrderCarPassport result set converting failure");
         }
 
         return orderCarPassport;
@@ -139,10 +140,27 @@ public final class ResultSetConverter {
             userOrders.setUserId(rs.getLong("user_id"));
             userOrders.setOrderId(rs.getLong("order_id"));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("UserOrders result set converting failure");
         }
 
         return userOrders;
+    }
+
+    public static InvoicesOrder convertResultToInvoicesOrder(ResultSet rs) {
+        InvoicesOrder invoicesOrder = new InvoicesOrder();
+
+        try {
+            invoicesOrder.setId(rs.getLong("id"));
+            invoicesOrder.setCreated(rs.getTimestamp("created"));
+            invoicesOrder.setUpdated(rs.getTimestamp("updated"));
+            invoicesOrder.setFileLink(rs.getString("file_link"));
+            invoicesOrder.setOrderId(rs.getLong("order_id"));
+            invoicesOrder.setEnabled(rs.getBoolean("enabled"));
+        } catch (SQLException resEx) {
+            LOGGER_ERROR.error("InvoicesOrder result set converting failure");
+        }
+
+        return invoicesOrder;
     }
 
     public static Car convertResultToCar(ResultSet rs) {
@@ -159,9 +177,8 @@ public final class ResultSetConverter {
             car.setInfo(rs.getString("info"));
             car.setRentalPrice(rs.getBigDecimal("rental_price"));
             car.setEnabled(rs.getBoolean("enabled"));
-
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("Car result set converting failure");
         }
 
         return car;
@@ -183,7 +200,7 @@ public final class ResultSetConverter {
             baseUser.setEnabled(rs.getBoolean("enabled"));
             baseUser.setRoleType(RoleType.valueOf(rs.getString("role_type")));
         } catch (SQLException resEx) {
-            resEx.printStackTrace();
+            LOGGER_ERROR.error("User result set converting failure");
         }
 
         return baseUser;
