@@ -23,8 +23,8 @@ public class ActionFacadeImpl implements ActionFacade {
 
     private final ActionService actionService;
 
-    public ActionFacadeImpl() {
-        this.actionService = new ActionServiceImpl();
+    public ActionFacadeImpl(ActionService actionService) {
+        this.actionService = actionService;
     }
 
     @Override

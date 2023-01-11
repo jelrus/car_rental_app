@@ -8,7 +8,15 @@ import facade.relation.*;
 import facade.relation.impl.*;
 import facade.user.UserFacade;
 import facade.user.impl.UserFacadeImpl;
+import persistence.dao.interaction.impl.ActionDaoImpl;
+import persistence.dao.interaction.impl.OrderDaoImpl;
+import persistence.dao.relation.impl.*;
+import persistence.dao.user.impl.UserDaoImpl;
 import persistence.entity.interaction.type.OrderStatus;
+import service.interaction.impl.ActionServiceImpl;
+import service.interaction.impl.OrderServiceImpl;
+import service.relation.impl.*;
+import service.user.impl.UserServiceImpl;
 import util.invoice.InvoiceGenerator;
 import util.invoice.objects.Member;
 import util.invoice.objects.impl.DamageRefundInvoice;
@@ -36,14 +44,14 @@ import java.util.stream.Collectors;
 
 public class ActionControllerUtil extends AbstractServlet{
 
-    private final ActionFacade actionFacade = new ActionFacadeImpl();
-    private final OrderFacade orderFacade = new OrderFacadeImpl();
-    private final OrderActionsFacade orderActionsFacade = new OrderActionsFacadeImpl();
-    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
-    private final ManagerActionsFacade managerActionsFacade = new ManagerActionsFacadeImpl();
-    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl();
-    private final OrderCarPassportFacade orderCarPassportFacade = new OrderCarPassportFacadeImpl();
-    private final UserFacade userFacade = new UserFacadeImpl();
+    private final ActionFacade actionFacade = new ActionFacadeImpl(new ActionServiceImpl(new ActionDaoImpl()));
+    private final OrderFacade orderFacade = new OrderFacadeImpl(new OrderServiceImpl(new OrderDaoImpl()));
+    private final OrderActionsFacade orderActionsFacade = new OrderActionsFacadeImpl(new OrderActionsServiceImpl(new OrderActionsDaoImpl()));
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl(new InvoicesOrderServiceImpl(new InvoicesOrderDaoImpl()));
+    private final ManagerActionsFacade managerActionsFacade = new ManagerActionsFacadeImpl(new ManagerActionsServiceImpl(new ManagerActionsDaoImpl()));
+    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl(new UserOrdersServiceImpl(new UserOrdersDaoImpl()));
+    private final OrderCarPassportFacade orderCarPassportFacade = new OrderCarPassportFacadeImpl(new OrderCarPassportServiceImpl(new OrderCarPassportDaoImpl(), new OrderDaoImpl()));
+    private final UserFacade userFacade = new UserFacadeImpl(new UserServiceImpl(new UserDaoImpl()));
 
     public void createActionGet(HttpServletRequest req) {
         OrderDtoResponse orderResponse = orderFacade.findById(Long.parseLong(req.getParameter("orderId")));

@@ -18,8 +18,8 @@ public class InvoicesOrderServiceImpl implements InvoicesOrderService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public InvoicesOrderServiceImpl() {
-        this.invoicesOrderDao = new InvoicesOrderDaoImpl();
+    public InvoicesOrderServiceImpl(InvoicesOrderDao invoicesOrderDao) {
+        this.invoicesOrderDao = invoicesOrderDao;
     }
 
     @Override

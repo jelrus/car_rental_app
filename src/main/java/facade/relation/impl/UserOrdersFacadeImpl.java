@@ -30,8 +30,8 @@ public class UserOrdersFacadeImpl implements UserOrdersFacade {
 
     private final UserOrdersService userOrdersService;
 
-    public UserOrdersFacadeImpl() {
-        this.userOrdersService = new UserOrdersServiceImpl();
+    public UserOrdersFacadeImpl(UserOrdersService userOrdersService) {
+        this.userOrdersService = userOrdersService;
     }
 
     @Override

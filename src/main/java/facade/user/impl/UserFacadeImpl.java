@@ -24,8 +24,8 @@ public class UserFacadeImpl implements UserFacade {
 
     private final UserService userService;
 
-    public UserFacadeImpl() {
-        this.userService = new UserServiceImpl();
+    public UserFacadeImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override

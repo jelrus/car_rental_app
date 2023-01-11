@@ -24,8 +24,8 @@ public class OrderFacadeImpl implements OrderFacade {
 
     private final OrderService orderService;
 
-    public OrderFacadeImpl() {
-        this.orderService = new OrderServiceImpl();
+    public OrderFacadeImpl(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @Override

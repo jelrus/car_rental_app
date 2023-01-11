@@ -22,8 +22,8 @@ public class InvoicesOrderFacadeImpl implements InvoicesOrderFacade {
 
     private final InvoicesOrderService invoicesOrderService;
 
-    public InvoicesOrderFacadeImpl() {
-        this.invoicesOrderService = new InvoicesOrderServiceImpl();
+    public InvoicesOrderFacadeImpl(InvoicesOrderService invoicesOrderService) {
+        this.invoicesOrderService = invoicesOrderService;
     }
 
     @Override

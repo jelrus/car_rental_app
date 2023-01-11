@@ -2,6 +2,8 @@ package view.controller.auth;
 
 import facade.user.UserFacade;
 import facade.user.impl.UserFacadeImpl;
+import persistence.dao.user.impl.UserDaoImpl;
+import service.user.impl.UserServiceImpl;
 import view.dto.request.user.AuthDtoRequest;
 
 import javax.servlet.ServletException;
@@ -14,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
-    UserFacade userFacade = new UserFacadeImpl();
+    UserFacade userFacade = new UserFacadeImpl(new UserServiceImpl(new UserDaoImpl()));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

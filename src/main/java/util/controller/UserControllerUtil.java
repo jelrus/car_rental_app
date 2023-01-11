@@ -2,7 +2,9 @@ package util.controller;
 
 import facade.user.UserFacade;
 import facade.user.impl.UserFacadeImpl;
+import persistence.dao.user.impl.UserDaoImpl;
 import persistence.entity.user.type.RoleType;
+import service.user.impl.UserServiceImpl;
 import view.controller.AbstractServlet;
 import view.dto.request.user.*;
 import view.dto.response.PageData;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class UserControllerUtil extends AbstractServlet {
 
-    private final UserFacade userFacade = new UserFacadeImpl();
+    private final UserFacade userFacade = new UserFacadeImpl(new UserServiceImpl(new UserDaoImpl()));
 
     public void createManagerPost(HttpServletRequest req) {
         UserDtoRequest userDtoRequest = new UserDtoRequest();

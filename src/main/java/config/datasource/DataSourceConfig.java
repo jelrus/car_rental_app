@@ -40,4 +40,15 @@ public class DataSourceConfig {
     public String getMaxSize() {
         return maxSize;
     }
+
+    @Override
+    public String toString() {
+        return "DataSourceConfig{" +
+                "url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", minSize='" + minSize + '\'' +
+                ", maxSize='" + maxSize + '\'' +
+                '}';
+    }
 }

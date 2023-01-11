@@ -20,8 +20,8 @@ public class UserOrdersServiceImpl implements UserOrdersService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public UserOrdersServiceImpl() {
-        this.userOrdersDao = new UserOrdersDaoImpl();
+    public UserOrdersServiceImpl(UserOrdersDao userOrdersDao) {
+        this.userOrdersDao = userOrdersDao;
     }
 
     @Override

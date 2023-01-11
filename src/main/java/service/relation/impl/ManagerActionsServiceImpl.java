@@ -20,8 +20,8 @@ public class ManagerActionsServiceImpl implements ManagerActionsService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public ManagerActionsServiceImpl() {
-        this.managerActionsDao = new ManagerActionsDaoImpl();
+    public ManagerActionsServiceImpl(ManagerActionsDao managerActionsDao) {
+        this.managerActionsDao = managerActionsDao;
     }
 
     @Override

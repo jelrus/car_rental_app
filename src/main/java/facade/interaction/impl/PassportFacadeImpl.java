@@ -22,8 +22,8 @@ public class PassportFacadeImpl implements PassportFacade {
 
     private final PassportService passportService;
 
-    public PassportFacadeImpl() {
-        this.passportService = new PassportServiceImpl();
+    public PassportFacadeImpl(PassportService passportService) {
+        this.passportService = passportService;
     }
 
     @Override

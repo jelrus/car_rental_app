@@ -2,9 +2,11 @@ package view.controller.open;
 
 import facade.product.CarFacade;
 import facade.product.impl.CarFacadeImpl;
+import persistence.dao.product.impl.CarDaoImpl;
 import persistence.entity.product.Car;
 import persistence.entity.user.BaseUser;
 import persistence.entity.user.type.RoleType;
+import service.product.impl.CarServiceImpl;
 import view.controller.AbstractServlet;
 import view.dto.response.PageData;
 import view.dto.response.product.CarDtoResponse;
@@ -21,7 +23,7 @@ import java.util.*;
 @WebServlet("")
 public class MainServlet extends AbstractServlet {
 
-    private final CarFacade carFacade = new CarFacadeImpl();
+    private final CarFacade carFacade = new CarFacadeImpl(new CarServiceImpl(new CarDaoImpl()));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,6 +35,7 @@ public class MainServlet extends AbstractServlet {
         }
 
         PageData<CarDtoResponse> cars = carFacade.findAllFiltered(req);
+
         AbstractServlet.HeaderName[] columnNames = getColumnNamesForCars();
         List<HeaderData> headerData = getHeaderDataList(columnNames, cars);
         req.setAttribute("headerDataList", headerData);
@@ -49,7 +52,7 @@ public class MainServlet extends AbstractServlet {
     private AbstractServlet.HeaderName[] getColumnNamesForCars() {
         return new AbstractServlet.HeaderName[]{
                 new AbstractServlet.HeaderName("Title", "title", "title"),
-                new AbstractServlet.HeaderName("Price", "rentalPrice", "rental_price"),
+                new AbstractServlet.HeaderName("Price", "rentalPrice", "rental_price")
         };
     }
 }

@@ -35,12 +35,12 @@ public final class RequestUtil {
         return new PageAndSizeData(DEFAULT_PAGE_PARAM_VALUE, DEFAULT_SIZE_PARAM_VALUE);
     }
 
-    public static SortData generateSortData(HttpServletRequest webRequest) {
-        String sort = StringUtils.isNotBlank(webRequest.getParameter(SORT_PARAM)) ?
-                      Objects.requireNonNull(webRequest.getParameter(SORT_PARAM)) :
+    public static SortData generateSortData(HttpServletRequest req) {
+        String sort = StringUtils.isNotBlank(req.getParameter(SORT_PARAM)) ?
+                      Objects.requireNonNull(req.getParameter(SORT_PARAM)) :
                       DEFAULT_SORT_PARAM_VALUE;
-        String order = StringUtils.isNotBlank(webRequest.getParameter(ORDER_PARAM)) ?
-                       Objects.requireNonNull(webRequest.getParameter(ORDER_PARAM)) :
+        String order = StringUtils.isNotBlank(req.getParameter(ORDER_PARAM)) ?
+                       Objects.requireNonNull(req.getParameter(ORDER_PARAM)) :
                        DEFAULT_ORDER_PARAM_VALUE;
         return new SortData(sort, order);
     }

@@ -25,7 +25,7 @@ public final class CarQueries {
     public static String findAllFiltered(DataTableRequest req) {
         int limit = (req.getCurrentPage() - 1) * req.getPageSize();
         return "SELECT * FROM cars " +
-                "WHERE enabled=true " +
+                "WHERE enabled=true " + req.getCurrentFilters() + " " +
                 "ORDER BY " + req.getSort() + " " + req.getOrder() + " " +
                 "LIMIT " + limit + "," + req.getPageSize() + ";";
     }

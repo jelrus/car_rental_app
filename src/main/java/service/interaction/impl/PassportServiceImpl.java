@@ -20,8 +20,8 @@ public class PassportServiceImpl implements PassportService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public PassportServiceImpl() {
-        this.passportDao = new PassportDaoImpl();
+    public PassportServiceImpl(PassportDao passportDao) {
+        this.passportDao = passportDao;
     }
 
     @Override

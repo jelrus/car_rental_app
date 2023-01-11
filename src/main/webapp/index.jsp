@@ -115,21 +115,21 @@
                 Filters
                 <div class="dropdown-divider" id="filter-div"></div>
             </div>
-
+            <form method="post">
             <div class="card" id="brand-group">
                 <h6 id="brand-h6">Brand</h6>
                 <div class="btn-group-vertical" data-toggle="buttons" id="brand-buttons-group">
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" name="bmw" value="1"> BMW
+                        <input type="checkbox" name="bmw" value="on" checked> BMW
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" name="mercedes" value="1"> Mercedes
+                        <input type="checkbox" name="mercedes" value="on" checked> Mercedes
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" name="toyota" value="1"> Toyota
+                        <input type="checkbox" name="toyota" value="on" checked> Toyota
                     </label>
                     <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" name="honda" value="1"> Honda
+                        <input type="checkbox" name="honda" value="on" checked> Honda
                     </label>
                 </div>
             </div>
@@ -140,19 +140,21 @@
                 <h6 id="quality-h6">Quality</h6>
                 <div class="btn-group-vertical" data-toggle="buttons" id="quality-buttons-group">
                     <label class="btn btn-secondary">
-                        <input type="checkbox" checked autocomplete="off" name="mpv" value="1"> MPV
+                        <input type="checkbox" name="mpv" value="on" checked> MPV
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="checkbox" checked autocomplete="off" name="luxury" value="1"> Luxury
+                        <input type="checkbox" name="luxury" value="on" checked> Luxury
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="checkbox" checked autocomplete="off" name="sports" value="1"> Sports
+                        <input type="checkbox" name="sports" value="on" checked> Sports
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="checkbox" checked autocomplete="off" name="suv" value="1"> SUV
+                        <input type="checkbox" name="suv" value="on" checked> SUV
                     </label>
                 </div>
             </div>
+                <button type="submit" class="btn btn-primary" id="apply-edit-action-button">Apply filters</button>
+            </form>
 
             <div class="dropdown-divider"></div>
 

@@ -26,9 +26,9 @@ public class OrderCarPassportServiceImpl implements OrderCarPassportService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public OrderCarPassportServiceImpl() {
-        this.orderCarPassportDao = new OrderCarPassportDaoImpl();
-        this.orderDao = new OrderDaoImpl();
+    public OrderCarPassportServiceImpl(OrderCarPassportDao orderCarPassportDao, OrderDao orderDao) {
+        this.orderCarPassportDao = orderCarPassportDao;
+        this.orderDao = orderDao;
     }
 
     @Override

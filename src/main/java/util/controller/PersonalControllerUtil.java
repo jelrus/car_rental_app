@@ -12,6 +12,18 @@ import facade.relation.impl.OrderCarPassportFacadeImpl;
 import facade.relation.impl.UserOrdersFacadeImpl;
 import facade.user.UserFacade;
 import facade.user.impl.UserFacadeImpl;
+import persistence.dao.interaction.impl.OrderDaoImpl;
+import persistence.dao.relation.impl.InvoicesOrderDaoImpl;
+import persistence.dao.relation.impl.OrderActionsDaoImpl;
+import persistence.dao.relation.impl.OrderCarPassportDaoImpl;
+import persistence.dao.relation.impl.UserOrdersDaoImpl;
+import persistence.dao.user.impl.UserDaoImpl;
+import service.interaction.impl.OrderServiceImpl;
+import service.relation.impl.InvoicesOrderServiceImpl;
+import service.relation.impl.OrderActionsServiceImpl;
+import service.relation.impl.OrderCarPassportServiceImpl;
+import service.relation.impl.UserOrdersServiceImpl;
+import service.user.impl.UserServiceImpl;
 import view.controller.AbstractServlet;
 import view.dto.request.user.AccessDtoRequest;
 import view.dto.request.user.AuthDtoRequest;
@@ -29,13 +41,13 @@ import java.util.List;
 
 public class PersonalControllerUtil extends AbstractServlet {
 
-    private final UserFacade userFacade = new UserFacadeImpl();
-    private final OrderFacade orderFacade = new OrderFacadeImpl();
-    private final OrderCarPassportFacade ocpFacade = new OrderCarPassportFacadeImpl();
-    private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl();
-    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl();
+    private final UserFacade userFacade = new UserFacadeImpl(new UserServiceImpl(new UserDaoImpl()));
+    private final OrderFacade orderFacade = new OrderFacadeImpl(new OrderServiceImpl(new OrderDaoImpl()));
+    private final OrderCarPassportFacade ocpFacade = new OrderCarPassportFacadeImpl(new OrderCarPassportServiceImpl(new OrderCarPassportDaoImpl(), new OrderDaoImpl()));
+    private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl(new OrderActionsServiceImpl(new OrderActionsDaoImpl()));
+    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl(new UserOrdersServiceImpl(new UserOrdersDaoImpl()));
     private final OrderControllerUtil orderControllerUtil = new OrderControllerUtil();
-    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl(new InvoicesOrderServiceImpl(new InvoicesOrderDaoImpl()));
 
     public void editPersonalProfilePost(HttpServletRequest req) {
         UserDtoResponse userDtoResponse = (UserDtoResponse) req.getSession().getAttribute("user");

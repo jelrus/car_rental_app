@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public UserServiceImpl() {
-        this.userDao = new UserDaoImpl();
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override

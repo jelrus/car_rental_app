@@ -13,8 +13,18 @@ import facade.relation.impl.OrderCarPassportFacadeImpl;
 import facade.relation.impl.UserOrdersFacadeImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import persistence.dao.interaction.impl.OrderDaoImpl;
+import persistence.dao.interaction.impl.PassportDaoImpl;
+import persistence.dao.product.impl.CarDaoImpl;
+import persistence.dao.relation.impl.OrderCarPassportDaoImpl;
+import persistence.dao.relation.impl.UserOrdersDaoImpl;
 import persistence.entity.interaction.type.OrderStatus;
 import persistence.entity.user.type.RoleType;
+import service.interaction.impl.OrderServiceImpl;
+import service.interaction.impl.PassportServiceImpl;
+import service.product.impl.CarServiceImpl;
+import service.relation.impl.OrderCarPassportServiceImpl;
+import service.relation.impl.UserOrdersServiceImpl;
 import view.dto.request.interaction.OrderDtoRequest;
 import view.dto.request.interaction.PassportDtoRequest;
 import view.dto.request.relation.OrderCarPassportDtoRequest;
@@ -36,11 +46,11 @@ import java.util.Objects;
 @WebServlet("/order/create/")
 public class OrderCreate extends HttpServlet {
 
-    private final OrderFacade orderFacade = new OrderFacadeImpl();
-    private final PassportFacade passportFacade = new PassportFacadeImpl();
-    private final CarFacade carFacade = new CarFacadeImpl();
-    private final OrderCarPassportFacade orderCarPassportFacade = new OrderCarPassportFacadeImpl();
-    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl();
+    private final OrderFacade orderFacade = new OrderFacadeImpl(new OrderServiceImpl(new OrderDaoImpl()));
+    private final PassportFacade passportFacade = new PassportFacadeImpl(new PassportServiceImpl(new PassportDaoImpl()));
+    private final CarFacade carFacade = new CarFacadeImpl(new CarServiceImpl(new CarDaoImpl()));
+    private final OrderCarPassportFacade orderCarPassportFacade = new OrderCarPassportFacadeImpl(new OrderCarPassportServiceImpl(new OrderCarPassportDaoImpl(), new OrderDaoImpl()));
+    private final UserOrdersFacade userOrdersFacade = new UserOrdersFacadeImpl(new UserOrdersServiceImpl(new UserOrdersDaoImpl()));
 
     private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 

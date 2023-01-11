@@ -21,8 +21,8 @@ public class CarServiceImpl implements CarService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public CarServiceImpl() {
-        this.carDao = new CarDaoImpl();
+    public CarServiceImpl(CarDao carDao) {
+        this.carDao = carDao;
     }
 
     @Override

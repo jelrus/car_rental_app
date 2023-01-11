@@ -20,8 +20,8 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public OrderServiceImpl() {
-        this.orderDao = new OrderDaoImpl();
+    public OrderServiceImpl(OrderDao orderDao) {
+        this.orderDao = orderDao;
     }
 
     @Override

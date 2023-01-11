@@ -8,7 +8,15 @@ import facade.relation.OrderCarPassportFacade;
 import facade.relation.impl.InvoicesOrderFacadeImpl;
 import facade.relation.impl.OrderActionsFacadeImpl;
 import facade.relation.impl.OrderCarPassportFacadeImpl;
+import persistence.dao.interaction.impl.OrderDaoImpl;
+import persistence.dao.relation.impl.InvoicesOrderDaoImpl;
+import persistence.dao.relation.impl.OrderActionsDaoImpl;
+import persistence.dao.relation.impl.OrderCarPassportDaoImpl;
 import persistence.entity.relation.InvoicesOrder;
+import service.interaction.impl.OrderServiceImpl;
+import service.relation.impl.InvoicesOrderServiceImpl;
+import service.relation.impl.OrderActionsServiceImpl;
+import service.relation.impl.OrderCarPassportServiceImpl;
 import view.controller.AbstractServlet;
 import view.dto.request.interaction.OrderDtoRequest;
 import view.dto.response.PageData;
@@ -23,10 +31,10 @@ import java.util.List;
 
 public class OrderControllerUtil extends AbstractServlet {
 
-    private final OrderFacade orderFacade = new OrderFacadeImpl();
-    private final OrderCarPassportFacade ocpFacade = new OrderCarPassportFacadeImpl();
-    private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl();
-    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
+    private final OrderFacade orderFacade = new OrderFacadeImpl(new OrderServiceImpl(new OrderDaoImpl()));
+    private final OrderCarPassportFacade ocpFacade = new OrderCarPassportFacadeImpl(new OrderCarPassportServiceImpl(new OrderCarPassportDaoImpl(), new OrderDaoImpl()));
+    private final OrderActionsFacade oasFacade = new OrderActionsFacadeImpl(new OrderActionsServiceImpl(new OrderActionsDaoImpl()));
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl(new InvoicesOrderServiceImpl(new InvoicesOrderDaoImpl()));
 
     public void deleteOrderPost(HttpServletRequest req) {
         orderFacade.delete(Long.parseLong(req.getParameter("id")));

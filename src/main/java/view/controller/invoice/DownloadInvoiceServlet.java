@@ -2,6 +2,8 @@ package view.controller.invoice;
 
 import facade.relation.InvoicesOrderFacade;
 import facade.relation.impl.InvoicesOrderFacadeImpl;
+import persistence.dao.relation.impl.InvoicesOrderDaoImpl;
+import service.relation.impl.InvoicesOrderServiceImpl;
 import view.dto.response.relation.InvoicesOrderDtoResponse;
 
 import javax.servlet.ServletException;
@@ -15,7 +17,7 @@ import java.io.*;
 @WebServlet("/download/invoice/")
 public class DownloadInvoiceServlet extends HttpServlet {
 
-    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl();
+    private final InvoicesOrderFacade invoicesOrderFacade = new InvoicesOrderFacadeImpl(new InvoicesOrderServiceImpl(new InvoicesOrderDaoImpl()));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

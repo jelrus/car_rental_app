@@ -53,7 +53,6 @@ public final class InvoiceGenerator {
             document.close();
         } catch (IOException | DocumentException e){
             LOGGER_ERROR.error("Standard invoice creation failed");
-            throw new DocumentCreateException("Document creation failed");
         }
 
         return fileName;
@@ -141,7 +140,6 @@ public final class InvoiceGenerator {
             cb.restoreState();
         } catch (DocumentException | IOException e) {
             LOGGER_ERROR.error("Text insertion failed");
-            throw new DocumentCreateException("Document creation failed");
         }
     }
 
@@ -150,7 +148,6 @@ public final class InvoiceGenerator {
             Files.createDirectory(Paths.get(OUTPUT_DIR));
         } catch (IOException e){
             LOGGER_ERROR.error("Output folder not created");
-            throw new DocumentCreateException("Document creation failed");
         }
     }
 }

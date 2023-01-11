@@ -25,8 +25,8 @@ public class OrderCarPassportFacadeImpl implements OrderCarPassportFacade {
 
     private final OrderCarPassportService orderCarPassportService;
 
-    public OrderCarPassportFacadeImpl() {
-        this.orderCarPassportService = new OrderCarPassportServiceImpl();
+    public OrderCarPassportFacadeImpl(OrderCarPassportService orderCarPassportService) {
+        this.orderCarPassportService = orderCarPassportService;
     }
 
     @Override

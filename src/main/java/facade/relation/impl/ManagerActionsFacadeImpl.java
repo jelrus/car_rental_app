@@ -25,8 +25,8 @@ public class ManagerActionsFacadeImpl implements ManagerActionsFacade {
 
     private final ManagerActionsService managerActionsService;
 
-    public ManagerActionsFacadeImpl() {
-        this.managerActionsService = new ManagerActionsServiceImpl();
+    public ManagerActionsFacadeImpl(ManagerActionsService managerActionsService) {
+        this.managerActionsService = managerActionsService;
     }
 
     @Override

@@ -319,4 +319,11 @@ public class ActionDaoImpl implements ActionDao {
 
         return genKey;
     }
+
+    @Override
+    public String toString() {
+        return "ActionDaoImpl{" +
+                "dsc=" + dsc +
+                '}';
+    }
 }

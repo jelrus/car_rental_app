@@ -2,6 +2,8 @@ package view.controller.open;
 
 import facade.product.CarFacade;
 import facade.product.impl.CarFacadeImpl;
+import persistence.dao.product.impl.CarDaoImpl;
+import service.product.impl.CarServiceImpl;
 import view.dto.response.product.CarDtoResponse;
 
 import javax.servlet.ServletException;
@@ -14,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/product/")
 public class CarInfoServlet extends HttpServlet {
 
-    private final CarFacade carFacade = new CarFacadeImpl();
+    private final CarFacade carFacade = new CarFacadeImpl(new CarServiceImpl(new CarDaoImpl()));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -2,8 +2,10 @@ package util.controller;
 
 import facade.product.CarFacade;
 import facade.product.impl.CarFacadeImpl;
+import persistence.dao.product.impl.CarDaoImpl;
 import persistence.entity.product.type.CarBrand;
 import persistence.entity.product.type.CarQuality;
+import service.product.impl.CarServiceImpl;
 import view.controller.AbstractServlet;
 import view.dto.request.product.CarDtoRequest;
 import view.dto.response.PageData;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class CarControllerUtil extends AbstractServlet {
 
-    private final CarFacade carFacade = new CarFacadeImpl();
+    private final CarFacade carFacade = new CarFacadeImpl(new CarServiceImpl(new CarDaoImpl()));
 
     public void createCarGet(HttpServletRequest req) {
         List<CarBrand> brand = Arrays.stream(CarBrand.values()).collect(Collectors.toList());

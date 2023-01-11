@@ -5,7 +5,6 @@ import exceptions.InputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.dao.interaction.ActionDao;
-import persistence.dao.interaction.impl.ActionDaoImpl;
 import persistence.datatable.DataTableRequest;
 import persistence.datatable.DataTableResponse;
 import persistence.entity.interaction.Action;
@@ -20,8 +19,8 @@ public class ActionServiceImpl implements ActionService {
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_WARNING = LoggerFactory.getLogger("warn");
 
-    public ActionServiceImpl() {
-        this.actionDao = new ActionDaoImpl();
+    public ActionServiceImpl(ActionDao actionDao) {
+        this.actionDao = actionDao;
     }
 
     @Override

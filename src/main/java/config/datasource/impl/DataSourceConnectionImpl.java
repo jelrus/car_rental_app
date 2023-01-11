@@ -20,15 +20,15 @@ public class DataSourceConnectionImpl implements DataSourceConnection {
 
     private static final Logger LOGGER_ERROR = LoggerFactory.getLogger("error");
 
-    private DataSourceConnectionImpl() {
-        dsc = new DataSourceConfig();
+    private DataSourceConnectionImpl(DataSourceConfig dataSourceConfig) {
+        dsc = dataSourceConfig;
         connectionPool = createPool();
         usedConnections = new ArrayList<>();
     }
 
     public static synchronized DataSourceConnectionImpl getInstance() {
         if (instance == null) {
-            instance = new DataSourceConnectionImpl();
+            instance = new DataSourceConnectionImpl(new DataSourceConfig());
         }
         return instance;
     }
