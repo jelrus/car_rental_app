@@ -1,6 +1,0 @@
-0. Product page - Filters
--------------------------
-1. Tests
-2. Internationalization
-3. Custom jsp tag
-4. Documentation
